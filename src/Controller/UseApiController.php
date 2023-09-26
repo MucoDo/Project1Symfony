@@ -33,27 +33,43 @@ class UseApiController extends AbstractController
         // $contentType = 'application/json'
         $content = $response->getContent();
         // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $recipees = ($response->toArray())['meals'];
+        $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-        dump($recipees);
+        dump($recipes);
 
         // pour chaque recette
-        foreach ($recipees as $recipee) {
+        foreach ($recipes as $recipe) {
 
-            // array d'ingredients, nouveau pour chaque repas
+            // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
 
-            // creer un objet Recipee
-            foreach ($recipee as $key => $val) {
+            // creer un objet recipe
+            foreach ($recipe as $key => $val) {
                 if (strpos($key, "strIngredient") !== false) {
-                    // creer un array d'ingredients pour apres faire une boucle et faire addIngredient
+                    // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)){
                         $arrIngredients[] = $val;
                     }
                 }
             }
-            // ici on a tous les ingredients de chaque recette
+            // ici on a tous les INGREDIENTS de chaque recette
             dump ($arrIngredients);
+
+            
+            // array de MESURE, nouveau pour chaque repas
+            $arrMesures = [];
+
+            // creer un objet recipe
+            foreach ($recipe as $key => $val) {
+                if (strpos($key, "strMeasure") !== false) {
+                    // creer un array de MESURE pour apres faire une boucle et faire addMESURE
+                    if ($val != "" && !is_null($val)){
+                        $arrMesures[] = $val;
+                    }
+                }
+            }
+            // ici on a tous les MESUSES de chaque recette
+            dump ($arrMesures);
         }
         
         dd();
