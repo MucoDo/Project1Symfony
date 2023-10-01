@@ -33,18 +33,18 @@ class UseApiController extends AbstractController
         // $contentType = 'application/json'
         $content = $response->getContent();
         // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $recipees = ($response->toArray())['meals'];
+        $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-        dump($recipees);
+        dump($recipes);
 
         // pour chaque recette
-        foreach ($recipees as $recipee) {
+        foreach ($recipes as $recipe) {
 
             // array d'ingredients, nouveau pour chaque repas
             $arrIngredients = [];
 
             // creer un objet Recipee
-            foreach ($recipee as $key => $val) {
+            foreach ($recipe as $key => $val) {
                 if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'ingredients pour apres faire une boucle et faire addIngredient
                     if ($val != "" && !is_null($val)){
