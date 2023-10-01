@@ -19,7 +19,8 @@ class UserFixtures extends Fixture
     {
         for ($i=1; $i<3; $i++){
             $user= new User();
-            $user->setEmail("utilisateur".$i."@gmail.com");
+            $user->setEmail("user".$i."@gmail.com");
+            $user->setNom("user".$i);
             $user->setPassword($this->passwordHasher->hashPassword($user,'hello'.$i) );
             $manager->persist($user);
         }

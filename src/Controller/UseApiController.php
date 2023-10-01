@@ -40,20 +40,36 @@ class UseApiController extends AbstractController
         // pour chaque recette
         foreach ($recipes as $recipe) {
 
-            // array d'ingredients, nouveau pour chaque repas
+            // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
 
             // creer un objet Recipee
-            foreach ($recipe as $key => $val) {
+            foreach ($recipee as $key => $val) {
                 if (strpos($key, "strIngredient") !== false) {
-                    // creer un array d'ingredients pour apres faire une boucle et faire addIngredient
+                    // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)){
                         $arrIngredients[] = $val;
                     }
                 }
             }
-            // ici on a tous les ingredients de chaque recette
+            // ici on a tous les INGREDIENTS de chaque recette
             dump ($arrIngredients);
+
+            
+            // array de MESURE, nouveau pour chaque repas
+            $arrMesures = [];
+
+            // creer un objet recipe
+            foreach ($recipe as $key => $val) {
+                if (strpos($key, "strMeasure") !== false) {
+                    // creer un array de MESURE pour apres faire une boucle et faire addMESURE
+                    if ($val != "" && !is_null($val)){
+                        $arrMesures[] = $val;
+                    }
+                }
+            }
+            // ici on a tous les MESUSES de chaque recette
+            dump ($arrMesures);
         }
         
         dd();
