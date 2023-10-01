@@ -44,7 +44,7 @@ class UseApiController extends AbstractController
             $arrIngredients = [];
 
             // creer un objet Recipee
-            foreach ($recipee as $key => $val) {
+            foreach ($recipes as $key => $val) {
                 if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)){
