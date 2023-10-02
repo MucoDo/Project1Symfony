@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\QuantityRepository;
+use App\Repository\RecetteIngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: QuantityRepository::class)]
-class Quantity
+#[ORM\Entity(repositoryClass: RecetteIngredientRepository::class)]
+class RecetteIngredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
