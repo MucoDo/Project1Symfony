@@ -55,18 +55,6 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
-    // méthode faite par nous-mêmes. Enlevez les commentaires pour voir l'effet. Importez AuthenticationException
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
-    {
-        // la méthode est doit renvoyer une réponse. 
-        // à nouse de rediriger, lancer une exception ou autre...
-        // return new Response("Erreur dans l'adresse mail ou dans le mot de passe");
-        $this->addFlash('error', 'Erreur dans l\'adresse mail et/ou mot de passe');
-        
-
-        // Redirect back to the login page
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
-    }
 
     protected function getLoginUrl(Request $request): string
     {

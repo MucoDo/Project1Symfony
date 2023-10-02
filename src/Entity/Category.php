@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -15,6 +17,17 @@ class Category
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
+
+    #[ORM\Column]
+    private ?int $codeCat = null;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Recipe::class)]
+    private Collection $recipes;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -29,6 +42,48 @@ class Category
     public function setNom(?string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getCodeCat(): ?int
+    {
+        return $this->codeCat;
+    }
+
+    public function setCodeCat(int $codeCat): static
+    {
+        $this->codeCat = $codeCat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getCategory() === $this) {
+                $recipe->setCategory(null);
+            }
+        }
 
         return $this;
     }
