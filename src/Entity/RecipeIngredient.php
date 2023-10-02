@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\RecetteIngredientRepository;
+use App\Repository\RecipeIngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RecetteIngredientRepository::class)]
-class RecetteIngredient
+#[ORM\Entity(repositoryClass: RecipeIngredientRepository::class)]
+class RecipeIngredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,6 +18,10 @@ class RecetteIngredient
 
     #[ORM\Column(length: 255)]
     private ?string $measure = null;
+
+    #[ORM\ManyToOne(inversedBy: 'recipeIngredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ingredient $ingredient = null;
 
     public function getId(): ?int
     {
@@ -44,6 +48,18 @@ class RecetteIngredient
     public function setMeasure(string $measure): static
     {
         $this->measure = $measure;
+
+        return $this;
+    }
+
+    public function getIngredient(): ?Ingredient
+    {
+        return $this->ingredient;
+    }
+
+    public function setIngredient(?Ingredient $ingredient): static
+    {
+        $this->ingredient = $ingredient;
 
         return $this;
     }
