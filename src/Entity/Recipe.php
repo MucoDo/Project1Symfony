@@ -38,16 +38,13 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class)]
     private Collection $recipeIngredients;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: AddToFavorite::class)]
-    private Collection $addToFavorites;
-
+    
     #[ORM\Column(length: 255)]
     private ?string $id_recipe = null;
 
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
-        $this->addToFavorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,35 +154,7 @@ class Recipe
         return $this;
     }
 
-    /**
-     * @return Collection<int, AddToFavorite>
-     */
-    public function getAddToFavorites(): Collection
-    {
-        return $this->addToFavorites;
-    }
 
-    public function addAddToFavorite(AddToFavorite $addToFavorite): static
-    {
-        if (!$this->addToFavorites->contains($addToFavorite)) {
-            $this->addToFavorites->add($addToFavorite);
-            $addToFavorite->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAddToFavorite(AddToFavorite $addToFavorite): static
-    {
-        if ($this->addToFavorites->removeElement($addToFavorite)) {
-            // set the owning side to null (unless already changed)
-            if ($addToFavorite->getRecipe() === $this) {
-                $addToFavorite->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getIdRecipe(): ?string
     {
