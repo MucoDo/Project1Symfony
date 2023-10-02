@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,18 @@ class Recipe
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class)]
+    private Collection $recipeIngredients;
+
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: AddToFavorite::class)]
+    private Collection $addToFavorites;
+
+    public function __construct()
+    {
+        $this->recipeIngredients = new ArrayCollection();
+        $this->addToFavorites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +120,66 @@ class Recipe
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RecipeIngredient>
+     */
+    public function getRecipeIngredients(): Collection
+    {
+        return $this->recipeIngredients;
+    }
+
+    public function addRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if (!$this->recipeIngredients->contains($recipeIngredient)) {
+            $this->recipeIngredients->add($recipeIngredient);
+            $recipeIngredient->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipeIngredient->getRecipe() === $this) {
+                $recipeIngredient->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AddToFavorite>
+     */
+    public function getAddToFavorites(): Collection
+    {
+        return $this->addToFavorites;
+    }
+
+    public function addAddToFavorite(AddToFavorite $addToFavorite): static
+    {
+        if (!$this->addToFavorites->contains($addToFavorite)) {
+            $this->addToFavorites->add($addToFavorite);
+            $addToFavorite->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddToFavorite(AddToFavorite $addToFavorite): static
+    {
+        if ($this->addToFavorites->removeElement($addToFavorite)) {
+            // set the owning side to null (unless already changed)
+            if ($addToFavorite->getRecipe() === $this) {
+                $addToFavorite->setRecipe(null);
+            }
+        }
 
         return $this;
     }

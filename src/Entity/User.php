@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,6 +34,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AddToFavorite::class)]
+    private Collection $addToFavorites;
+
+    public function __construct()
+    {
+        $this->addToFavorites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,6 +121,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AddToFavorite>
+     */
+    public function getAddToFavorites(): Collection
+    {
+        return $this->addToFavorites;
+    }
+
+    public function addAddToFavorite(AddToFavorite $addToFavorite): static
+    {
+        if (!$this->addToFavorites->contains($addToFavorite)) {
+            $this->addToFavorites->add($addToFavorite);
+            $addToFavorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddToFavorite(AddToFavorite $addToFavorite): static
+    {
+        if ($this->addToFavorites->removeElement($addToFavorite)) {
+            // set the owning side to null (unless already changed)
+            if ($addToFavorite->getUser() === $this) {
+                $addToFavorite->setUser(null);
+            }
+        }
 
         return $this;
     }
