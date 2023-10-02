@@ -41,6 +41,9 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: AddToFavorite::class)]
     private Collection $addToFavorites;
 
+    #[ORM\Column(length: 255)]
+    private ?string $id_recipe = null;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -180,6 +183,18 @@ class Recipe
                 $addToFavorite->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdRecipe(): ?string
+    {
+        return $this->id_recipe;
+    }
+
+    public function setIdRecipe(string $id_recipe): static
+    {
+        $this->id_recipe = $id_recipe;
 
         return $this;
     }

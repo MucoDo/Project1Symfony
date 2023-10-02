@@ -21,6 +21,9 @@ class Ingredient
     #[ORM\OneToMany(mappedBy: 'ingredient', targetEntity: RecipeIngredient::class)]
     private Collection $recipeIngredients;
 
+    #[ORM\Column(length: 255)]
+    private ?string $id_ingredient = null;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -69,6 +72,18 @@ class Ingredient
                 $recipeIngredient->setIngredient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdIngredient(): ?string
+    {
+        return $this->id_ingredient;
+    }
+
+    public function setIdIngredient(string $id_ingredient): static
+    {
+        $this->id_ingredient = $id_ingredient;
 
         return $this;
     }
