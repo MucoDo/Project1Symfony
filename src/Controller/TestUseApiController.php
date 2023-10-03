@@ -36,6 +36,8 @@ class TestUseApiController extends AbstractController
         $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
         dump($recipes);
+        // dump($content);
+        // dd();
 
         // pour chaque recette
         foreach ($recipes as $recipe) {
@@ -53,7 +55,7 @@ class TestUseApiController extends AbstractController
                 }
             }
             // ici on a tous les INGREDIENTS de chaque recette
-            dump ($arrIngredients);
+            // dump ($arrIngredients);
 
             
             // array de MESURE, nouveau pour chaque repas
@@ -69,7 +71,7 @@ class TestUseApiController extends AbstractController
                 }
             }
             // ici on a tous les MESURES de chaque recette
-            dump ($arrMesures);
+            // dump ($arrMesures);
 
 
             // array de RECIPEINFO, nouveau pour chaque repas

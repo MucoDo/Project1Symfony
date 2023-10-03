@@ -42,9 +42,13 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $id_recipe = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'recipes')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +168,33 @@ class Recipe
     public function setIdRecipe(string $id_recipe): static
     {
         $this->id_recipe = $id_recipe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeRecipe($this);
+        }
 
         return $this;
     }
