@@ -42,53 +42,40 @@ class TestUseApiController extends AbstractController
         // pour chaque recette
         foreach ($recipes as $recipe) {
 
+
             // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
-
-            // creer un objet Recipee
-            foreach ($recipes as $key => $val) {
-                if (strpos($key, "strIngredient") !== false) {
-                    // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
-                    if ($val != "" && !is_null($val)){
-                        $arrIngredients[] = $val;
-                    }
-                }
-            }
-            // ici on a tous les INGREDIENTS de chaque recette
-            // dump ($arrIngredients);
-
-            
             // array de MESURE, nouveau pour chaque repas
             $arrMesures = [];
-
-            // creer un objet recipe
-            foreach ($recipe as $key => $val) {
-                if (strpos($key, "strMeasure") !== false) {
-                    // creer un array de MESURE pour apres faire une boucle et faire addMESURE
-                    if ($val != "" && !is_null($val)){
-                        $arrMesures[] = $val;
-                    }
-                }
-            }
-            // ici on a tous les MESURES de chaque recette
-            // dump ($arrMesures);
-
-
             // array de RECIPEINFO, nouveau pour chaque repas
             $arrRecipeInfo = [];
 
-            // creer un objet recipe
-            foreach ($recipe as $key => $val) {
-                // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                if ($key== "idMeal" || $key== "strMeal" || $key== "strInstructions"){
-                        $arrRecipeInfo[$key] = $val;
+            foreach ($recipes as $key => $val) {
+
+                // creer objet Recette
+
+                if (strpos($key, "strIngredient") !== false) {
+                    // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
+                    if ($val != "" && !is_null($val)) {
+                        $arrIngredients[] = $val;
                     }
+                } else if (strpos($key, "strMeasure") !== false) {
+                    // creer un array de MESURE pour apres faire une boucle et faire addMESURE
+                    if ($val != "" && !is_null($val)) {
+                        $arrMesures[] = $val;
+                    }
+                }
+                // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
+                else if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
+                    $arrRecipeInfo[$key] = $val;
+                }
                 
+                // parcourir les arrays ingredients-quantite pour rajouter des objets IngredientRecette
+                
+
+            
+            
             }
-            // ici on a tous les RECIPEINFO de chaque recette
-            dump ($arrRecipeInfo);
         }
-        
-        dd();
     }
 }
