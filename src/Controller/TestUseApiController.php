@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +12,7 @@ class TestUseApiController extends AbstractController
 {
 
     #[Route('api/test/deux')]
-    public function apiTestDeux(HttpClientInterface $client)
+    public function apiTestDeux(HttpClientInterface $client, ManagerRegistry $doctrine)
     {
 
         $client = $client->withOptions([
@@ -40,28 +41,22 @@ class TestUseApiController extends AbstractController
         // dump($content);
         // dd();
 
+        
         // pour chaque recette
         foreach ($recipes as $recipe) {
-
-
             // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
             // array de MESURE, nouveau pour chaque repas
             $arrMesures = [];
             // array de RECIPEINFO, nouveau pour chaque repas
-            // $arrRecipeInfo = [];
-
+            $arrRecipeInfo = [];
+            
             foreach ($recipe as $key => $val) {
 
-                // creer objet Recette
-                // $recipe=new Recipe();
-
                 // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
+                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key=="strMealThumb") {
                     $arrRecipeInfo[$key] = $val;
-                }
-
-                else if (strpos($key, "strIngredient") !== false) {
+                } else if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)) {
                         $arrIngredients[] = $val;
@@ -72,14 +67,23 @@ class TestUseApiController extends AbstractController
                         $arrMesures[] = $val;
                     }
                 }
-
-                // parcourir les arrays ingredients-quantite pour rajouter des objets IngredientRecette
-
             }
+
+            $em = $doctrine->getManager();
+            $recipe=new Recipe();
+            $recipe->setNom($arrRecipeInfo['strMeal']);
+            $recipe->setInstruction($arrRecipeInfo['strInstructions']);
+            $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
+            $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
+            
+            $em->persist($recipe);
+            
+            // dump($arrRecipeInfo);
+            // dump($arrIngredients);
+            // dump($arrMesures);
         }
-        dump($arrIngredients);
-        dump($arrMesures);
-        dump($arrRecipeInfo);
+        $em->flush();
+
         dd();
     }
 }
