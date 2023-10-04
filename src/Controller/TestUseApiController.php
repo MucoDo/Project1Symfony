@@ -56,8 +56,12 @@ class TestUseApiController extends AbstractController
                 // creer objet Recette
                 // $recipe=new Recipe();
 
+                // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
+                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
+                    $arrRecipeInfo[$key] = $val;
+                }
 
-                if (strpos($key, "strIngredient") !== false) {
+                else if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)) {
                         $arrIngredients[] = $val;
@@ -68,10 +72,6 @@ class TestUseApiController extends AbstractController
                         $arrMesures[] = $val;
                     }
                 }
-                // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                // else ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
-                //     $arrRecipeInfo[$key] = $val;
-                // }
 
                 // parcourir les arrays ingredients-quantite pour rajouter des objets IngredientRecette
 
@@ -79,7 +79,7 @@ class TestUseApiController extends AbstractController
         }
         dump($arrIngredients);
         dump($arrMesures);
-        // dump($arrRecipeInfo);
+        dump($arrRecipeInfo);
         dd();
     }
 }

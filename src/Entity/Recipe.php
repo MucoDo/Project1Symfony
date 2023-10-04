@@ -31,9 +31,7 @@ class Recipe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageRecette = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recipes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
+
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class)]
     private Collection $recipeIngredients;
@@ -116,17 +114,6 @@ class Recipe
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, RecipeIngredient>
