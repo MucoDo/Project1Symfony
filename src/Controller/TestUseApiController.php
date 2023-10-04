@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,11 +49,13 @@ class TestUseApiController extends AbstractController
             // array de MESURE, nouveau pour chaque repas
             $arrMesures = [];
             // array de RECIPEINFO, nouveau pour chaque repas
-            $arrRecipeInfo = [];
+            // $arrRecipeInfo = [];
 
-            foreach ($recipes as $key => $val) {
+            foreach ($recipe as $key => $val) {
 
                 // creer objet Recette
+                // $recipe=new Recipe();
+
 
                 if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
@@ -61,21 +64,22 @@ class TestUseApiController extends AbstractController
                     }
                 } else if (strpos($key, "strMeasure") !== false) {
                     // creer un array de MESURE pour apres faire une boucle et faire addMESURE
-                    if ($val != "" && !is_null($val)) {
+                    if ($val != "" && $val != " " && !is_null($val)) {
                         $arrMesures[] = $val;
                     }
                 }
                 // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                else if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
-                    $arrRecipeInfo[$key] = $val;
-                }
-                
-                // parcourir les arrays ingredients-quantite pour rajouter des objets IngredientRecette
-                
+                // else ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions") {
+                //     $arrRecipeInfo[$key] = $val;
+                // }
 
-            
-            
+                // parcourir les arrays ingredients-quantite pour rajouter des objets IngredientRecette
+
             }
         }
+        dump($arrIngredients);
+        dump($arrMesures);
+        // dump($arrRecipeInfo);
+        dd();
     }
 }
