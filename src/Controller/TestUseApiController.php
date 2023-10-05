@@ -24,6 +24,8 @@ class TestUseApiController extends AbstractController
             ],
 
         ]);
+/*
+        // API du site pour récupérer les RECETTES
 
         $response = $client->request(
             'GET',
@@ -31,6 +33,7 @@ class TestUseApiController extends AbstractController
             'https://www.themealdb.com/api/json/v1/1/search.php?f=a'
         );
 
+        
         $statusCode = $response->getStatusCode();
         // $statusCode = 200
         $contentType = $response->getHeaders()['content-type'][0];
@@ -42,8 +45,23 @@ class TestUseApiController extends AbstractController
         dump($recipes);
         // dump($content);
         // dd();
+        */
+        // API du site pour récupérer les CATEGORIES et les PAYS
+
+        $responseCat = $client->request(
+            'GET',
+            // 'https://trackapi.nutritionix.com/v2/search/instant?query=chocolate'
+            'https://www.themealdb.com/api/json/v1/1/list.php?c=list '
+        );
+
+        $content = $responseCat->getContent();
+        // $content = '{"id":521583, "name":"symfony-docs", ...}'
+        $categories = $responseCat->toArray()['meals'];
+
+        // dd($categories);
 
 
+        /*
         // pour chaque recette
         foreach ($recipes as $recipe) {
             // array d'INGREDIENTS, nouveau pour chaque repas
@@ -81,19 +99,18 @@ class TestUseApiController extends AbstractController
             $em->persist($recipe);
 
 
-            for ($i=0; $i < count($arrIngredients); $i++) {
+            for ($i = 0; $i < count($arrIngredients); $i++) {
                 $ingredient = new Ingredient();
                 $ingredient->setNom($arrIngredients[$i]);
-                $ingredient->setIdIngredient($i+1);
+                $ingredient->setIdIngredient($i + 1);
                 $em->persist($ingredient);
-                
-                $recipeIngredient=new RecipeIngredient();
+
+                $recipeIngredient = new RecipeIngredient();
                 $recipeIngredient->setQuantity($arrMesures[$i]);
-                $recipeIngredient->setMeasure($i+1);
+                $recipeIngredient->setMeasure($i + 1);
                 $recipe->addRecipeIngredient($recipeIngredient);
                 $ingredient->addRecipeIngredient($recipeIngredient);
                 $em->persist($recipeIngredient);
-                
             }
 
             // dump($arrRecipeInfo);
@@ -102,6 +119,14 @@ class TestUseApiController extends AbstractController
         }
         $em->flush();
 
-        dd();
+        dd();*/
+
+        $arrcategories = [];
+        foreach ($categories as $categorie){
+            foreach($categorie as $val){
+                $arrcategories[]=$val;
+            }
+        }
+        dd($arrcategories);
     }
 }
