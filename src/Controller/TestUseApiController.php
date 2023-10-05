@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
@@ -24,7 +25,9 @@ class TestUseApiController extends AbstractController
             ],
 
         ]);
-/*
+
+        // API pour récupérer les données du site themealdb
+
         // API du site pour récupérer les RECETTES
 
         $response = $client->request(
@@ -33,7 +36,7 @@ class TestUseApiController extends AbstractController
             'https://www.themealdb.com/api/json/v1/1/search.php?f=a'
         );
 
-        
+
         $statusCode = $response->getStatusCode();
         // $statusCode = 200
         $contentType = $response->getHeaders()['content-type'][0];
@@ -44,9 +47,8 @@ class TestUseApiController extends AbstractController
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
         dump($recipes);
         // dump($content);
-        // dd();
-        */
-        // API du site pour récupérer les CATEGORIES et les PAYS
+
+        /*        // API du site pour récupérer les CATEGORIES et les PAYS
 
         $responseCat = $client->request(
             'GET',
@@ -58,11 +60,28 @@ class TestUseApiController extends AbstractController
         // $content = '{"id":521583, "name":"symfony-docs", ...}'
         $categories = $responseCat->toArray()['meals'];
 
-        // dd($categories);
+        dump($categories);
 
 
-        /*
+        // Creation des variables et insertion des données dans la db
+           // pour chaque catégorie
+        
+            $arrcategories = [];
+            foreach ($categories as $categorie) {
+                $arrcategories[] = $categorie['strCategory'];
+            }
+    
+    
+            for ($i = 0; $i < count($arrcategories); $i++) {
+                $em = $doctrine->getManager();
+                $cat = new Category();
+                $cat->setCategoryTitle($arrcategories[$i]);
+                $em->persist($cat);
+            }
+*/
+
         // pour chaque recette
+
         foreach ($recipes as $recipe) {
             // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
@@ -70,12 +89,17 @@ class TestUseApiController extends AbstractController
             $arrMesures = [];
             // array de RECIPEINFO, nouveau pour chaque repas
             $arrRecipeInfo = [];
+            // array de CATEGORY, nouveau pour chaque repas
+            $arrCategory = [];
+
 
             foreach ($recipe as $key => $val) {
 
                 // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
                 if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key == "strMealThumb") {
                     $arrRecipeInfo[$key] = $val;
+                } else if ($key == "strCategory") {
+                    $arrCategory[$key] = $val;
                 } else if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
                     if ($val != "" && !is_null($val)) {
@@ -96,6 +120,7 @@ class TestUseApiController extends AbstractController
             $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
             $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
 
+
             $em->persist($recipe);
 
 
@@ -111,22 +136,21 @@ class TestUseApiController extends AbstractController
                 $recipe->addRecipeIngredient($recipeIngredient);
                 $ingredient->addRecipeIngredient($recipeIngredient);
                 $em->persist($recipeIngredient);
-            }
 
-            // dump($arrRecipeInfo);
-            // dump($arrIngredients);
-            // dump($arrMesures);
-        }
-        $em->flush();
 
-        dd();*/
-
-        $arrcategories = [];
-        foreach ($categories as $categorie){
-            foreach($categorie as $val){
-                $arrcategories[]=$val;
+                /*$category = new Category();
+                $category->setCategoryTitle($arrCategory[$i]);
+                $recipe->addCategory($category);
+                $em->persist($category);*/
             }
         }
-        dd($arrcategories);
+
+        dump($arrRecipeInfo);
+        dump($arrIngredients);
+        dump($arrMesures);
+        dd($arrCategory);
+        dd();
+
+        // $em->flush();
     }
 }

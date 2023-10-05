@@ -15,13 +15,10 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 255)]
+    private ?string $categoryTitle = null;
 
-    #[ORM\Column]
-    private ?int $codeCat = null;
-
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Recipe::class)]
+    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'categories')]
     private Collection $recipes;
 
     public function __construct()
@@ -29,31 +26,20 @@ class Category
         $this->recipes = new ArrayCollection();
     }
 
+  
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getCategoryTitle(): ?string
     {
-        return $this->nom;
+        return $this->categoryTitle;
     }
 
-    public function setNom(?string $nom): static
+    public function setCategoryTitle(string $categoryTitle): static
     {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getCodeCat(): ?int
-    {
-        return $this->codeCat;
-    }
-
-    public function setCodeCat(int $codeCat): static
-    {
-        $this->codeCat = $codeCat;
+        $this->categoryTitle = $categoryTitle;
 
         return $this;
     }
@@ -70,7 +56,7 @@ class Category
     {
         if (!$this->recipes->contains($recipe)) {
             $this->recipes->add($recipe);
-            $recipe->setCategory($this);
+            $recipe->addCategory($this);
         }
 
         return $this;
@@ -79,12 +65,11 @@ class Category
     public function removeRecipe(Recipe $recipe): static
     {
         if ($this->recipes->removeElement($recipe)) {
-            // set the owning side to null (unless already changed)
-            if ($recipe->getCategory() === $this) {
-                $recipe->setCategory(null);
-            }
+            $recipe->removeCategory($this);
         }
 
         return $this;
     }
+
+
 }

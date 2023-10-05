@@ -43,11 +43,6 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'recipes')]
     private Collection $users;
 
-    public function __construct()
-    {
-        $this->recipeIngredients = new ArrayCollection();
-        $this->users = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -185,4 +180,7 @@ class Recipe
 
         return $this;
     }
+
+    
+  
 }
