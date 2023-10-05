@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Entity\Ingredient;
+use App\Entity\RecipeIngredient;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -41,7 +43,7 @@ class TestUseApiController extends AbstractController
         // dump($content);
         // dd();
 
-        
+
         // pour chaque recette
         foreach ($recipes as $recipe) {
             // array d'INGREDIENTS, nouveau pour chaque repas
@@ -50,11 +52,11 @@ class TestUseApiController extends AbstractController
             $arrMesures = [];
             // array de RECIPEINFO, nouveau pour chaque repas
             $arrRecipeInfo = [];
-            
+
             foreach ($recipe as $key => $val) {
 
                 // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key=="strMealThumb") {
+                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key == "strMealThumb") {
                     $arrRecipeInfo[$key] = $val;
                 } else if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
@@ -70,14 +72,30 @@ class TestUseApiController extends AbstractController
             }
 
             $em = $doctrine->getManager();
-            $recipe=new Recipe();
+            $recipe = new Recipe();
             $recipe->setNom($arrRecipeInfo['strMeal']);
             $recipe->setInstruction($arrRecipeInfo['strInstructions']);
             $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
             $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
-            
+
             $em->persist($recipe);
-            
+
+
+            for ($i=0; $i < count($arrIngredients); $i++) {
+                $ingredient = new Ingredient();
+                $ingredient->setNom($arrIngredients[$i]);
+                $ingredient->setIdIngredient($i+1);
+                $em->persist($ingredient);
+                
+                $recipeIngredient=new RecipeIngredient();
+                $recipeIngredient->setQuantity($arrMesures[$i]);
+                $recipeIngredient->setMeasure($i+1);
+                $recipe->addRecipeIngredient($recipeIngredient);
+                $ingredient->addRecipeIngredient($recipeIngredient);
+                $em->persist($recipeIngredient);
+                
+            }
+
             // dump($arrRecipeInfo);
             // dump($arrIngredients);
             // dump($arrMesures);

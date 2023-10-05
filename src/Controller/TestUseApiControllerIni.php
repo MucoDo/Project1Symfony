@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TestUseApiController2 extends AbstractController
+class TestUseApiControllerIni extends AbstractController
 {
 
-    #[Route('api/test/deux2')]
-    public function apiTestDeux2(HttpClientInterface $client, ManagerRegistry $doctrine)
+    #[Route('api/test/ini')]
+    public function apiTestIni(HttpClientInterface $client, ManagerRegistry $doctrine)
     {
 
         $client = $client->withOptions([
@@ -67,23 +68,23 @@ class TestUseApiController2 extends AbstractController
                         $arrMesures[] = $val;
                     }
                 }
+
             }
-
-            $em = $doctrine->getManager();
-            $recipe=new Recipe();
-            $recipe->setNom($arrRecipeInfo['strMeal']);
-            $recipe->setInstruction($arrRecipeInfo['strInstructions']);
-            $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
-            $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
             
-            $em->persist($recipe);
+            // $em = $doctrine->getManager();
+            // $recipe=new Recipe();
+            // $recipe->setNom($arrRecipeInfo['strMeal']);
+            // $recipe->setInstruction($arrRecipeInfo['strInstructions']);
+            // $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
+            // $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
             
-            // dump($arrRecipeInfo);
-            // dump($arrIngredients);
-            // dump($arrMesures);
-        }
-        $em->flush();
-
-        dd();
+     
+                // dump($arrRecipeInfo);
+                // dump($arrMesures);
+                dd($arrIngredients);
+            }
+            // $em->flush();
+            
+        // dd();
     }
 }
