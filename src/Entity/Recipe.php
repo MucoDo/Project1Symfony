@@ -17,31 +17,41 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $instruction = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $nbrePers = null;
+    private ?int $nbrePersonne = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $tpsCuisson = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageRecette = null;
-
-
-
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class)]
-    private Collection $recipeIngredients;
-
-    
-    #[ORM\Column(length: 255)]
-    private ?string $id_recipe = null;
+    private ?string $image = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'recipes')]
     private Collection $users;
+
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    // #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientRecipe::class, orphanRemoval: true)]
+    private Collection $ingredientRecipes;
+
+    #[ORM\Column(length: 255)]
+    private ?string $recipeId = null;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->ingredientRecipes = new ArrayCollection();
+    }
+
+ 
+
 
 
     public function getId(): ?int
@@ -49,14 +59,14 @@ class Recipe
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getTitre(): ?string
     {
-        return $this->nom;
+        return $this->titre;
     }
 
-    public function setNom(string $nom): static
+    public function setTitre(string $titre): static
     {
-        $this->nom = $nom;
+        $this->titre = $titre;
 
         return $this;
     }
@@ -73,14 +83,14 @@ class Recipe
         return $this;
     }
 
-    public function getNbrePers(): ?int
+    public function getNbrePersonne(): ?int
     {
-        return $this->nbrePers;
+        return $this->nbrePersonne;
     }
 
-    public function setNbrePers(?int $nbrePers): static
+    public function setNbrePersonne(?int $nbrePersonne): static
     {
-        $this->nbrePers = $nbrePers;
+        $this->nbrePersonne = $nbrePersonne;
 
         return $this;
     }
@@ -97,59 +107,14 @@ class Recipe
         return $this;
     }
 
-    public function getImageRecette(): ?string
+    public function getImage(): ?string
     {
-        return $this->imageRecette;
+        return $this->image;
     }
 
-    public function setImageRecette(?string $imageRecette): static
+    public function setImage(?string $image): static
     {
-        $this->imageRecette = $imageRecette;
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection<int, RecipeIngredient>
-     */
-    public function getRecipeIngredients(): Collection
-    {
-        return $this->recipeIngredients;
-    }
-
-    public function addRecipeIngredient(RecipeIngredient $recipeIngredient): static
-    {
-        if (!$this->recipeIngredients->contains($recipeIngredient)) {
-            $this->recipeIngredients->add($recipeIngredient);
-            $recipeIngredient->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient): static
-    {
-        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
-            // set the owning side to null (unless already changed)
-            if ($recipeIngredient->getRecipe() === $this) {
-                $recipeIngredient->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-
-    public function getIdRecipe(): ?string
-    {
-        return $this->id_recipe;
-    }
-
-    public function setIdRecipe(string $id_recipe): static
-    {
-        $this->id_recipe = $id_recipe;
+        $this->image = $image;
 
         return $this;
     }
@@ -181,6 +146,61 @@ class Recipe
         return $this;
     }
 
-    
-  
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, IngredientRecipe>
+     */
+    public function getIngredientRecipes(): Collection
+    {
+        return $this->ingredientRecipes;
+    }
+
+    public function addIngredientRecipe(IngredientRecipe $ingredientRecipe): static
+    {
+        if (!$this->ingredientRecipes->contains($ingredientRecipe)) {
+            $this->ingredientRecipes->add($ingredientRecipe);
+            $ingredientRecipe->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientRecipe(IngredientRecipe $ingredientRecipe): static
+    {
+        if ($this->ingredientRecipes->removeElement($ingredientRecipe)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredientRecipe->getRecipe() === $this) {
+                $ingredientRecipe->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRecipeId(): ?string
+    {
+        return $this->recipeId;
+    }
+
+    public function setRecipeId(string $recipeId): static
+    {
+        $this->recipeId = $recipeId;
+
+        return $this;
+    }
+
+
+
+
 }

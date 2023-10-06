@@ -2,20 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Ingredient;
+use App\Entity\Category;
 use App\Entity\Recipe;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TestUseApiControllerIni extends AbstractController
+class ApiController extends AbstractController
 {
-
-    #[Route('api/test/ini')]
-    public function apiTestIni(HttpClientInterface $client, ManagerRegistry $doctrine)
+    #[Route('api/test/trois')]
+    public function apiTestTrois(HttpClientInterface $client, ManagerRegistry $doctrine)
     {
-
         $client = $client->withOptions([
             'headers' => [
                 // 'x-app-key' => 'f9073faf6bdc00e3b9f2f2cbe099f464',
@@ -39,23 +37,49 @@ class TestUseApiControllerIni extends AbstractController
         $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
         dump($recipes);
-        // dump($content);
+
+        $cat = $client->request(
+            'GET',
+            // 'https://trackapi.nutritionix.com/v2/search/instant?query=chocolate'
+            'https://www.themealdb.com/api/json/v1/1/list.php?c=list'
+        );
+        $categories = ($cat->toArray())['meals'];
+        dump($categories);
+
+        // CREATION des variables et INSERTION des données dans la db
+
+        // pour chaque catégorie
+
+        $arrcategories = [];
+        foreach ($categories as $categorie) {
+            $arrcategories[] = $categorie['strCategory'];
+        }
+
+        // dd($arrcategories);
+
+        for ($i = 0; $i < count($arrcategories); $i++) {
+            $em = $doctrine->getManager();
+            $cat = new Category();
+            $cat->setTitre($arrcategories[$i]);
+            $em->persist($cat);
+        }
+        $em->flush();
         // dd();
 
-        
         // pour chaque recette
         foreach ($recipes as $recipe) {
+
             // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
             // array de MESURE, nouveau pour chaque repas
             $arrMesures = [];
             // array de RECIPEINFO, nouveau pour chaque repas
             $arrRecipeInfo = [];
-            
+
             foreach ($recipe as $key => $val) {
 
                 // creer un array de RECIPEINFO pour apres faire une boucle et faire addRecipeInfo
-                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key=="strMealThumb") {
+                if ($key == "idMeal" || $key == "strMeal" || $key == "strInstructions" || $key == "strMealThumb" || $key == "strCategory") {
                     $arrRecipeInfo[$key] = $val;
                 } else if (strpos($key, "strIngredient") !== false) {
                     // creer un array d'INGREDIENTS pour apres faire une boucle et faire addINGREDIENT
@@ -68,23 +92,33 @@ class TestUseApiControllerIni extends AbstractController
                         $arrMesures[] = $val;
                     }
                 }
+            }
+            $em = $doctrine->getManager();
+            $rep = $em->getRepository(Category::class);
 
-            }
-            
-            // $em = $doctrine->getManager();
-            // $recipe=new Recipe();
-            // $recipe->setNom($arrRecipeInfo['strMeal']);
-            // $recipe->setInstruction($arrRecipeInfo['strInstructions']);
-            // $recipe->setIdRecipe($arrRecipeInfo['idMeal']);
-            // $recipe->setImageRecette($arrRecipeInfo['strMealThumb']);
-            
-     
-                // dump($arrRecipeInfo);
-                // dump($arrMesures);
-                dd($arrIngredients);
-            }
-            // $em->flush();
-            
-        // dd();
+            $catRecipe = $arrRecipeInfo['strCategory'];
+            dd($catRecipe);
+            $cat = $rep->findOneBy($catRecipe);
+            $recipe = new Recipe();
+            $recipe->setTitre($arrRecipeInfo['strMeal']);
+            $recipe->setInstruction($arrRecipeInfo['strInstructions']);
+            $recipe->setRecipeId($arrRecipeInfo['idMeal']);
+            $recipe->setImage($arrRecipeInfo['strMealThumb']);
+
+
+            // $em->persist($recipe);
+
+            // dump($arrMesures);
+            // dump($arrRecipeInfo);
+
+        }
+        // foreach($arrCategory as $val){
+        //     $category=new Category();
+        //     $category->setTitre($val);
+        //     $em->persist($category);
+
+        $em->flush();
+
+        dd();
     }
 }
