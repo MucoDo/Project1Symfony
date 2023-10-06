@@ -98,15 +98,16 @@ class ApiController extends AbstractController
 
             $catRecipe = $arrRecipeInfo['strCategory'];
             dd($catRecipe);
-            $cat = $rep->findOneBy($catRecipe);
+            $cat = $rep->findOneBy("'".$catRecipe."'");
             $recipe = new Recipe();
             $recipe->setTitre($arrRecipeInfo['strMeal']);
             $recipe->setInstruction($arrRecipeInfo['strInstructions']);
             $recipe->setRecipeId($arrRecipeInfo['idMeal']);
             $recipe->setImage($arrRecipeInfo['strMealThumb']);
+            $recipe->setCategory($cat);
 
 
-            // $em->persist($recipe);
+            $em->persist($recipe);
 
             // dump($arrMesures);
             // dump($arrRecipeInfo);

@@ -50,10 +50,6 @@ class Recipe
         $this->ingredientRecipes = new ArrayCollection();
     }
 
- 
-
-
-
     public function getId(): ?int
     {
         return $this->id;
