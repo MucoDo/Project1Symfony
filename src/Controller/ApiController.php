@@ -97,8 +97,8 @@ class ApiController extends AbstractController
             $rep = $em->getRepository(Category::class);
 
             $catRecipe = $arrRecipeInfo['strCategory'];
-            dd($catRecipe);
-            $cat = $rep->findOneBy("'".$catRecipe."'");
+            // dd($catRecipe);
+            $cat = $rep->findOneByTitre($catRecipe);
             $recipe = new Recipe();
             $recipe->setTitre($arrRecipeInfo['strMeal']);
             $recipe->setInstruction($arrRecipeInfo['strInstructions']);
