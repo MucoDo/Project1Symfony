@@ -27,6 +27,9 @@ class IngredientRecipe
     #[ORM\JoinColumn(nullable: false)]
     private ?Ingredient $ingredient = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $quantityMeasure = null;
+
 
     public function getId(): ?int
     {
@@ -77,6 +80,18 @@ class IngredientRecipe
     public function setIngredient(?Ingredient $ingredient): static
     {
         $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    public function getQuantityMeasure(): ?string
+    {
+        return $this->quantityMeasure;
+    }
+
+    public function setQuantityMeasure(string $quantityMeasure): static
+    {
+        $this->quantityMeasure = $quantityMeasure;
 
         return $this;
     }
