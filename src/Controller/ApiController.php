@@ -37,14 +37,14 @@ class ApiController extends AbstractController
         $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
         dump($recipes);
-
+/*
         $cat = $client->request(
             'GET',
             // 'https://trackapi.nutritionix.com/v2/search/instant?query=chocolate'
             'https://www.themealdb.com/api/json/v1/1/list.php?c=list'
         );
         $categories = ($cat->toArray())['meals'];
-        dump($categories);
+        // dump($categories);
 
         // CREATION des variables et INSERTION des données dans la db
 
@@ -64,6 +64,8 @@ class ApiController extends AbstractController
             $em->persist($cat);
         }
         $em->flush();
+
+        */
         // dd();
 
         // pour chaque recette
@@ -72,7 +74,9 @@ class ApiController extends AbstractController
             // array d'INGREDIENTS, nouveau pour chaque repas
             $arrIngredients = [];
             // array de MESURE, nouveau pour chaque repas
-            $arrMesures = [];
+            // $arrMesures = [];
+            $arrFr_qte=[];
+            $arrFr_mesure=[];
             // array de RECIPEINFO, nouveau pour chaque repas
             $arrRecipeInfo = [];
 
@@ -89,36 +93,66 @@ class ApiController extends AbstractController
                 } else if (strpos($key, "strMeasure") !== false) {
                     // creer un array de MESURE pour apres faire une boucle et faire addMESURE
                     if ($val != "" && $val != " " && !is_null($val)) {
-                        $arrMesures[] = $val;
+                        // $arrMesures[] = (explode('/',$val))[0];
+                        $arrMesures = (explode('/',$val))[0];
+                        $arrMeasFr= (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures));
+                        if(isset($arrMeasFr[1])){
+                            $arrFr_qte[]=$arrMeasFr[0];
+                            $arrFr_mesure[]=$arrMeasFr[1];
+                        }else{
+                            $arrFr_qte[]=$arrMeasFr[0];
+                            $arrFr_mesure[]="";
+
+                        }
+                        
+                        // $arrMesures[] = $arrMeasFR_EN[1];
+                        // $arrMeasFr[]=(explode('/',$val))[0];
+                        // $arrMeasEn[]=(explode('/',$val))[1];
+                        // $arrMeasFr[]=(explode('/',$arrMesures[0]))[0];
+                        // $arrMeasFr[]=$arrMeasFR_EN[0];
+                        // dump($arrMeasFr);
+                        // dump($arrMeasFr);
+
                     }
+                    // Séparer les mesures en grammes
+                    // $arrMeasEn[]=$arrMeasFR_EN[1];
+                    
+                    // dump($arrMeasEn);
+                    // dd($arrMeasFR_EN);
+                    // dd($arrMeasEn);
+                    // dd();
+
+                    // Séparer les nombres des lettres
                 }
             }
+            /*
             $em = $doctrine->getManager();
             $rep = $em->getRepository(Category::class);
-
+            
             $catRecipe = $arrRecipeInfo['strCategory'];
-            // dd($catRecipe);
             $cat = $rep->findOneByTitre($catRecipe);
+            // dd($cat);
             $recipe = new Recipe();
             $recipe->setTitre($arrRecipeInfo['strMeal']);
             $recipe->setInstruction($arrRecipeInfo['strInstructions']);
             $recipe->setRecipeId($arrRecipeInfo['idMeal']);
             $recipe->setImage($arrRecipeInfo['strMealThumb']);
             $recipe->setCategory($cat);
-
-
-            $em->persist($recipe);
-
+            
+            
+            $em->persist($recipe);*/
+            
             // dump($arrMesures);
+            dump($arrFr_qte);
+            dump($arrFr_mesure);
+
             // dump($arrRecipeInfo);
-
+            // dump($arrIngredients);
+            
         }
-        // foreach($arrCategory as $val){
-        //     $category=new Category();
-        //     $category->setTitre($val);
-        //     $em->persist($category);
+     
 
-        $em->flush();
+        // $em->flush();
 
         dd();
     }
