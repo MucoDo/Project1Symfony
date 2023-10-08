@@ -116,12 +116,12 @@ class ApiController extends AbstractController
                 } else if (strpos($key, "strMeasure") !== false) {
                     // creer un array de MESURE pour apres faire une boucle et faire addMESURE
                     if ($val != "" && $val != " " && !is_null($val)) {
-                        $arrAllMesures[]=$val;
+                        $arrAllMesures[] = $val;
                         // $arrMesures[] = (explode('/',$val))[0];
                         // Séparer les mesures en grammes vs ounce
-                        $arrMesures = (explode('/([a-zA-Z])/', $val))[0];
+                        $arrMesures = (explode('/([a-z]/)/', $val))[0];
                         // Séparer les nombres des lettres
-                        $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures,-1,PREG_SPLIT_NO_EMPTY));
+                        $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures, -1, PREG_SPLIT_NO_EMPTY));
                         if (isset($arrMeasFr[1])) {
                             $arrFr_qte[] = $arrMeasFr[0];
                             $arrFr_mesure[] = $arrMeasFr[1];
@@ -129,17 +129,17 @@ class ApiController extends AbstractController
                             $arrFr_qte[] = $arrMeasFr[0];
                             $arrFr_mesure[] = "";
                         }
-                        
+
                         // $arrMeasFr[]=(explode('/',$val))[0];
                         // $arrMeasEn[]=(explode('/',$val))[1];
                     }
                 }
             }
-           
-            
+
+
             $em = $doctrine->getManager();
             $rep = $em->getRepository(Category::class);
-            
+
             $catRecipe = $arrRecipeInfo['strCategory'];
             $cat = $rep->findOneByTitre($catRecipe);
             // dd($cat);
@@ -149,35 +149,52 @@ class ApiController extends AbstractController
             $recipe->setRecipeId($arrRecipeInfo['idMeal']);
             $recipe->setImage($arrRecipeInfo['strMealThumb']);
             $recipe->setCategory($cat);
-            
-            
+
+
             $em->persist($recipe);
-            
-            
-            for ($i = 0; $i < count($arrIngredients); $i++) {
-                $ingredient = new Ingredient();
-                $ingredient->setNom($arrIngredients[$i]);
-                $em->persist($ingredient);
-                
-                $ingredientRecipe = new IngredientRecipe();
-                $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
-                $ingredientRecipe->setQuantity($arrFr_qte[$i]);
-                $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
-                $recipe->addingredientRecipe($ingredientRecipe);
-                $ingredient->addingredientRecipe($ingredientRecipe);
-                $em->persist($ingredientRecipe);
-                
-         }
-         dump($arrIngredients); 
-         dump($arrFr_qte);
+
+            // foreach ($arrIngredients as $ingredient) {
+            //     $ingredient = new Ingredient();
+            //     $ingredient->setNom($arrIngredients[$i]);
+            //     $em->persist($ingredient);
+            // }
+
+            // foreach ($arrIngredients as $ingredient) {
+            //     $ingredientRecipe = new IngredientRecipe();
+            //     $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
+            //     $ingredientRecipe->setQuantity($arrFr_qte[$i]);
+            //     $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
+            //     $recipe->addingredientRecipe($ingredientRecipe);
+            //     $ingredient->addingredientRecipe($ingredientRecipe);
+            //     $em->persist($ingredientRecipe);
+
+
+
+                for ($i = 0; $i < count($arrIngredients); $i++) {
+                    $ingredient = new Ingredient();
+                    $ingredient->setNom($arrIngredients[$i]);
+                    $em->persist($ingredient);
+                }
+                for ($i = 0; $i < count($arrAllMesures); $i++){
+                    $ingredientRecipe = new IngredientRecipe();
+                    $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
+                    $ingredientRecipe->setQuantity($arrFr_qte[$i]);
+                    $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
+                    $recipe->addingredientRecipe($ingredientRecipe);
+                    $ingredient->addingredientRecipe($ingredientRecipe);
+                    $em->persist($ingredientRecipe);
+
+            }
+            // dump($arrIngredients);
+            // dump($arrFr_qte);
             // dump($arrMesures);
             // dump($arrFr_mesure);
             //dump($arrRecipeInfo);
             // dump($arrIngredients); 
-            
-            
+
+
+            $em->flush();
         }
-        $em->flush();
         dd();
     }
 }
