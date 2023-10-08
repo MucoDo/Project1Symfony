@@ -119,7 +119,8 @@ class ApiController extends AbstractController
                         $arrAllMesures[] = $val;
                         // $arrMesures[] = (explode('/',$val))[0];
                         // Séparer les mesures en grammes vs ounce
-                        $arrMesures = (explode('/([a-z]/)/', $val))[0];
+                        $arrMesures = (explode('/', $val))[0];
+                        $arrMesures =  $val;
                         // Séparer les nombres des lettres
                         $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures, -1, PREG_SPLIT_NO_EMPTY));
                         if (isset($arrMeasFr[1])) {
