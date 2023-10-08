@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Recipe;
+use App\Entity\Category;
+use App\Entity\Ingredient;
+use App\Entity\IngredientRecipe;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -37,7 +39,7 @@ class ApiController extends AbstractController
         $recipes = ($response->toArray())['meals'];
         // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
         dump($recipes);
-/*
+
         $cat = $client->request(
             'GET',
             // 'https://trackapi.nutritionix.com/v2/search/instant?query=chocolate'
@@ -65,7 +67,7 @@ class ApiController extends AbstractController
         }
         $em->flush();
 
-        */
+        
         // dd();
 
         // pour chaque recette
@@ -94,7 +96,9 @@ class ApiController extends AbstractController
                     // creer un array de MESURE pour apres faire une boucle et faire addMESURE
                     if ($val != "" && $val != " " && !is_null($val)) {
                         // $arrMesures[] = (explode('/',$val))[0];
+                        // Séparer les mesures en grammes vs ounce
                         $arrMesures = (explode('/',$val))[0];
+                        // Séparer les nombres des lettres
                         $arrMeasFr= (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures));
                         if(isset($arrMeasFr[1])){
                             $arrFr_qte[]=$arrMeasFr[0];
@@ -105,27 +109,13 @@ class ApiController extends AbstractController
 
                         }
                         
-                        // $arrMesures[] = $arrMeasFR_EN[1];
                         // $arrMeasFr[]=(explode('/',$val))[0];
                         // $arrMeasEn[]=(explode('/',$val))[1];
-                        // $arrMeasFr[]=(explode('/',$arrMesures[0]))[0];
-                        // $arrMeasFr[]=$arrMeasFR_EN[0];
-                        // dump($arrMeasFr);
-                        // dump($arrMeasFr);
-
                     }
-                    // Séparer les mesures en grammes
-                    // $arrMeasEn[]=$arrMeasFR_EN[1];
-                    
-                    // dump($arrMeasEn);
-                    // dd($arrMeasFR_EN);
-                    // dd($arrMeasEn);
-                    // dd();
-
-                    // Séparer les nombres des lettres
+                                                   
                 }
             }
-            /*
+            
             $em = $doctrine->getManager();
             $rep = $em->getRepository(Category::class);
             
@@ -140,19 +130,32 @@ class ApiController extends AbstractController
             $recipe->setCategory($cat);
             
             
-            $em->persist($recipe);*/
+            $em->persist($recipe);
             
+            
+            for ($i = 0; $i < count($arrIngredients); $i++) {
+                $ingredient = new Ingredient();
+                $ingredient->setNom($arrIngredients[$i]);
+                $em->persist($ingredient);
+
+                $ingredientRecipe = new IngredientRecipe();
+                $ingredientRecipe->setQuantity($arrFr_qte[$i]);
+                $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
+                $recipe->addingredientRecipe($ingredientRecipe);
+                $ingredient->addingredientRecipe($ingredientRecipe);
+                $em->persist($ingredientRecipe);
+            }
+
             // dump($arrMesures);
-            dump($arrFr_qte);
-            dump($arrFr_mesure);
+            // dump($arrFr_qte);
+            // dump($arrFr_mesure);
 
             // dump($arrRecipeInfo);
             // dump($arrIngredients);
             
         }
      
-
-        // $em->flush();
+        $em->flush();
 
         dd();
     }
