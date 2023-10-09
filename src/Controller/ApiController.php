@@ -61,7 +61,8 @@ class ApiController extends AbstractController
 
         // $allLetters = range('c', 'd');
         // $allLetters =  range('a', 'b');
-        $letter = 'a';
+        // LETTRES QUI RENVOIT DES DONNEES SANS PROBLEME (a,d,e,g,i,j, k, l,m, n, o,p,s,t, w)
+        $letter = 'w';
         // $recipes = [];
         // foreach ($allLetters as $letter) {
         $response = $client->request(
