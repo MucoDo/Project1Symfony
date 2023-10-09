@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ApiController extends AbstractController
+class ApiControllerCopy extends AbstractController
 {
-    #[Route('api/test/trois')]
-    public function apiTestTrois(HttpClientInterface $client, ManagerRegistry $doctrine)
+    #[Route('api/test/deux')]
+    public function apiTestDeux(HttpClientInterface $client, ManagerRegistry $doctrine)
     {
         $client = $client->withOptions([
             'headers' => [
@@ -119,7 +119,7 @@ class ApiController extends AbstractController
                         $arrAllMesures[] = $val;
                         // $arrMesures[] = (explode('/',$val))[0];
                         // Séparer les mesures en grammes vs ounce
-                        // $arrMesures = (explode('/', $val))[0];
+                        $arrMesures = (explode('/', $val))[0];
                         $arrMesures =  $val;
                         // Séparer les nombres des lettres
                         $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures, -1, PREG_SPLIT_NO_EMPTY));
@@ -136,7 +136,9 @@ class ApiController extends AbstractController
                     }
                 }
             }
-
+            
+            dump($arrIngredients);
+            dd();
 
             $em = $doctrine->getManager();
             $rep = $em->getRepository(Category::class);
@@ -150,29 +152,42 @@ class ApiController extends AbstractController
             $recipe->setRecipeId($arrRecipeInfo['idMeal']);
             $recipe->setImage($arrRecipeInfo['strMealThumb']);
             $recipe->setCategory($cat);
+
+
             $em->persist($recipe);
 
-            for ($i = 0; $i < count($arrIngredients); $i++) {
-                $rep = $em->getRepository(Ingredient::class);
-                $ingredientExistant = $rep->findOneByNom($arrIngredients[$i]);
-                if (!$ingredientExistant) {
+            // foreach ($arrIngredients as $ingredient) {
+            //     $ingredient = new Ingredient();
+            //     $ingredient->setNom($arrIngredients[$i]);
+            //     $em->persist($ingredient);
+            // }
+
+            // foreach ($arrIngredients as $ingredient) {
+            //     $ingredientRecipe = new IngredientRecipe();
+            //     $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
+            //     $ingredientRecipe->setQuantity($arrFr_qte[$i]);
+            //     $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
+            //     $recipe->addingredientRecipe($ingredientRecipe);
+            //     $ingredient->addingredientRecipe($ingredientRecipe);
+            //     $em->persist($ingredientRecipe);
+
+
+
+                for ($i = 0; $i < count($arrIngredients); $i++) {
                     $ingredient = new Ingredient();
                     $ingredient->setNom($arrIngredients[$i]);
                     $em->persist($ingredient);
-                }else{
-                    $ingredient=$ingredientExistant;
                 }
+                for ($i = 0; $i < count($arrAllMesures); $i++){
+                    $ingredientRecipe = new IngredientRecipe();
+                    $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
+                    $ingredientRecipe->setQuantity($arrFr_qte[$i]);
+                    $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
+                    $recipe->addingredientRecipe($ingredientRecipe);
+                    $ingredient->addingredientRecipe($ingredientRecipe);
+                    $em->persist($ingredientRecipe);
 
-                $ingredientRecipe = new IngredientRecipe();
-                $ingredientRecipe->setQuantityMeasure($arrAllMesures[$i]);
-                $ingredientRecipe->setQuantity($arrFr_qte[$i]);
-                $ingredientRecipe->setMeasure($arrFr_mesure[$i]);
-                $recipe->addingredientRecipe($ingredientRecipe);
-                $ingredient->addingredientRecipe($ingredientRecipe);
-                $em->persist($ingredientRecipe);
             }
-
-            // dump($arrIngredients);
             // dump($arrFr_qte);
             // dump($arrMesures);
             // dump($arrFr_mesure);
@@ -182,7 +197,6 @@ class ApiController extends AbstractController
 
             $em->flush();
         }
-
         dd();
     }
 }
