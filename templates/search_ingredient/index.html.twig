@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchIngredientController!{% endblock %}
+
+{% block body %}
+    <h1>Which ingredient would you like to cook?</h1>
+
+    {{form_start(searchIngForm)}}
+        {{ form_widget(searchIngForm) }}
+        <button type="submit">Search!</button>
+
+    {{form_end(searchIngForm)}}
+
+
+{% endblock %}
