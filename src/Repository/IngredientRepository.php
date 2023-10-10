@@ -26,12 +26,17 @@ public function searchIngredient($filtre){
     // dd($filtre);
     $em=$this->getEntityManager();
     $query=$em->createQuery(
-        "Select i from App\Entity\Ingredient i
-        where i.nom LIKE :nom "
+        "SELECT r FROM App\Entity\Recipe r 
+        INNER JOIN r.ingredientRecipes ir
+        INNER JOIN ir.ingredient i
+        WHERE i.nom LIKE :nom
+        "
     );
+
     $query->setParameter("nom","%".$filtre['nom']."%");
     $res=$query->getResult();
-    // dd($res);
+
+     dd($res);
     return $res;
 }
 
