@@ -21,6 +21,22 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
+    // Méthode créée manuellement pour intérroger la bd en fonction de champs de recherche du formulaire
+public function searchIngredient($filtre){
+    
+    $em=$this->getEntityManager();
+    // dd($filtre);
+    $query=$em->createQuery(
+        "Select i from App\Entity\Ingredient i
+        where (i.nom LIKE :nom )"
+    );
+    $query->setParameter("nom","%".$filtre['nom']."%");
+    $res=$query->getResult();
+    dd($res);
+    return $res;
+}
+
+
 //    /**
 //     * @return Ingredient[] Returns an array of Ingredient objects
 //     */

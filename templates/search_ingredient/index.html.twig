@@ -5,11 +5,10 @@
 {% block body %}
     <h1>Which ingredient would you like to cook?</h1>
 
-    {{form_start(searchIngForm, {'id':'search-form'})}}
-        {{ form_widget(searchIngForm) }}
+    {{form_start(searchIngForm,{'attr': {'id':'search-form'}})}}
+        {{ form_row(searchIngForm.nom) }}
         <button type="submit">Search!</button>
 
-    {{form_end(searchIngForm)}}
-
-
+    {{ form_end(searchIngForm, {render_rest: false}) }}
+<div id="div_resultats"></div>
 {% endblock %}
