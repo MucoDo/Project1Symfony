@@ -20,15 +20,17 @@ class SearchIngredientController extends AbstractController
     {
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
-
+        
+     
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $rep = $doctrine->getRepository(Ingredient::class);
+
             // ici ça fait référence à la méthode propre qu'on va ajouter dans le repo IngredientRepositoty.php
             //car on fera appel à la base de données
             $resultats = $rep->searchIngredient($form->getData());
             // dd($resultats);
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes']]);
-
             return new Response($response);
         }
 
@@ -36,9 +38,8 @@ class SearchIngredientController extends AbstractController
         // renvois du résultat JSON
 
 
-        $vars = ['searchIngForm' => $form];
-        return $this->render('search_ingredient/index.html.twig', [
-            'searchIngForm' => $vars
-        ]);
+        $vars = ['form' => $form];
+        // dd($vars);
+        return $this->render('search_ingredient/index.html.twig',$vars);
     }
 }
