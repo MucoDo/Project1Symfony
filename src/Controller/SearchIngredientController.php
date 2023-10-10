@@ -21,7 +21,7 @@ class SearchIngredientController extends AbstractController
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
         
-     
+
         
         if ($form->isSubmitted() && $form->isValid()) {
             $rep = $doctrine->getRepository(Ingredient::class);
