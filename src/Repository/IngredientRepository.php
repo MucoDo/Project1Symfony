@@ -29,7 +29,7 @@ public function searchIngredient($filtre){
         "SELECT r FROM App\Entity\Recipe r 
         INNER JOIN r.ingredientRecipes ir
         INNER JOIN ir.ingredient i
-        WHERE i.nom LIKE :nom
+        WHERE i.nom LIKE :nom or r.instruction LIKE :nom
         "
     );
 
