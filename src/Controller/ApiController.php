@@ -62,7 +62,7 @@ class ApiController extends AbstractController
         // $allLetters = range('c', 'd');
         // $allLetters =  range('a', 'b');
         // LETTRES QUI RENVOIT DES DONNEES SANS PROBLEME (a,d,e,g,i,j, k, l,m, n, o,p,s,t, w)
-        $letter = 'w';
+        $letter = 'e';
         // $recipes = [];
         // foreach ($allLetters as $letter) {
         $response = $client->request(
@@ -122,7 +122,7 @@ class ApiController extends AbstractController
                         // Séparer les mesures en grammes vs ounce
                         // $arrMesures = (explode('/', $val))[0];
                         $arrMesures =  $val;
-                        // Séparer les nombres des lettres
+                        // Séparer les nombres des lettres (cas g/; )
                         $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures, -1, PREG_SPLIT_NO_EMPTY));
                         if (isset($arrMeasFr[1])) {
                             $arrFr_qte[] = $arrMeasFr[0];
