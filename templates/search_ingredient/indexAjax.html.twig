@@ -9,7 +9,7 @@
         {{ form_row(form.nom) }}
         <button type="submit">Search!</button>
     {{ form_end(form) }}
-<div id="div_resultats"></div>
+<div id="div_resultats">hhhhhh</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
@@ -25,14 +25,15 @@
 
         axios.post('/search/ingredient', formData)
         .then(reponse=>{
-            console.log(response.data);
+            dump("tt");
+            // console.log(response.data);
             
-            divResultats.innerHTML="";
-            let arrayRecipe=response.data;
+            // divResultats.innerHTML="";
+            // let arrayRecipe=response.data;
            
-            arrayRecipe.foreach(function (recipe){
-                divResultats.innerHTML+="<p><b>Recipe:</b>" + recipe.titre + "</p>";
-            })
+            // arrayRecipe.foreach(function (recipe){
+            //     divResultats.innerHTML+="<p><b>Recipe:</b>" + recipe.titre + "</p>";
+            // })
         })
         .catch(error=>{
             console.error(error);
