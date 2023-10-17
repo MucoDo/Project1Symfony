@@ -22,7 +22,7 @@ class IngredientRepository extends ServiceEntityRepository
     }
 
     // Méthode créée manuellement pour intérroger la bd en fonction de champs de recherche du formulaire
-public function searchIngredient($filtre){
+public function FormSearchIngredientFiltreAjax($filtre){
     // dd($filtre);
     $em=$this->getEntityManager();
     $query=$em->createQuery(

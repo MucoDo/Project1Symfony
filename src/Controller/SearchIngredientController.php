@@ -37,10 +37,11 @@ class SearchIngredientController extends AbstractController
         // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"
         // renvois du résultat JSON
 
-
+else{
         $vars = ['form' => $form];
         // dd($vars);
-        return $this->render('search_ingredient/indexAjax.html.twig',$vars);
+        return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',$vars);}
+        // return $this->render('search_ingredient/indexAjax.html.twig',$vars);
         // return $this->render('search_ingredient/index.html.twig',$vars);
     }
 }
