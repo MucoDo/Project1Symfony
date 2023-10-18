@@ -7,33 +7,59 @@
 
     {{form_start(form,{'attr':{'id':'recherche-form'}})}}
         {{ form_row(form.nom) }}
-        <button type="submit">Search!</button>
+        <button id="search" type="submit">Search!</button>
     {{ form_end(form) }}
-<div id="div_resultats"></div>
+<div id="div_resultats">hhhhhh</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <script>
-    const form=document.getElementById('recherche-form');
-    form.addEventListener('click', function(event){
+    {# const form=document.getElementById('recherche-forme');
+    form.addEventListener('input', function(event){
         event.preventDefault();
-        let divResultats=document.getElementById("div_resultats");
-        console.log ("appel recherche...");
+      
+     
         const formData=new FormData(form);
-        divResultats.innerHTML="Recherche en cours..";
 
-        axios.post('/form/search/ingredient/filtre/ajax', formData)
+      
+
+        axios.post('/search/ingredient', formData)
         .then(reponse=>{
-            //alert("gg");
+             event.preventDefault();
             console.log(response.data);
             
             divResultats.innerHTML="";
             let arrayRecipe=response.data;
-                        arrayRecipe.forEach (function (recipe){
+            arrayRecipe.forEach (function (recipe){
                 divResultats.innerHTML+="<p><b>Recipe:</b>" + recipe.titre + "</p>";
                 divResultats.innerHTML += "<hr>";
-            })
+            }) #}
+
+  
+  document.getElementById('search').addEventListener('click', function(event) {
+    event.preventDefault();
+  
+      alert("jjj");
+    // obtenir le div pour afficher les résultats
+
+    axios({
+        // on prend la route generee avec path du data-route du form
+        url: '/search/ingredient',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data: new FormData(document.getElementById('recherche-form'))
+    }).then(function (response) {
+
+alert("je suis dans le then");
+
+
+        // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
+        let arrayIn = response.data;
+
+       console.log(arrayIn);
         })
         .catch(error=>{
             console.error(error);

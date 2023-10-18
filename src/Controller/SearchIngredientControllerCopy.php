@@ -13,10 +13,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
-class SearchIngredientController extends AbstractController
+class SearchIngredientControllerCopy extends AbstractController
 {
-    #[Route('/search/ingredient', name: 'search_ingredient')]
-    public function searchIngredient(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer): Response
+    #[Route('/search/ingredient/copy', name: 'search_ingredient_copy')]
+    public function searchIngredientCopy(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer): Response
     {
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
@@ -29,29 +29,10 @@ class SearchIngredientController extends AbstractController
             // ici ça fait référence à la méthode propre qu'on va ajouter dans le repo IngredientRepositoty.php
             //car on fera appel à la base de données
             $resultats = $rep->searchIngredient($form->getData());
-            // dd($resultats);
-
-            $ingredients = [];
-            foreach ($resultats as $plante) {
-                $arrIng = [];
-                
-                $arrIng['nom'] = $plante->getTitre();
-             
-            
-                // rajouter le livre ayant l'array d'auteurs incrusté
-                $ingredients[] = $arrIng;
-           }
-         
-
-
-            $response = $serializer->serialize($ingredients, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes','category']]);
+            dd($resultats);
+            $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes']]);
             return new Response($response);
- }
-
-
-
-            
-       
+        }
 
         // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"
         // renvois du résultat JSON
@@ -59,7 +40,6 @@ class SearchIngredientController extends AbstractController
 
         $vars = ['form' => $form];
         // dd($vars);
-        return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',$vars);
-        // return $this->render('search_ingredient/index.html.twig',$vars);
-    
-} }
+        return $this->render('search_ingredient/index.html.twig',$vars);
+    }
+}
