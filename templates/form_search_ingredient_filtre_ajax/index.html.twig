@@ -15,32 +15,9 @@
 
 
 <script>
-    {# const form=document.getElementById('recherche-forme');
-    form.addEventListener('input', function(event){
-        event.preventDefault();
-      
-     
-        const formData=new FormData(form);
-
-      
-
-        axios.post('/search/ingredient', formData)
-        .then(reponse=>{
-             event.preventDefault();
-            console.log(response.data);
-            
-            divResultats.innerHTML="";
-            let arrayRecipe=response.data;
-            arrayRecipe.forEach (function (recipe){
-                divResultats.innerHTML+="<p><b>Recipe:</b>" + recipe.titre + "</p>";
-                divResultats.innerHTML += "<hr>";
-            }) #}
-
-  
-  document.getElementById('search').addEventListener('click', function(event) {
+document.getElementById('search').addEventListener('click', function(event) {
     event.preventDefault();
-  
-      alert("jjj");
+    alert("jjj");
     // obtenir le div pour afficher les résultats
 
     axios({
@@ -58,8 +35,12 @@ alert("je suis dans le then");
 
         // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
         let arrayIn = response.data;
+        //let myObj=JSON.Parse(arrayIn);
+        console.log(arrayIn);
+        //console.log(myObj);
+        divResultat=document.getElementById("div_resultats");
+        divResultat.innerHTML="<p> Titre de la 1ère recette est: " + arrayIn[0]['titre'];
 
-       console.log(arrayIn);
         })
         .catch(error=>{
             console.error(error);
