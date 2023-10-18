@@ -37,9 +37,51 @@ alert("je suis dans le then");
         let arrayIn = response.data;
         //let myObj=JSON.Parse(arrayIn);
         console.log(arrayIn);
-        //console.log(myObj);
+      
         divResultat=document.getElementById("div_resultats");
-        divResultat.innerHTML="<p> Titre de la 1ère recette est: " + arrayIn[0]['titre'];
+
+    
+var cardDiv = document.createElement("div");
+cardDiv.className = "card";
+cardDiv.style.width = "18rem";
+
+var img = document.createElement("img");
+img.className = "card-img-top";
+img.src = "...";
+img.alt = "Card image cap";
+
+var cardBodyDiv = document.createElement("div");
+cardBodyDiv.className = "card-body";
+
+// Création de l'élément h5 avec la classe "card-title" et le texte spécifié
+var cardTitle = document.createElement("h5");
+cardTitle.className = "card-title";
+cardTitle.textContent = "Card title";
+
+// Création de l'élément p avec la classe "card-text" et le texte spécifié
+var cardText = document.createElement("p");
+cardText.className = "card-text";
+cardText.textContent = arrayIn[0]['titre'];
+
+// Création de l'élément a avec les classes "btn" et "btn-primary" et le texte spécifié
+var link = document.createElement("a");
+link.href = "#";
+link.className = "btn btn-primary";
+link.textContent = "Go somewhere";
+
+// Ajout des éléments créés à la carte
+cardBodyDiv.appendChild(cardTitle);
+cardBodyDiv.appendChild(cardText);
+cardBodyDiv.appendChild(link);
+
+cardDiv.appendChild(img);
+cardDiv.appendChild(cardBodyDiv);
+
+// Ajout de la carte au document
+divResultat.appendChild(cardDiv);
+
+
+       // divResultat.innerHTML="<p> Titre de la 1ère recette est: " + arrayIn[0]['titre'];
 
         })
         .catch(error=>{

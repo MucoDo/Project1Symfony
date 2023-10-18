@@ -34,19 +34,17 @@ class SearchIngredientController extends AbstractController
         //     $ingredients = [];
         //     foreach ($resultats as $plante) {
         //         $arrIng = [];
-                
+
         //         $arrIng['nom'] = $plante->getTitre();
-             
-            
+
         //         // rajouter le livre ayant l'array d'auteurs incrusté
         //         $ingredients[] = $arrIng;
         //    }
-         
 
 
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes','category']]);
             return new Response ($response);
- }
+}
 
 
 
