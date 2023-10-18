@@ -48,9 +48,6 @@ class SearchIngredientController extends AbstractController
 
 
 
-            
-       
-
         // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"
         // renvois du résultat JSON
 
@@ -61,3 +58,5 @@ class SearchIngredientController extends AbstractController
         // return $this->render('search_ingredient/index.html.twig',$vars);
     
 } }
+// il faut créer une route pour créer une page de référence pour le détail recette (prendre le template gratuit)
+//
