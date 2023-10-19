@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Ingredient;
 use App\Form\SearchIngredientType;
+use App\Repository\RecipeRepository;
+use App\Repository\IngredientRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +58,19 @@ class SearchIngredientController extends AbstractController
         // dd($vars);
         return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',$vars);
         // return $this->render('search_ingredient/index.html.twig',$vars);
+        
     
-} }
-// il faut créer une route pour créer une page de référence pour le détail recette (prendre le template gratuit)
-//
+} 
+
+        #[Route('/show/recipe/{id}', name: 'show_recipe')]
+        public function showRecipe (RecipeRepository $rep, Request $req){
+
+            $id=$req->get('id');
+            $recipe=$rep->find($id);
+            dd($recipe->getIngredientRecipes());
+            $vars=['recipe'=>$recipe];
+
+            return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig",$vars);
+
+        }
+}

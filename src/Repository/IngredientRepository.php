@@ -26,10 +26,10 @@ public function searchIngredient($filtre){
     // dd($filtre);
     $em=$this->getEntityManager();
     $query=$em->createQuery(
-        "SELECT r FROM App\Entity\Recipe r 
+        "SELECT r.id, r.titre, r.instruction, r.image, i.nom, ir.quantityMeasure FROM App\Entity\Recipe r 
         INNER JOIN r.ingredientRecipes ir
         INNER JOIN ir.ingredient i
-        WHERE i.nom LIKE :nom 
+        WHERE (i.nom LIKE :nom or :nom is NULL) 
         "
     );
 
