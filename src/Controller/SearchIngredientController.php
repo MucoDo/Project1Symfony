@@ -67,7 +67,8 @@ class SearchIngredientController extends AbstractController
 
             $id=$req->get('id');
             $recipe=$rep->find($id);
-            dd($recipe->getIngredientRecipes());
+            // $ing=$recipe->getIngredientRecipes();
+            // dd($ing);
             $vars=['recipe'=>$recipe];
 
             return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig",$vars);
