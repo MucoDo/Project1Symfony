@@ -45,4 +45,38 @@ class RecipeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function showRecipe($id){
+    // dd($filtre);
+    $em=$this->getEntityManager();
+    $query=$em->createQuery(
+        "SELECT r FROM App\Entity\Recipe r 
+        INNER JOIN r.ingredientRecipes ir
+        INNER JOIN ir.ingredient i
+        WHERE (r.id= :id or :id is NULL) 
+        "
+    );
+
+    $query->setParameter("id",$id);
+    $res=$query->getResult();
+
+     // dd($res);
+    return $res;
+}
+public function showIngRecipe($id){
+    // dd($filtre);
+    $em=$this->getEntityManager();
+    $query=$em->createQuery(
+        "SELECT r.id, i.nom, ir.quantityMeasure FROM App\Entity\Recipe r 
+        INNER JOIN r.ingredientRecipes ir
+        INNER JOIN ir.ingredient i
+        WHERE (r.id= :id or :id is NULL) 
+        "
+    );
+
+    $query->setParameter("id",$id);
+    $res=$query->getResult();
+
+     // dd($res);
+    return $res;
+}
 }

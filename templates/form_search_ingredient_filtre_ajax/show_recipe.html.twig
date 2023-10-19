@@ -4,19 +4,29 @@
 
 {# //affiche le détails des recettes #}
 
-<h1> Title :{{recipe.titre}}</h1>
+<h1> Title: {{recipe[0].titre}}</h1>
 
 <h3> Ingredients: </h3>
 <ul>
-    {% for quantity in recipe.ingredientRecipes %}
-        {% for ing in ingredientRecipes %}
-        <li> {{ing.quantityMeasure}}</li>
+
+    {% for ingRec in ingRecette %}
+        <li> {{ingRec.nom}}: {{ingRec.quantityMeasure}}</li>
+    {% endfor %}
+    {# {% for quantity in ingRecipe %}
+        {% for ing in ingredient %}
+            <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
         {% endfor %}
+    {% endfor %} #}
+    {# {% for quantity in quantities %}
+        {% for ing in quantities.ingredient %}
+        <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
+        {% endfor %}
+    {% endfor %} #}
 </ul>
 
     
 <h3> Instructions: </h3>
-<p>{{recipe.instruction}}</p>
+<p>{{recipe[0].instruction}}</p>
 
 
 
