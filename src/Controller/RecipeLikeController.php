@@ -11,13 +11,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeLikeController extends AbstractController{
     #[Route('/recipe/like', name: 'recipe_like')]
-    public function recipeLike(UserRepository $rep,RecipeRepository $rep2,  Request $req){
+    public function recipeLike(ManagerRegistry $doctrine,UserRepository $rep,RecipeRepository $rep2,  Request $req){
         $id=$req->get('id');
         // dd($id);
         $recipe=$rep2->find($id);
-        $user=$rep->$this->user;
+        // dd($recipe);
+        $user = $this->getUser();
+        // dd($user);
+        
         $user->addRecipe($recipe);
+
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        $favoris= $user->getRecipes();
+
+        dd($favoris);
+
         return $this -> render('recipe_like/index.html.twig');
         
     }
+
+
 }
