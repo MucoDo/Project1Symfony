@@ -2,38 +2,11 @@
 
 {% block body %}
 
-{# //affiche le détails des recettes #}
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-<button id={{recipe[0].id}} class="btn btn-primary">Like</button>
+<button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
 
-<script>
-    let btnId={{recipe[0].id}}
-    console.log(btnId);
-    let btnlike=document.getElementById(btnId);
-    btnlike.addEventListener('click',function(event){
-        alert('all is ok');
-
-        let formLike=new FormData();
-        formLike.append("id", btnId);
-        console.log(formLike);
-
-        axios.post ("/recipe/like", formLike, {
-            headers:{
-                'Content-Type':'multipart/form-data',
-                }
-        })
-        .then (function (response){
-            console.log (response);
-        })
-        .catch(function (error){
-            console.log(error);
-        })
-    });
-
-
-</script>
 
 <h3> Ingredients: </h3>
 <ul>
@@ -57,6 +30,57 @@
 <h3> Instructions: </h3>
 <p>{{recipe[0].instruction}}</p>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    let btnLike=document.getElementById("like");
+    {# let btnId={{recipe[0].id}}
+    console.log(btnId);
+    let btnlike=document.getElementById(btnId); #}
+    /*let formLike=new FormData();
+    formLike.append("id", btnId);
+    console.log(formLike);*/
+
+    btnLike.addEventListener('click',function(event){
+        let btnClique=event.target;
+        console.log(btnClique.dataset.id);
+        alert('all is ok');
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/like", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            alert("hello");
+            console.log("La reponse de la requete POst:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        });
+        /*axios({
+            url: '/recipe/like',
+            method: 'POST',
+            headers: {
+            'Content-Type': 'multipart/form-data'
+            },
+            data: formLike
+        })
+        .then (function (response){
+            //alert("hello");
+            let idForm=response.data;
+            console.log (idForm);
+            console.log("hello");
+        })
+        .catch(function (error){
+            console.log(error);
+        })*/
+    });
+
+
+</script>
 
 
 {% endblock %}
