@@ -6,34 +6,9 @@
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-<button id={{recipe[0].id}} class="btn btn-primary">Like</button>
-
-<script>
-    let btnId={{recipe[0].id}}
-    console.log(btnId);
-    let btnlike=document.getElementById(btnId);
-    btnlike.addEventListener('click',function(event){
-        alert('all is ok');
-
-        let formLike=new FormData();
-        formLike.append("id", btnId);
-        console.log(formLike);
-
-        axios.post ("/recipe/like", formLike, {
-            headers:{
-                'Content-Type':'multipart/form-data',
-                }
-        })
-        .then (function (response){
-            console.log (response);
-        })
-        .catch(function (error){
-            console.log(error);
-        })
-    });
+{# Création d'un bouton "like" #}
 
 
-</script>
 
 <h3> Ingredients: </h3>
 <ul>
