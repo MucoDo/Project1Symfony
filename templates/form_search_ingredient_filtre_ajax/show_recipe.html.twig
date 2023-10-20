@@ -6,7 +6,8 @@
 <h1> Title: {{recipe[0].titre}}</h1>
 
 <button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
-
+{# REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL #}
+<button id="all_favoris" class="btn btn-primary">Favoris</button>
 
 <h3> Ingredients: </h3>
 <ul>
@@ -14,16 +15,7 @@
     {% for ingRec in ingRecette %}
         <li> {{ingRec.nom}}: {{ingRec.quantityMeasure}}</li>
     {% endfor %}
-    {# {% for quantity in ingRecipe %}
-        {% for ing in ingredient %}
-            <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
-        {% endfor %}
-    {% endfor %} #}
-    {# {% for quantity in quantities %}
-        {% for ing in quantities.ingredient %}
-        <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
-        {% endfor %}
-    {% endfor %} #}
+
 </ul>
 
     
@@ -34,14 +26,14 @@
 
 <script>
 
-    let btnLike=document.getElementById("like");
-    {# let btnId={{recipe[0].id}}
-    console.log(btnId);
-    let btnlike=document.getElementById(btnId); #}
-    /*let formLike=new FormData();
-    formLike.append("id", btnId);
-    console.log(formLike);*/
+{# PAGES FAVORIS ---------- EN COURS #}
+    let btnFavoris=document.getElementById("all_favoris");
+    btnFavoris.addEventListener('click', function(event){
+        window.location.href ="/recipe/like"
+    })
 
+{# PAGES FAVORIS ---------- EN COURS #}
+    let btnLike=document.getElementById("like");
     btnLike.addEventListener('click',function(event){
         let btnClique=event.target;
         console.log(btnClique.dataset.id);
@@ -60,23 +52,7 @@
             console.log("La reponse de la requete POst:", error);
 
         });
-        /*axios({
-            url: '/recipe/like',
-            method: 'POST',
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            },
-            data: formLike
-        })
-        .then (function (response){
-            //alert("hello");
-            let idForm=response.data;
-            console.log (idForm);
-            console.log("hello");
-        })
-        .catch(function (error){
-            console.log(error);
-        })*/
+
     });
 
 

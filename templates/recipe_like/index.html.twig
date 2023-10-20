@@ -4,6 +4,8 @@
 
 <ul>
     {% for fav in favoris %}
+    <li><a href={{ path ('show_recipe', { id: fav.id } )}}</a> {{fav.titre}}</li>
+
     
     {% endblock %}
 </ul>

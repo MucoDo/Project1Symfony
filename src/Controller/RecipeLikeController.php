@@ -27,8 +27,9 @@ class RecipeLikeController extends AbstractController{
         $favoris= $user->getRecipes();
 
         dd($favoris);
+        $vars=['favoris' => $favoris];
 
-        return $this -> render('recipe_like/index.html.twig');
+        return $this -> render('recipe_like/index.html.twig',$vars);
         
     }
 

@@ -3,6 +3,7 @@
 {% block title %}Hello AccueilController!{% endblock %}
 
 {% block body %}
-<h1>Bienvenue au site! {{(app.user.nom)}}</h1>
+<h1>Bienvenue au site! {{app.user.nom}}</h1>
+{# <h1>Bienvenue au site! </h1> #}
 <a href={{ path ('search_ingredient') }}>lien vers la recherche</a>
 {% endblock %}
