@@ -24,7 +24,7 @@ class RecipeLikeController extends AbstractController{
         $em = $doctrine->getManager();
         $em->flush();
 
-        $favoris= $user->getRecipes();
+        $favoris= $user->getRecipes()->toArray();
 
         dd($favoris);
         $vars=['favoris' => $favoris];
