@@ -1,12 +1,21 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
+<style>
+ .red-color {
+    color:red;
+    }
+</style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
+{# class="bi bi-heart" #}
 <button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
-{# REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL #}
+
+{# ----------------------TEST DE CHANGEMENT DE COULEUR--------------------------------------- #}
+<span id="like_test" class="bi bi-heart-fill red-color"></span>
+
+{#--------- REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL------- #}
 <button id="all_favoris" class="btn btn-primary">Favoris</button>
 
 <h3> Ingredients: </h3>
@@ -25,7 +34,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-
+/* --------- A intégrer avec le fonction ajout et remove des like --------
+    let changeColor=document.getElementById("like_test");
+    changeColor.addEventListener('click',function(){
+      if (changeColor.style.color === 'red') {
+      changeColor.style.color = 'blue';
+    } else {
+      changeColor.style.color = 'red';
+        }
+    });
+*/
     let btnLike=document.getElementById("like");
     btnLike.addEventListener('click',function(event){
         let btnClique=event.target;
