@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<h1>Voici la liste de vos favoris</h1>
+
+<ul>
+    {% for fav in favoris %}
+        <li><a href={{ path ('show_recipe', { id: fav.id } )}}>{{fav.titre}}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

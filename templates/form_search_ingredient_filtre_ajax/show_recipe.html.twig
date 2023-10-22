@@ -26,13 +26,6 @@
 
 <script>
 
-{# PAGES FAVORIS ---------- EN COURS #}
-    let btnFavoris=document.getElementById("all_favoris");
-    btnFavoris.addEventListener('click', function(event){
-        window.location.href ="/recipe/like"
-    })
-
-{# PAGES FAVORIS ---------- EN COURS #}
     let btnLike=document.getElementById("like");
     btnLike.addEventListener('click',function(event){
         let btnClique=event.target;
@@ -45,7 +38,7 @@
             'Content-Type': 'multipart/form-data',  },
         })
         .then ((response)=>{
-            alert("hello");
+            //alert("hello");
             console.log("La reponse de la requete POst:", response.data);
         })
         .catch((error)=>{
@@ -54,6 +47,11 @@
         });
 
     });
+{# Bouton favoris temporaire à remplacer par un onglet spécifique #}
+    let btnFavoris=document.getElementById("all_favoris");
+    btnFavoris.addEventListener('click', function(event){
+        window.location.href ="/recipe/show/likes"
+    })
 
 
 </script>
