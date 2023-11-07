@@ -48,7 +48,7 @@ class SearchIngredientController extends AbstractController
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
             return new Response($response);
         }
-
+        
 
 
         // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"

@@ -2,15 +2,23 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\RecipeRepository;
+use App\Repository\IngredientRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AccueilController extends AbstractController
 {
     #[Route('/accueil', name: 'accueil')]
-    public function index(): Response
+    public function index(RecipeRepository $rep): Response
     {
-        return $this->render('accueil/index.html.twig');
+       
+            $recettes = $rep->findAll();
+            $vars = ['recettes' => $recettes];
+            return $this->render('accueil/index.html.twig', $vars);
+       
+
+        
     }
 }
