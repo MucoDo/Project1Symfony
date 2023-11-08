@@ -9,14 +9,24 @@
         {{ form_row(form.nom) }}
         <button id="search" type="submit">Search!</button>
     {{ form_end(form) }}
-<div id="div_resultats">hhhhhh</div>
+<div id="div_resultats">
+{% for recipe in recettes %}
+    <br>Titre: {{ recipe.titre }} 
+    <br>Image: {{ recipe.image }} 
+
+   
+{% endfor %}
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <script>
 document.getElementById('search').addEventListener('click', function(event) {
+        
     event.preventDefault();
+    let divResultat=document.getElementById("div_resultats");divResultat.innerHTML="";
+         
     //alert("jjj");
     // obtenir le div pour afficher les résultats
 
@@ -32,8 +42,7 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         //alert("je suis dans le then");
 
-        divResultat=document.getElementById("div_resultats");
-        divResultat.innerHTLM="";
+        
 
         // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
         let arrayIn = response.data;
@@ -80,6 +89,7 @@ document.getElementById('search').addEventListener('click', function(event) {
         cardDiv.appendChild(cardBodyDiv);
 
         // Ajout de la carte au document
+        divResultat.innerHTML="";
         divResultat.appendChild(cardDiv);
 
     });

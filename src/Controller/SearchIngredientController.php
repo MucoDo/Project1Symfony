@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
 use App\Entity\Ingredient;
 use App\Entity\IngredientRecipe;
 use App\Form\SearchIngredientType;
@@ -34,30 +35,25 @@ class SearchIngredientController extends AbstractController
             $resultats = $rep->searchIngredient($form->getData());
             // dd($resultats);
 
-            //     $ingredients = [];
-            //     foreach ($resultats as $plante) {
-            //         $arrIng = [];
-
-            //         $arrIng['nom'] = $plante->getTitre();
-
-            //         // rajouter le livre ayant l'array d'auteurs incrusté
-            //         $ingredients[] = $arrIng;
-            //    }
-
-
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
             return new Response($response);
         }
-        
+
 
 
         // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"
         // renvois du résultat JSON
+        
+        $em = $doctrine->getManager();
+        $rep = $em->getRepository(Recipe::class);
+        $recipesAll = $rep->findAll();
+        
 
 
-        $vars = ['form' => $form];
+
+        // $vars = ['form' => $form];
         // dd($vars);
-        return $this->render('form_search_ingredient_filtre_ajax/index.html.twig', $vars);
+        return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',['recettes'=> $recipesAll,'form' => $form]);
         // return $this->render('search_ingredient/index.html.twig',$vars);
 
 
@@ -77,30 +73,4 @@ class SearchIngredientController extends AbstractController
         // dd($vars);
         return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig", $vars);
     }
-
-    // public function showRecipe (RecipeRepository $rep,  Request $req){
-
-    //     // $id=$req->get('id');
-    //     // $recipe=$rep->find($id);
-    //     // $ingRecipe=$recipe->getIngredientRecipes();
-
-    // à demander - - - - -pourquoi le getIngredient ne fonctionne pas alors qu'il exite bien dans IngredientRecipe??- - - - -
-
-    //     // $ingredient=[];
-    //     // foreach ($ingRecipe as $ing){
-    //     //     $ingredienT=$ing->getIngredient();
-    //     //     $ingredient[]=$ingredienT;
-    //     // }
-
-    //     // dd($quantities);
-    //     // $ingredient=$quantity->getIngredient();
-
-    //     // dd($ing);
-    //     $vars=['recipe'=>$recipe,
-    //     'ingRecipe'=>$ingRecipe,
-    //         'ingredient'=>$ingredient];
-
-    //     return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig",$vars);
-
-    // }
 }
