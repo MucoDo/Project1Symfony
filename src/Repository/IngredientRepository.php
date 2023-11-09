@@ -23,7 +23,7 @@ class IngredientRepository extends ServiceEntityRepository
 
     // Méthode créée manuellement pour intérroger la bd en fonction de champs de recherche du formulaire
 public function searchIngredient($filtre){
-    // dd($filtre);
+    //dd($filtre);
     $em=$this->getEntityManager();
     $query=$em->createQuery(
         "SELECT r.id, r.titre, r.instruction, r.image, i.nom, ir.quantityMeasure FROM App\Entity\Recipe r 
