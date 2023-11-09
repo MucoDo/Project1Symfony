@@ -13,7 +13,7 @@
 <button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
 
 {# ----------------------TEST DE CHANGEMENT DE COULEUR--------------------------------------- #}
-<span id="like_test" class="bi bi-heart-fill red-color"></span>
+<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill red-color"></span>
 
 {#--------- REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL------- #}
 {# <button id="all_favoris" class="btn btn-primary">Favoris</button> #}
@@ -44,11 +44,14 @@
         }
     });
 */
-    let btnLike=document.getElementById("like");
+
+
+/* code qui fonctionne pour l'instant avec un bouton LIKE je veux l'appliquer à l'emoji coeur*/
+   /* let btnLike=document.getElementById("like");
     btnLike.addEventListener('click',function(event){
         let btnClique=event.target;
         console.log(btnClique.dataset.id);
-        alert('all is ok');
+        //alert('all is ok');
         let formLike= new FormData();
         formLike.append("id", btnClique.dataset.id);
 
@@ -64,7 +67,40 @@
 
         });
 
+    });*/
+
+  let changeColor=document.getElementById("heart_like");
+    changeColor.addEventListener('click',function(){
+      if (changeColor.style.color === 'red') {
+      changeColor.style.color = 'blue';
+    } else {
+      changeColor.style.color = 'red';
+        }
     });
+
+    let btnLike=document.getElementById("heart_like");
+    btnLike.addEventListener('click',function(event){
+        let btnClique=event.target;
+        console.log(btnClique.dataset.id);
+        //alert('all is ok');
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/like", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            //alert("hello");
+            console.log("La reponse de la requete POst:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        });
+
+    })
+
+    
 {# Bouton favoris temporaire à remplacer par un onglet spécifique #}
     {# let btnFavoris=document.getElementById("all_favoris");
     btnFavoris.addEventListener('click', function(event){
