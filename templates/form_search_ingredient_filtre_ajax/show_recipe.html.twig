@@ -33,8 +33,12 @@ console.log(likeButton);
 // pour récupérer l'id de ce span : console.log(likeButton.id);
 
 likeButton.addEventListener('click',function(event){
+    let idBouton=likeButton.id;
+    
+    // Peut-être qu'on a pas besoin d'un event target
 
     let btnClique=event.target;
+    console.log(btnClique);
 
     const styles = getComputedStyle(btnClique);
     const couleur = styles.color
