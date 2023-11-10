@@ -3,14 +3,14 @@
 {% block body %}
 <style>
 .blue-color {
-color:blue;
+    color:blue;
 }
 </style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
 
-<button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
+<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 
 <h3> Ingredients: </h3>
 <ul>
@@ -28,7 +28,14 @@ color:blue;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-
+let btnLike=document.getElementById("heart_like");
+btnLike.addEventListener('click',function(){
+    if (btnLike.style.color === 'blue') {
+        btnLike.style.color='red';
+    }else{
+        btnLike.style.color = 'blue';
+    }
+})
 
 </script>
 
