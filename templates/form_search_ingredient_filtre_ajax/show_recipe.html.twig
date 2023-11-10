@@ -2,8 +2,8 @@
 
 {% block body %}
 <style>
- .red-color {
-    color:red;
+ .blue-color {
+    color:blue;
     }
 </style>
 
@@ -13,7 +13,7 @@
 <button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
 
 {# ----------------------TEST DE CHANGEMENT DE COULEUR--------------------------------------- #}
-<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill red-color"></span>
+<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 
 {#--------- REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL------- #}
 {# <button id="all_favoris" class="btn btn-primary">Favoris</button> #}
@@ -69,34 +69,57 @@
 
     });*/
 
-  let changeColor=document.getElementById("heart_like");
+  {# let changeColor=document.getElementById("heart_like");
     changeColor.addEventListener('click',function(){
       if (changeColor.style.color === 'red') {
       changeColor.style.color = 'blue';
     } else {
       changeColor.style.color = 'red';
         }
-    });
+    }); #}
 
     let btnLike=document.getElementById("heart_like");
     btnLike.addEventListener('click',function(event){
         let btnClique=event.target;
         console.log(btnClique.dataset.id);
         //alert('all is ok');
+        if (btnClique.style.color === 'blue') {
+        btnClique.style.color = 'red';
+         
         let formLike= new FormData();
         formLike.append("id", btnClique.dataset.id);
 
-        axios.post ("/recipe/like", formLike, { headers: {
+        axios.post ("/recipe/unlike", formLike, { headers: {
             'Content-Type': 'multipart/form-data',  },
         })
         .then ((response)=>{
+            
             //alert("hello");
-            console.log("La reponse de la requete POst:", response.data);
+            console.log("La reponse de la requete Post:", response.data);
         })
         .catch((error)=>{
             console.log("La reponse de la requete POst:", error);
 
-        });
+        })
+        }
+        else {
+        btnClique.style.color = 'blue';
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/unlike", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            //alert("hello");
+            console.log("La reponse de la requete Post:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        })
+        }
+
 
     })
 
