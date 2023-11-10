@@ -1,14 +1,22 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
-{# //affiche le détails des recettes #}
+<style>
+.blue-color {
+    color:blue;
+    }
+</style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-{# Création d'un bouton "like" #}
+{# class="bi bi-heart" #}
+<button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
 
+{# ----------------------TEST DE CHANGEMENT DE COULEUR--------------------------------------- #}
+<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 
+{#--------- REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL------- #}
+{# <button id="all_favoris" class="btn btn-primary">Favoris</button> #}
 
 <h3> Ingredients: </h3>
 <ul>
@@ -16,22 +24,115 @@
     {% for ingRec in ingRecette %}
         <li> {{ingRec.nom}}: {{ingRec.quantityMeasure}}</li>
     {% endfor %}
-    {# {% for quantity in ingRecipe %}
-        {% for ing in ingredient %}
-            <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
-        {% endfor %}
-    {% endfor %} #}
-    {# {% for quantity in quantities %}
-        {% for ing in quantities.ingredient %}
-        <li> {{ing.nom}}: {{quantity.quantityMeasure}}</li>
-        {% endfor %}
-    {% endfor %} #}
+
 </ul>
 
     
 <h3> Instructions: </h3>
 <p>{{recipe[0].instruction}}</p>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+/* --------- A intégrer avec le fonction ajout et remove des like --------
+    let changeColor=document.getElementById("like_test");
+    changeColor.addEventListener('click',function(){
+      if (changeColor.style.color === 'red') {
+      changeColor.style.color = 'blue';
+    } else {
+      changeColor.style.color = 'red';
+        }
+    });
+*/
+
+
+/* code qui fonctionne pour l'instant avec un bouton LIKE je veux l'appliquer à l'emoji coeur*/
+   /* let btnLike=document.getElementById("like");
+    btnLike.addEventListener('click',function(event){
+        let btnClique=event.target;
+        console.log(btnClique.dataset.id);
+        //alert('all is ok');
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/like", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            //alert("hello");
+            console.log("La reponse de la requete POst:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        });
+
+    });*/
+
+  {# let changeColor=document.getElementById("heart_like");
+    changeColor.addEventListener('click',function(){
+      if (changeColor.style.color === 'red') {
+      changeColor.style.color = 'blue';
+    } else {
+      changeColor.style.color = 'red';
+        }
+    }); #}
+
+    let btnLike=document.getElementById("heart_like");
+    btnLike.addEventListener('click',function(event){
+        let btnClique=event.target;
+        console.log(btnClique.dataset.id);
+        //alert('all is ok');
+        if (btnClique.style.color === 'blue') {
+        //btnClique.style.color = 'red';
+         
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/like", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            alert("hello");
+            btnClique.style.color = 'red';         
+            console.log("La reponse de la requete Post:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        })
+        }
+        else if (btnClique.style.color === 'red') {
+        
+        let formLike= new FormData();
+        formLike.append("id", btnClique.dataset.id);
+
+        axios.post ("/recipe/unlike", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            alert("hellobiz");
+            btnClique.style.color = 'blue';
+            console.log("La reponse de la requete Post:", response.data);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete POst:", error);
+
+        })
+        }
+
+
+    })
+
+    
+{# Bouton favoris temporaire à remplacer par un onglet spécifique #}
+    {# let btnFavoris=document.getElementById("all_favoris");
+    btnFavoris.addEventListener('click', function(event){
+        window.location.href ="/recipe/show/likes"
+    }) #}
+
+
+</script>
 
 
 {% endblock %}
