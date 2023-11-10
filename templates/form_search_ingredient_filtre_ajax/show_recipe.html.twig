@@ -10,7 +10,7 @@
 <h1> Title: {{recipe[0].titre}}</h1>
 
 
-<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
+<span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 
 <h3> Ingredients: </h3>
 <ul>
@@ -28,14 +28,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-let btnLike=document.getElementById("heart_like");
-btnLike.addEventListener('click',function(){
-    if (btnLike.style.color === 'blue') {
-        btnLike.style.color='red';
-    }else{
-        btnLike.style.color = 'blue';
+let likeButton=document.getElementById("heart_like {{recipe[0].id}}");
+console.log(likeButton);
+// pour récupérer l'id de ce span : console.log(likeButton.id);
+
+likeButton.addEventListener('click',function(event){
+
+    let btnClique=event.target;
+
+    const styles = getComputedStyle(btnClique);
+    const couleur = styles.color
+    //console.log("la couleur du bouton cliqué est " + couleur);
+    //console.log("heart_like" +btnClique.dataset.id);
+    if (couleur == 'rgb(0, 0, 255)') {
+        btnClique.style.color='rgb(255, 0, 0)';
+        localStorage.setItem("buttonColor", "rgb(255,0, 0)");
+        alert("Hello de if");
+
+    }else if (couleur == 'rgb(255,0, 0)'){
+        btnClique.style.color = 'rgb(0, 0, 255)';
+        localStorage.setItem("buttonColor", "rgb(0, 0, 255)");
+        alert("Hello de else");
     }
+    
 })
+
+console.log("la couleur du clique sauvegardé est " + bntCliqueCouleur );
 
 </script>
 
