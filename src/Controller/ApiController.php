@@ -62,7 +62,7 @@ class ApiController extends AbstractController
         // $allLetters = range('c', 'd');
         // $allLetters =  range('a', 'b');
         // LETTRES QUI RENVOIT DES DONNEES SANS PROBLEME (a,d,e,g,i,j, k, l,m, n, o,p,s,t, w)
-        $letter = 'e';
+        $letter = 'a';
         // $recipes = [];
         // foreach ($allLetters as $letter) {
         $response = $client->request(
@@ -118,9 +118,7 @@ class ApiController extends AbstractController
                     // creer un array de MESURE pour apres faire une boucle et faire addMESURE
                     if ($val != "" && $val != " " && !is_null($val)) {
                         $arrAllMesures[] = $val;
-                        // $arrMesures[] = (explode('/',$val))[0];
-                        // Séparer les mesures en grammes vs ounce
-                        // $arrMesures = (explode('/', $val))[0];
+                        /*
                         $arrMesures =  $val;
                         // Séparer les nombres des lettres (cas g/; )
                         $arrMeasFr = (preg_split('/(?<=[0-9])(?=[a-zA-Z])/', $arrMesures, -1, PREG_SPLIT_NO_EMPTY));
@@ -130,10 +128,31 @@ class ApiController extends AbstractController
                         } else {
                             $arrFr_qte[] = $arrMeasFr[0];
                             $arrFr_mesure[] = "";
+                        }*/
+                       
+                        $arrMesures =  $val;
+                        $caractere = "g/";
+                        if (str_contains($arrMesures, $caractere)) {
+                            $string = substr($arrMesures, 0, strpos($arrMesures, $caractere));
+                            $arrFr_qte[] = preg_replace('/[^0-9\/.]/', ' ', $string);
+
+                            // Isoler les valeurs textuelles
+                            // $arrFr_mesure[] = preg_replace('/[0-9\/. ]/', '', $string);
+                            $arrFr_mesure[] = 'g';
+
+                            // echo "Valeur numérique : " . $numericValue . "<br>";
+                            // echo "Valeur textuelle : " . $textValue;
+                        } else {
+                            $string = $arrMesures;
+                            $arrFr_qte[] = preg_replace('/[^0-9\/.]/', ' ', $string);
+
+                            // Isoler les valeurs textuelles
+                            $arrFr_mesure[] = preg_replace('/[0-9\/. ]/', '', $string);
+
+                            // echo "Valeur numérique : " . $numericValue . "<br>";
+                            // echo "Valeur textuelle : " . $textValue;
                         }
 
-                        // $arrMeasFr[]=(explode('/',$val))[0];
-                        // $arrMeasEn[]=(explode('/',$val))[1];
                     }
                 }
             }
@@ -160,8 +179,8 @@ class ApiController extends AbstractController
                     $ingredient = new Ingredient();
                     $ingredient->setNom($arrIngredients[$i]);
                     $em->persist($ingredient);
-                }else{
-                    $ingredient=$ingredientExistant;
+                } else {
+                    $ingredient = $ingredientExistant;
                 }
 
                 $ingredientRecipe = new IngredientRecipe();
