@@ -28,36 +28,52 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-let likeButton=document.getElementById("heart_like {{recipe[0].id}}");
-console.log(likeButton);
-// pour récupérer l'id de ce span : console.log(likeButton.id);
 
-likeButton.addEventListener('click',function(event){
-    let idBouton=likeButton.id;
+let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
+
+// Check if the color preference is already stored in localStorage
+if (localStorage.getItem("buttonColor") === "red") {
+  likeButton.style.color = "rgb(255, 0, 0)";
+}
+
+likeButton.addEventListener('click', function(event) {
+  let styles = getComputedStyle(likeButton).color;
+  let btnClique=event.target;
+    let formLike= new FormData();
+    formLike.append("id", btnClique.dataset.id);
+
+  if (styles === "rgb(0, 0, 255)") {
+    likeButton.style.color = "rgb(255, 0, 0)";
+    localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
+     
+
+    axios.post ("/recipe/like", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du if");
     
-    // Peut-être qu'on a pas besoin d'un event target
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
 
-    let btnClique=event.target;
-    console.log(btnClique);
+    })
+  } else {
+    likeButton.style.color = "rgb(0, 0, 255)";
+    localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
 
-    const styles = getComputedStyle(btnClique);
-    const couleur = styles.color
-    //console.log("la couleur du bouton cliqué est " + couleur);
-    //console.log("heart_like" +btnClique.dataset.id);
-    if (couleur == 'rgb(0, 0, 255)') {
-        btnClique.style.color='rgb(255, 0, 0)';
-        localStorage.setItem("buttonColor", "rgb(255,0, 0)");
-        alert("Hello de if");
+    axios.post ("/recipe/unlike", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du else");
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
 
-    }else if (couleur == 'rgb(255,0, 0)'){
-        btnClique.style.color = 'rgb(0, 0, 255)';
-        localStorage.setItem("buttonColor", "rgb(0, 0, 255)");
-        alert("Hello de else");
-    }
-    
-})
-
-console.log("la couleur du clique sauvegardé est " + bntCliqueCouleur );
+    })
+  }
+});
 
 </script>
 
