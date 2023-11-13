@@ -21,6 +21,24 @@ class IngredientRecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, IngredientRecipe::class);
     }
 
+    public function shoppingList($ids){
+
+        $em=$this->getEntityManager();
+    $query=$em->createQuery(
+        "SELECT r.id, r.titre, r.instruction, r.image, i.nom, ir.quantityMeasure FROM App\Entity\Recipe r 
+        INNER JOIN r.ingredientRecipes ir
+        INNER JOIN ir.ingredient i
+        WHERE (i.nom LIKE :nom or :nom is NULL) 
+        "
+    );
+
+    $query->setParameter("nom","%".$ids['nom']."%");
+    $res=$query->getResult();
+
+     // dd($res);
+    return $res;
+
+    }
 //    /**
 //     * @return IngredientRecipe[] Returns an array of IngredientRecipe objects
 //     */

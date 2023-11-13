@@ -27,12 +27,7 @@ class RecipeLikeController extends AbstractController{
 
         // Renvoyer une response vide sinon symfony va générer une erreur disant que la réponse n'a pas été envoyée
         return new Response();
-        // $favoris= $user->getRecipes()->toArray();
 
-        // // dd($favoris);
-        // $vars=['favoris' => $favoris];
-
-        // return $this -> render('recipe_like/index.html.twig',$vars);
         
     }
 
@@ -56,10 +51,7 @@ class RecipeLikeController extends AbstractController{
         return new Response();
         // $favoris= $user->getRecipes()->toArray();
 
-        // // dd($favoris);
-        // $vars=['favoris' => $favoris];
 
-        // return $this -> render('recipe_like/index.html.twig',$vars);
         
     }
 
