@@ -1,0 +1,16 @@
+<nav>
+    <ul>
+        <li><a href={{ path('accueil') }}>Accueil</a></li>
+        <li><a href={{ path('search_ingredient') }}>Recettes</a></li>
+        <li><a href={{ path('recipe_show_likes') }}>Liste des favoris</a></li>                
+        <li><a href={{ path('app_shopping_list') }}>Liste courses</a></li>                
+        {% if app.user %}
+            {# <li><a href={{ path('accueil') }}>Profil</a></li> #}
+            <li><a href={{ path('app_logout') }}>Déconnexion</a></li>
+        {% else %}
+            <li><a href={{ path('app_lgin') }}>Connexion</a></li>
+            <li><a href={{ path('app_register') }}>Inscription</a></li>
+        {% endif %}
+        
+    </ul>
+</nav>
