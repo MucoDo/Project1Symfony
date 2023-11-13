@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello FormSearchIngredientFiltreAjaxController!{% endblock %}
+{% import '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig' as knp_pagination %}
 
 {% block body %}
 {% include 'navigation.html.twig' %}
@@ -17,6 +18,10 @@
 
 
 {% endfor %}
+
+<div id="navigationPagination" class="pagination">
+    {{ knp_pagination_render(recettes) }}
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -26,8 +31,8 @@
 document.getElementById('search').addEventListener('click', function(event) {
         
     event.preventDefault();
-    let divResultat=document.getElementById("div_resultats");divResultat.innerHTML="";
-    
+    let divResultat=document.getElementById("div_resultats");
+    divResultat.innerHTML="";
     //alert("jjj");
     // obtenir le div pour afficher les résultats
 
@@ -41,12 +46,14 @@ document.getElementById('search').addEventListener('click', function(event) {
         data: new FormData(document.getElementById('recherche-form'))
     }).then(function (response) {
 
-        //alert("je suis dans le then");
 
         
 
         // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
         let arrayIn = response.data;
+        let navigationPagination=document.getElementById("navigationPagination");
+        navigationPagination.innerHTML={{ knp_pagination_render(arrayIn) }}
+        //alert("je suis dans le then");
         //let myObj=JSON.Parse(arrayIn);
         console.log(arrayIn);
         // console.log(arrayIn[0]['image']);

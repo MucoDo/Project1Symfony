@@ -6,13 +6,16 @@
 .blue-color {
     color:blue;
 }
+
 </style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
 
 <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
-
+{# agrandir la taille des emoticones #}
+<div id="grocery_list {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-cart-plus-fill biggerSize"></div>
+{# <i class="bi bi-cart-plus biggerSize"></i> #}
 <h3> Ingredients: </h3>
 <ul>
 
@@ -46,7 +49,6 @@ likeButton.addEventListener('click', function(event) {
   if (styles === "rgb(0, 0, 255)") {
     likeButton.style.color = "rgb(255, 0, 0)";
     localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
-     
 
     axios.post ("/recipe/like", formLike, { headers: {
         'Content-Type': 'multipart/form-data',  },
@@ -76,7 +78,54 @@ likeButton.addEventListener('click', function(event) {
   }
 });
 
+// code pour ajouter les ingrédients des recettes sélectionnées dans une liste de courses
+let groceryButton = document.getElementById("grocery_list {{recipe[0].id}}");
+
+{# if (localStorage.getItem("buttonColor") === "red") {
+  groceryButton.style.color = "rgb(255, 0, 0)";
+} #}
+let ids=[];
+groceryButton.addEventListener('click', function(event) {
+  //let styles = getComputedStyle(groceryButton).color;
+  let btnClique=event.target;
+    //let formLike= new FormData();
+    //formLike.append("id", btnClique.dataset.id);
+    ids[]=btnClique.dataset.id
+
+  /*if (styles === "rgb(0, 0, 255)") {
+    groceryButton.style.color = "rgb(255, 0, 0)";
+    localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage*/
+
+    axios.post ("/shopping/list", ids, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        alert("hello du if dans la shopping");
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+  } else {
+    groceryButton.style.color = "rgb(0, 0, 255)";
+    localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
+
+    axios.post ("/recipe/unlike", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du else");
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+  }
+});
+
 </script>
+
 
 
 {% endblock %}

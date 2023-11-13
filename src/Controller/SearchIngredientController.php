@@ -9,6 +9,7 @@ use App\Form\SearchIngredientType;
 use App\Repository\RecipeRepository;
 use App\Repository\IngredientRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +18,11 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
+
 class SearchIngredientController extends AbstractController
 {
     #[Route('/search/ingredient', name: 'search_ingredient')]
-    public function searchIngredient(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer): Response
+    public function searchIngredient(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer,  PaginatorInterface $paginator,Request $request): Response
     {
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
@@ -32,7 +34,11 @@ class SearchIngredientController extends AbstractController
 
             // ici ça fait référence à la méthode propre qu'on va ajouter dans le repo IngredientRepositoty.php
             //car on fera appel à la base de données
-            $resultats = $rep->searchIngredient($form->getData());
+            // $resultats = $rep->searchIngredient($form->getData());
+            $resultats = $paginator->paginate($rep->searchIngredient($form->getData()),
+            $request->query->getInt('page', 1), 
+            3 );
+
             // dd($resultats);
 
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
@@ -46,7 +52,9 @@ class SearchIngredientController extends AbstractController
         
         $em = $doctrine->getManager();
         $rep = $em->getRepository(Recipe::class);
-        $recipesAll = $rep->findAll();
+        $recipesAll = $paginator->paginate($rep->findAll(),
+        $request->query->getInt('page', 1), 
+        20 );
         
 
 
