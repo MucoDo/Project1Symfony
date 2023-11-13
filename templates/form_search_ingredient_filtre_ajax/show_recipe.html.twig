@@ -5,8 +5,6 @@
 <style>
 .blue-color {
     color:blue;
-    display:inline-block;
-    height:600px;
 }
 
 </style>
@@ -81,30 +79,67 @@ likeButton.addEventListener('click', function(event) {
   }
 });
 
-let boutonsClicles=[];
+// SEND ID to controller to have the shoppingList
 
-// Fonction appelée lorsqu'un bouton est cliqué
-function boutonClique(id) {
-  // Ajouter l'ID du bouton dans la table
-    boutonsClicles.push(id);
-}
+let groceryButton = document.getElementById("grocery_list {{recipe[0].id}}");
 
-// Fonction pour écouter les clics sur les boutons de la page web
-function ecouterClics() {
-    //let boutonGrocID=document.getElementById("grocery_list {{recipe[0].id}}")
-    let boutons = document.getElementsByClassName("grocery_list");
-    for (let i = 0; i < boutons.length; i++) {
-    boutons[i].addEventListener("click", function(event) {
-        let btnClique=event.target
-        let id = btnClique.dataset.id;
-        boutonClique(id);
-    });
-    }
-}
+// Check if the color preference is already stored in localStorage
+/*if (localStorage.getItem("buttonColor") === "red") {
+  likeButton.style.color = "rgb(255, 0, 0)";
+}*/
 
-// Appeler la fonction pour écouter les clics lorsque la page est chargée
-window.addEventListener("load", ecouterClics);
-console.log(boutonsClicles);
+groceryButton.addEventListener('click', function(event) {
+  event.preventDefault();
+  let styles = getComputedStyle(groceryButton).color;
+  let btnCliqueGrocery=event.target;
+  
+  let formLike= new FormData();
+  formLike.append("id", btnCliqueGrocery.dataset.id);
+
+  axios.post ("/shopping/list", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        alert("hello du if");
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+
+  /*if (styles === "rgb(0, 0, 255)") {
+    groceryButton.style.color = "rgb(255, 0, 0)";
+    localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
+
+    axios.post ("/recipe/like", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du if");
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+  } else {
+    groceryButton.style.color = "rgb(0, 0, 255)";
+    localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
+
+    axios.post ("/recipe/unlike", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du else");
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+  }*/
+});
+
 </script>
 
 
