@@ -35,10 +35,11 @@ class SearchIngredientController extends AbstractController
             // ici ça fait référence à la méthode propre qu'on va ajouter dans le repo IngredientRepositoty.php
             //car on fera appel à la base de données
             // $resultats = $rep->searchIngredient($form->getData());
-            $resultats = $paginator->paginate($rep->searchIngredient($form->getData()),
-            $request->query->getInt('page', 1), 
-            3 );
-
+            // A retravailler pour tenir compte des résultats de l'appel AXIOS
+            // $resultats = $paginator->paginate($rep->searchIngredient($form->getData()),
+            // $request->query->getInt('page', 1), 
+            // 20 );
+            $resultats = $rep->searchIngredient($form->getData());
             // dd($resultats);
 
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);

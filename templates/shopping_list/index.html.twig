@@ -3,5 +3,38 @@
 
 {% block body %}
 {% include 'navigation.html.twig' %}
+<h1>Voici ma liste de courses</h1>
+<div id="div_resultatsCourse"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+let boutonClique=[];
+document.getElementsByClass("grocery_list").addEventListener('click',function(event){
+    event.preventDefault();
+    let div_resultatsCourse=document.getElementById("div_resultatsCourse");
+    div_resultatsCourse.innerHTML="";
+    let btnClique=event.target;
+    
+    div_resultatsCourse.append(btnClique.dataset.id);
+    axios({
+        // on prend la route generee avec path du data-route du form
+        url: '/shopping/list',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data: new FormData(document.getElementById('recherche-form'))
+    })
+    .then ((response)=>{
+        alert("hello du if");
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+})
+
+</script>
 
 {% endblock %}

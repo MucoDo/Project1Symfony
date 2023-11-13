@@ -51,8 +51,7 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
         let arrayIn = response.data;
-        let navigationPagination=document.getElementById("navigationPagination");
-        navigationPagination.innerHTML={{ knp_pagination_render(arrayIn) }}
+
         //alert("je suis dans le then");
         //let myObj=JSON.Parse(arrayIn);
         console.log(arrayIn);
