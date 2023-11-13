@@ -5,6 +5,8 @@
 <style>
 .blue-color {
     color:blue;
+    display:inline-block;
+    height:600px;
 }
 
 </style>
@@ -14,8 +16,8 @@
 
 <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 {# agrandir la taille des emoticones #}
-<div class="grocery_list" id="grocery_list {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-cart-plus-fill biggerSize"></div>
-{# <i class="bi bi-cart-plus biggerSize"></i> #}
+<span id="grocery_list {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-cart-plus-fill biggerSize grocery_list"></span>
+{# <button class="grocery_list" type="button">Click Me!</button>  #}
 <h3> Ingredients: </h3>
 <ul>
 
@@ -41,6 +43,7 @@ if (localStorage.getItem("buttonColor") === "red") {
 }
 
 likeButton.addEventListener('click', function(event) {
+  event.preventDefault();
   let styles = getComputedStyle(likeButton).color;
   let btnClique=event.target;
     let formLike= new FormData();
@@ -78,7 +81,30 @@ likeButton.addEventListener('click', function(event) {
   }
 });
 
+let boutonsClicles=[];
 
+// Fonction appelée lorsqu'un bouton est cliqué
+function boutonClique(id) {
+  // Ajouter l'ID du bouton dans la table
+    boutonsClicles.push(id);
+}
+
+// Fonction pour écouter les clics sur les boutons de la page web
+function ecouterClics() {
+    //let boutonGrocID=document.getElementById("grocery_list {{recipe[0].id}}")
+    let boutons = document.getElementsByClassName("grocery_list");
+    for (let i = 0; i < boutons.length; i++) {
+    boutons[i].addEventListener("click", function(event) {
+        let btnClique=event.target
+        let id = btnClique.dataset.id;
+        boutonClique(id);
+    });
+    }
+}
+
+// Appeler la fonction pour écouter les clics lorsque la page est chargée
+window.addEventListener("load", ecouterClics);
+console.log(boutonsClicles);
 </script>
 
 
