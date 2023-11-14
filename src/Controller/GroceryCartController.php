@@ -14,16 +14,8 @@ class GroceryCartController extends AbstractController
     #[Route('/grocery/cart', name: 'app_grocery_cart')]
     public function index(): Response
     {
-        return new Response();
+        return $this -> render('grocery_cart/index.html.twig',[]);
     }
-    #[Route('/grocery/add', name: 'add_grocery_cart')]
-    public function groceryAdd(ManagerRegistry $doctrine,  Request $req, IngredientRecipeRepository $rep2) 
-    {
-        $id=$req->get('id');
-        dd($id);
-        $ingQte=$rep2->find($id);
-        
-        $vars = ['unID' => $ingQte];
-        return $this->render('grocery_cart/index.html.twig', $vars);
-    }
+
+
 }

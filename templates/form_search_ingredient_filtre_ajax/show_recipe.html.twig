@@ -37,17 +37,17 @@ let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
 
 // Check if the color preference is already stored in localStorage
 if (localStorage.getItem("buttonColor") === "red") {
-  likeButton.style.color = "rgb(255, 0, 0)";
+    likeButton.style.color = "rgb(255, 0, 0)";
 }
 
 likeButton.addEventListener('click', function(event) {
-  event.preventDefault();
-  let styles = getComputedStyle(likeButton).color;
-  let btnClique=event.target;
-  let formLike= new FormData();
-  formLike.append("id", btnClique.dataset.id);
-
-  if (styles === "rgb(0, 0, 255)") {
+    event.preventDefault();
+    let styles = getComputedStyle(likeButton).color;
+    let btnClique=event.target;
+    let formLike= new FormData();
+    formLike.append("id", btnClique.dataset.id);
+    
+    if (styles === "rgb(0, 0, 255)") {
     likeButton.style.color = "rgb(255, 0, 0)";
     localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
 
@@ -62,7 +62,7 @@ likeButton.addEventListener('click', function(event) {
         console.log("La reponse de la requete POst:", error);
 
     })
-  } else {
+    } else {
     likeButton.style.color = "rgb(0, 0, 255)";
     localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
 
@@ -76,8 +76,15 @@ likeButton.addEventListener('click', function(event) {
         console.log("La reponse de la requete POst:", error);
 
     })
-  }
+    }
 });
+
+
+
+
+
+
+//
 </script>
 
 
