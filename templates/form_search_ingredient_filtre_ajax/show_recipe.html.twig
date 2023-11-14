@@ -14,8 +14,8 @@
 
 <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
 {# agrandir la taille des emoticones #}
-<span id="{{recipe[0].id}}" class="bi bi-cart-plus-fill"></span>
-{# <button class="grocery_list" type="button">Click Me!</button>  #}
+<span id={{recipe[0].id}} class="bi bi-cart-plus-fill"></span>
+
 <h3> Ingredients: </h3>
 <ul>
 
@@ -48,23 +48,24 @@ likeButton.addEventListener('click', function(event) {
     formLike.append("id", btnClique.dataset.id);
     
     if (styles === "rgb(0, 0, 255)") {
-    likeButton.style.color = "rgb(255, 0, 0)";
-    localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
+        likeButton.style.color = "rgb(255, 0, 0)";
+        localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
 
     axios.post ("/recipe/like", formLike, { headers: {
         'Content-Type': 'multipart/form-data',  },
     })
     .then ((response)=>{
-        //alert("hello du if");
+        alert("hello du if");
     
     })
     .catch((error)=>{
         console.log("La reponse de la requete POst:", error);
 
     })
-    } else {
-    likeButton.style.color = "rgb(0, 0, 255)";
-    localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
+    } 
+    else {
+        likeButton.style.color = "rgb(0, 0, 255)";
+        localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
 
     axios.post ("/recipe/unlike", formLike, { headers: {
         'Content-Type': 'multipart/form-data',  },
@@ -79,16 +80,27 @@ likeButton.addEventListener('click', function(event) {
     }
 });
 
+let groceryButton = document.getElementById("{{recipe[0].id}}");
+groceryButton.addEventListener('click', function(evenement) {
+    evenement.preventDefault();
 
+    let btnCliqueGrocery=evenement.target;
+    let formLike= new FormData();
+    formLike.append("id", btnCliqueGrocery.id);
+    const id=btnCliqueGrocery.id
+    axios.post (`/grocery/cart/add/${id}`, formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        alert("hello du if");
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
 
+    });
+})
 
-
-
-//
 </script>
-
-
-
-
 
 {% endblock %}
