@@ -6,15 +6,41 @@
 {% include 'navigation.html.twig' %}
 <h1> Liste de courses</h1> 
 
-<ul>
+{# <ul>
     {% for liste in listeCourse %}
         {% for ingr in liste %}
         <li> {{ingr.nom}}: {{ingr.quantiteTotal}}</li>
         {% endfor %}
     {% endfor %}
 
-</ul>
+</ul> #}
+<table class="table">
+        <thead>
+            <tr>
+                <th>Ingredients</th>
+                <th>Quantité totales</th>
+            </tr>
+        </thead>
+        <tbody>
+               {% for liste in listeCourse %}
+                    {% for ingr in liste %}
+                <tr>
+                    <td>{{ ingr.nom }}</td>
+                    <td>{{ ingr.quantiteTotal }}</td>
+                                    
+                </tr>
+                
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Votre panier est vide</td>
+                </tr>
+                    {% endfor %}
+                {% endfor %}
+        </tbody>
+         <tfoot>
+                <a href="{{path("app_grocery_cart_delete")}}"><button>Delete panier</button></a>
+        </tfoot>
 
-<a href="{{path("app_grocery_cart_delete")}}"><button>Delete panier</button></a>
+</table>
 
 {% endblock %}

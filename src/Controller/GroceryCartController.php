@@ -29,7 +29,7 @@ class GroceryCartController extends AbstractController
         $panier = $session->get('panier',[]);
         $id=$req->get('id');
         $panier[$id]= 1;
-        // $session-> set('panier', $panier);
+        $session-> set('panier', $panier);
         // dd($session->get('panier'));
         
         $array = $session->get('panier');
@@ -56,7 +56,7 @@ class GroceryCartController extends AbstractController
     }
 
     #[Route('/grocery/cart/delete', name: 'app_grocery_cart_delete')]
-    public function droceryCartAdd(SessionInterface $session){
+    public function groceryCartDelete(SessionInterface $session){
         $session->remove('panier');
         return $this->redirectToRoute('app_grocery_cart');
 
