@@ -15,7 +15,14 @@
 <h1> Title: {{recipe[0].titre}}</h1>
 
 
-<span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>       
+<a href=path('recipe_show_likes')><span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
+    {% if app.user.recipes(recipe) %}
+        <span class="bi bi-heart-fill red-color"></span>
+    {% else %}
+        <span class="bi bi-heart-fill blue-color"></span>
+    {% endif %}
+</span>
+<a>       
 
 {# agrandir la taille des emoticones #}
 <span id={{recipe[0].id}} class="bi bi-cart-plus-fill"></span>
