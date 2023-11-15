@@ -13,12 +13,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GroceryCartController extends AbstractController
 {
-    // #[Route('/grocery/cart', name: 'app_grocery_cart')]
-    // public function index(SessionInterface $session):response
-    // {
-    //     // $panier = $session->get('panier',[]);
-    //     return $this -> render('grocery_cart/index.html.twig');
-    // }
+    #[Route('/grocery/cart', name: 'app_grocery_cart')]
+    public function index(SessionInterface $session):response
+    {
+        $fullPanier = $session->get('panier',[]);
+        // dd($fullPanier);
+        $vars=['listeCourse'=>$fullPanier];
+        return $this -> render('grocery_cart/index.html.twig',$vars);
+    }
 
     #[Route('/grocery/cart/add', name: 'app_grocery_cart_add')]
     public function groceryCartAdd( SessionInterface $session, ManagerRegistry $doctrine, Request $req)
@@ -27,13 +29,13 @@ class GroceryCartController extends AbstractController
         $panier = $session->get('panier',[]);
         $id=$req->get('id');
         $panier[$id]= 1;
-        $session-> set('panier', $panier);
+        // $session-> set('panier', $panier);
         // dd($session->get('panier'));
         
         $array = $session->get('panier');
         $keys = array_keys($array);
         // dd($keys);
-        $liste = implode(", ", $keys);
+        // $liste = implode(", ", $keys);
         // dd($liste);
         $em = $doctrine->getManager();
         $query = $em->createQuery (
@@ -48,9 +50,9 @@ class GroceryCartController extends AbstractController
         // dd($session->get('panier'));
         // dd($vars);
         // REPRENDRE ICI
-        return $this -> render('grocery_cart/index.html.twig',$vars);
         $session-> set('panier', $vars);
-        dd($session);
+        // dd($session);
+        return $this->redirectToRoute('app_grocery_cart');
     }
 
 }

@@ -8,7 +8,9 @@
 
 <ul>
     {% for liste in listeCourse %}
-        <li> {{liste.nom}}: {{liste.quantiteTotal}}</li>
+        {% for ingr in liste %}
+        <li> {{ingr.nom}}: {{ingr.quantiteTotal}}</li>
+        {% endfor %}
     {% endfor %}
 </ul>
 
