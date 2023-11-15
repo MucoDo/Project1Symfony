@@ -87,8 +87,8 @@ groceryButton.addEventListener('click', function(evenement) {
     let btnCliqueGrocery=evenement.target;
     let formLike= new FormData();
     formLike.append("id", btnCliqueGrocery.id);
-    const id=btnCliqueGrocery.id
-    axios.post (`/grocery/cart/add/${id}`, formLike, { headers: {
+    //const id=btnCliqueGrocery.id
+    axios.post (`/grocery/cart/add`, formLike, { headers: {
         'Content-Type': 'multipart/form-data',  },
     })
     .then ((response)=>{
