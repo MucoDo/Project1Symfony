@@ -45,11 +45,12 @@ class GroceryCartController extends AbstractController
         $query->setParameter ('listeCles',$keys);
         $resultats = $query->getResult();
         $vars = ['listeCourse'=> $resultats];
-        $session-> set('panier', $vars);
         // dd($session->get('panier'));
         // dd($vars);
         // REPRENDRE ICI
         return $this -> render('grocery_cart/index.html.twig',$vars);
+        $session-> set('panier', $vars);
+        dd($session->save());
     }
 
 }
