@@ -55,4 +55,10 @@ class GroceryCartController extends AbstractController
         return $this->redirectToRoute('app_grocery_cart');
     }
 
+    #[Route('/grocery/cart/delete', name: 'app_grocery_cart_delete')]
+    public function droceryCartAdd(SessionInterface $session){
+        $session->remove('panier');
+        return $this->redirectToRoute('app_grocery_cart');
+
+    }
 }

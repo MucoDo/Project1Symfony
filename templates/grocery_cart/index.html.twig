@@ -12,8 +12,9 @@
         <li> {{ingr.nom}}: {{ingr.quantiteTotal}}</li>
         {% endfor %}
     {% endfor %}
+
 </ul>
 
-
+<a href="{{path("app_grocery_cart_delete")}}"><button>Delete panier</button></a>
 
 {% endblock %}
