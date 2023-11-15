@@ -20,8 +20,8 @@ class GroceryCartController extends AbstractController
     //     return $this -> render('grocery_cart/index.html.twig');
     // }
 
-    #[Route('/grocery/cart/add', name: 'app_grocery_cart_add')]
-    public function groceryCartAdd( SessionInterface $session, ManagerRegistry $doctrine, Request $req)
+    #[Route('/grocery/cart/add/copy', name: 'app_grocery_cart_add_copy')]
+    public function groceryCartAddCopy( SessionInterface $session, ManagerRegistry $doctrine, Request $req)
     {
         
         $panier = $session->get('panier',[]);
