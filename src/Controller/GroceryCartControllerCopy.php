@@ -37,7 +37,7 @@ class GroceryCartControllerCopy extends AbstractController
         // dd($liste);
         $em = $doctrine->getManager();
         $query = $em->createQuery (
-            "SELECT i.nom, sum(ir.quantityMeasure) as quantiteTotal FROM App\Entity\Recipe r
+            "SELECT i.nom, sum(ir.quantity) as quantiteTotal FROM App\Entity\Recipe r
             INNER JOIN r.ingredientRecipes ir
             INNER JOIN ir.ingredient i
             WHERE r.id IN (:listeCles)

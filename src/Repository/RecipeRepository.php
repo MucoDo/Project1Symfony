@@ -66,7 +66,7 @@ public function showIngRecipe($id){
     // dd($filtre);
     $em=$this->getEntityManager();
     $query=$em->createQuery(
-        "SELECT r.id, i.nom, ir.quantityMeasure FROM App\Entity\Recipe r 
+        "SELECT distinct r.id, i.nom, ir.quantity FROM App\Entity\Recipe r 
         INNER JOIN r.ingredientRecipes ir
         INNER JOIN ir.ingredient i
         WHERE (r.id= :id or :id is NULL) 
@@ -83,7 +83,7 @@ public function showIngRecipe($id){
 public function groceryList($keys){
     $em =$this->getEntityManager();
     $query = $em->createQuery (
-        "SELECT i.nom, sum(ir.quantityMeasure) as quantiteTotal FROM App\Entity\Recipe r
+        "SELECT i.nom, sum(ir.quantity) as quantiteTotal FROM App\Entity\Recipe r
         INNER JOIN r.ingredientRecipes ir
         INNER JOIN ir.ingredient i
         WHERE r.id IN (:listeCles)

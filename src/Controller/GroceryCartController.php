@@ -17,7 +17,7 @@ class GroceryCartController extends AbstractController
     public function index(SessionInterface $session, RecipeRepository $rep):response
     {
         $fullPanier = $session->get('panierAll',[]);
-        dd($fullPanier);
+        // dd($fullPanier);
         $ingQuantity=$rep->groceryList($fullPanier);
         // dd($ingQuantity);
         $vars=['listeCourse'=>$ingQuantity];

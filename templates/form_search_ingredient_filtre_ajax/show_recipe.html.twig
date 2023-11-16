@@ -20,8 +20,16 @@
 {% set userRecipes = app.user.recipes %}
 {% set class = 'bi bi-heart-fill blue-color' %}
 
+
+{% while  recipe in app.user.recipes %}
+
 {% for recipe in app.user.recipes %}
+<pre>
+    {{ dump(recipe,recipe.id == recipeId,recipeId) }}
+</pre>
+
     {% if recipe.id == recipeId %}
+
         {% set class = 'bi bi-heart-fill red-color' %}
     {% else %}
         {% set class = 'bi bi-heart-fill blue-color' %}
@@ -90,7 +98,7 @@
 <ul>
 
     {% for ingRec in ingRecette %}
-        <li> {{ingRec.nom}}: {{ingRec.quantityMeasure}}</li>
+        <li> {{ingRec.nom}}: {{ingRec.quantity}}</li>
     {% endfor %}
 
 </ul>
