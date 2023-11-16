@@ -1,15 +1,15 @@
 <nav>
-    <ul>
+    <ul class="nav">
         {% if app.user %}
         {# <li><a href={{ path('accueil') }}>Accueil</a></li> #}
-        <li><a href={{ path('search_ingredient') }}>Recettes</a></li>
-        <li><a href={{ path('recipe_show_likes') }}>Favoris</a></li>                
-        <li><a href={{ path('app_grocery_cart') }}>Liste de courses</a></li>                
+        <li class="nav-item"><a class="nav-link" href={{ path('search_ingredient') }}>Recettes</a></li>
+        <li class="nav-item"><a class="nav-link" href={{ path('recipe_show_likes') }}>Favoris</a></li>                
+        <li class="nav-item"><a class="nav-link" href={{ path('app_grocery_cart') }}>Liste de courses</a></li>                
         {# <li><a href={{ path('accueil') }}>Profil</a></li> #}
-        <li><a href={{ path('app_logout') }}>Déconnexion</a></li>
+        <li class="nav-item"><a class="nav-link" href={{ path('app_logout') }}>Déconnexion</a></li>
         {% else %}
-            <li><a href={{ path('app_login') }}>Connexion</a></li>
-            <li><a href={{ path('app_register') }}>Inscription</a></li>
+            <li class="nav-item"><a class="nav-link" href={{ path('app_login') }}>Connexion</a></li>
+            <li class="nav-item"><a class="nav-link" href={{ path('app_register') }}>Inscription</a></li>
         {% endif %}
     </ul>
 </nav>

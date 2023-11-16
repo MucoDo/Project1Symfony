@@ -9,9 +9,11 @@
 
     {{form_start(form,{'attr':{'id':'recherche-form'}})}}
         {{ form_row(form.nom) }}
-        <button id="search" type="submit">Search!</button>
+        <button class="btn btn-primary" id="search" type="submit">Search!</button>
     {{ form_end(form) }}
-<div id="div_resultats">
+
+<div id="div_resultats" class="row">
+{# <div id="div_resultats"> #}
 {% for recipe in recettes %}
     <br>Titre: {{ recipe.titre }} 
     <br>Image: {{ recipe.image }} 
@@ -22,7 +24,9 @@
 <div id="navigationPagination" class="pagination">
     {{ knp_pagination_render(recettes) }}
 </div>
+{# </div> #}
 </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -56,8 +60,12 @@ document.getElementById('search').addEventListener('click', function(event) {
         //let myObj=JSON.Parse(arrayIn);
         console.log(arrayIn);
         // console.log(arrayIn[0]['image']);
+      
         arrayIn.forEach(function (recipe){
     
+        var cardDivCol = document.createElement("div");
+        cardDivCol.className = "col-sm-6";
+
         var cardDiv = document.createElement("div");
         cardDiv.className = "card";
         cardDiv.style.width = "18rem";
@@ -97,8 +105,12 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         // Ajout de la carte au document
         //divResultat.innerHTML="";
-        divResultat.appendChild(cardDiv);
-        divResultat.className="col-sm-6"
+        cardDivCol.appendChild(cardDiv);
+       
+         
+        divResultat.appendChild(cardDivCol);
+
+
 
     });
 
