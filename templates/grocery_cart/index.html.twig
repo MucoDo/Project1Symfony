@@ -25,12 +25,12 @@
         </thead>
         <tbody>
             {% for liste in listeCourse %}
-                {% for ingr in liste %}
+                {# {% for ingr in liste %} #}
                     <tr>
-                        <td>{{ ingr.nom }}</td>
-                        <td>{{ ingr.quantiteTotal }}</td>
+                        <td>{{ liste.nom }}</td>
+                        <td>{{ liste.quantiteTotal }}</td>
                     </tr>
-                {% endfor %}
+                {# {% endfor %} #}
             {% endfor %}
         </tbody>
     </table>

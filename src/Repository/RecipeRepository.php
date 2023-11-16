@@ -79,4 +79,17 @@ public function showIngRecipe($id){
      // dd($res);
     return $res;
 }
+
+public function groceryList($keys){
+    $em =$this->getEntityManager();
+    $query = $em->createQuery (
+        "SELECT i.nom, sum(ir.quantityMeasure) as quantiteTotal FROM App\Entity\Recipe r
+        INNER JOIN r.ingredientRecipes ir
+        INNER JOIN ir.ingredient i
+        WHERE r.id IN (:listeCles)
+        GROUP BY i.nom");
+    $query->setParameter ('listeCles',$keys);
+    $res=$query->getResult();
+    return $res;
+}
 }
