@@ -14,24 +14,39 @@
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-{# {{ dump (app.user.recipes) }} #}
-{# Remplacez 123 par l'ID de la recette que vous souhaitez vérifier #}
-{{dump(app.user.recipes)}}
-
-{% set recipeId = recipe[0].id %}  {# Remplacez 123 par l'ID de votre recette spécifique #}
+{% set recipeId = recipe[0].id %}
+{% set userRecipes = app.user.recipes %}
+{% set class = 'bi bi-heart-fill blue-color' %}
 
 {% for recipe in app.user.recipes %}
     {% if recipe.id == recipeId %}
-        {# Faites quelque chose avec la recette spécifique #}
+        {% set class = 'bi bi-heart-fill red-color' %}
+    {% else %}
+        {% set class = 'bi bi-heart-fill blue-color' %}
+    {% endif %}
+{% endfor %}
+
+<span id="heart_like {{ recipeId }}" data-id="{{ recipeId }}" class="{{ class }}"></span>
+
+
+{# {{ dump (app.user.recipes) }} #}
+{# Remplacez 123 par l'ID de la recette que vous souhaitez vérifier #}
+{# {{dump(app.user.recipes)}} #}
+
+{# {% set recipeId = recipe[0].id %}  Remplacez 123 par l'ID de votre recette spécifique #}
+{# 
+{% for recipe in app.user.recipes %}
+    {% if recipe.id == recipeId %} #}
+        {# Faites quelque chose avec la recette spécifique
         {{ recipe.titre }}
         <span id="heart_like {{recipeId}}" data-id={{recipeId}} class="bi bi-heart-fill red-color"></span>
     
     {% else %}
         <p>ne fait rien</p>
-        <span id="heart_like {{recipeId}}" data-id={{recipeId}} class="bi bi-heart-fill blue-color"></span>
+        <span id="heart_like {{recipeId}}" data-id={{recipeId}} class="bi bi-heart-fill blue-color"></span> #}
 
-    {% endif %}
-{% endfor %}
+    {# {% endif %}
+{% endfor %} #}
 
 {# {% set class = 'bi bi-heart-fill blue-color' %}
 {% if recipe[0].id in app.user.recipes %}
