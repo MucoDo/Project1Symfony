@@ -14,15 +14,27 @@
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
+{# {{ dump (app.user.recipes) }} #}
+{# Remplacez 123 par l'ID de la recette que vous souhaitez vérifier #}
 
-<a href=path('recipe_show_likes')><span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
-    {% if app.user.recipes(recipe) %}
-        <span class="bi bi-heart-fill red-color"></span>
-    {% else %}
-        <span class="bi bi-heart-fill blue-color"></span>
+{% set recipeIdToCheck = recipe[0].id %} 
+{% for recipe in app.user.recipes %}
+    {% if recipe.id == recipeIdToCheck %}
+        {# La recette spécifique est trouvée dans les recettes de l'utilisateur #}
+        <p>La recette est présente dans les recettes de l'utilisateur.</p>
+        {# <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill red-color"> #}
+        {# Faites ici ce que vous souhaitez faire si la recette est trouvée #}
     {% endif %}
-</span>
-<a>       
+{% endfor %}
+
+
+{# <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
+    {% if app.user.recipes(recipe) %}
+        <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
+    {% else %}
+        <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
+    {% endif %} #}
+
 
 {# agrandir la taille des emoticones #}
 <span id={{recipe[0].id}} class="bi bi-cart-plus-fill"></span>
@@ -107,7 +119,7 @@ likeButton.addEventListener('click', function(event) {
         }else{
             likeButton.style.color="red";
         }
-       
+
 
         //alert("je suis dans le then");
         //let myObj=JSON.Parse(arrayIn);
