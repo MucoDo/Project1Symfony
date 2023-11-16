@@ -37,7 +37,7 @@ class GroceryCartController extends AbstractController
         // $array = $session->get('panier');
         // dd($array);
         $keys = array_keys($panier);
-        // dump($keys);
+        dump($keys);
         // $liste = implode(", ", $keys);
         // dd($liste);
         $em = $doctrine->getManager();
