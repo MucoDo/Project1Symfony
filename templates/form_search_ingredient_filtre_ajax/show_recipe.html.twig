@@ -22,6 +22,7 @@
     {% if recipe.id == recipeIdToCheck %}
         {# La recette spécifique est trouvée dans les recettes de l'utilisateur #}
         <p>La recette est présente dans les recettes de l'utilisateur.</p>
+        <span id="heart_like {{recipe.id}}" data-id={{recipe.id}} class="bi bi-heart-fill red-color"></span>
         {# <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill red-color"> #}
         {# Faites ici ce que vous souhaitez faire si la recette est trouvée #}
     {% endif %}
