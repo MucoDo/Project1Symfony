@@ -28,13 +28,20 @@ class GroceryCartController extends AbstractController
         
         $panier = $session->get('panier',[]);
         $id=$req->get('id');
+        // if (!empty($panier[$id])){
+        //     $panier[$id]++;
+        // }else{
+        //     $panier[$id]=1;
+        // }
+
         $panier[$id]= 1;
         $session-> set('panier', $panier);
         // dd($session->get('panier'));
         
         $array = $session->get('panier');
+        // dd($array);
         $keys = array_keys($array);
-        // dd($keys);
+        dd($keys);
         // $liste = implode(", ", $keys);
         // dd($liste);
         $em = $doctrine->getManager();
@@ -51,7 +58,7 @@ class GroceryCartController extends AbstractController
         // dd($vars);
         // REPRENDRE ICI
         $session-> set('panier', $vars);
-        // dd($session);
+        dd($session);
         return $this->redirectToRoute('app_grocery_cart');
     }
 

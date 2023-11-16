@@ -14,7 +14,9 @@
     {% endfor %}
 
 </ul> #}
-<table class="table">
+<a href="{{path("app_grocery_cart_delete")}}"><button>Delete panier</button></a>
+{% if listeCourse| length > 0 %}
+    <table class="table">
         <thead>
             <tr>
                 <th>Ingredients</th>
@@ -22,25 +24,18 @@
             </tr>
         </thead>
         <tbody>
-               {% for liste in listeCourse %}
-                    {% for ingr in liste %}
-                <tr>
-                    <td>{{ ingr.nom }}</td>
-                    <td>{{ ingr.quantiteTotal }}</td>
-                                    
-                </tr>
-                
-                {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">Votre panier est vide</td>
-                </tr>
-                    {% endfor %}
+            {% for liste in listeCourse %}
+                {% for ingr in liste %}
+                    <tr>
+                        <td>{{ ingr.nom }}</td>
+                        <td>{{ ingr.quantiteTotal }}</td>
+                    </tr>
                 {% endfor %}
+            {% endfor %}
         </tbody>
-         <tfoot>
-                <a href="{{path("app_grocery_cart_delete")}}"><button>Delete panier</button></a>
-        </tfoot>
-
-</table>
+    </table>
+{% else %}
+    <p colspan="5" class="text-center">Votre panier est vide</p>
+{% endif %}
 
 {% endblock %}
