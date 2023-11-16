@@ -16,7 +16,7 @@ class GroceryCartController extends AbstractController
     #[Route('/grocery/cart', name: 'app_grocery_cart')]
     public function index(SessionInterface $session):response
     {
-        $fullPanier = $session->get('panier');
+        $fullPanier = $session->get('panierAll',[]);
         // dd($fullPanier);
         $vars=['listeCourse'=>$fullPanier];
         return $this -> render('grocery_cart/index.html.twig',$vars);
@@ -29,13 +29,15 @@ class GroceryCartController extends AbstractController
         $id=$req->get('id');
         $panier[$id]= 1;
         $session-> set('panier', $panier);
-        // dd($session->get('panier'));
+        $session-> save();
+
+        // dd($panier);
 
         
-        $array = $session->get('panier');
+        // $array = $session->get('panier');
         // dd($array);
-        $keys = array_keys($array);
-        // dd($keys);
+        $keys = array_keys($panier);
+        // dump($keys);
         // $liste = implode(", ", $keys);
         // dd($liste);
         $em = $doctrine->getManager();
@@ -47,12 +49,12 @@ class GroceryCartController extends AbstractController
             GROUP BY i.nom");
         $query->setParameter ('listeCles',$keys);
         $resultats = $query->getResult();
-        $vars = ['listeCourse'=> $resultats];
-        // dd($vars);
+        $vars = ['resultats'=> $resultats];
+        // dump($vars);
         // REPRENDRE ICI
-        $session-> set('panier', $vars);
-        // dd($session->get('panier'));
+        $session-> set('panierAll', $vars);
         $session-> save();
+        // dd($session->get('panier'));
         // dd($session);
         return $this -> render('grocery_cart/index.html.twig');
         
@@ -60,9 +62,10 @@ class GroceryCartController extends AbstractController
 
     #[Route('/grocery/cart/delete', name: 'app_grocery_cart_delete')]
     public function groceryCartDelete(SessionInterface $session){
-        $session->remove('panier');
+        
+        $session->remove('panierAll');
         // $session-> set('panier', []);  
-        $session->save();
+        // $session->save();
         return $this->redirectToRoute('app_grocery_cart');
 
     }
