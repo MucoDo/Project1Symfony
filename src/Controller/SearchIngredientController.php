@@ -8,6 +8,7 @@ use App\Entity\IngredientRecipe;
 use App\Form\SearchIngredientType;
 use App\Repository\RecipeRepository;
 use App\Repository\IngredientRepository;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,10 +75,26 @@ class SearchIngredientController extends AbstractController
     {
         $id = $req->get('id');
         $recipe = $rep->showRecipe($id);
+        // dump( $recipe);
+        $favRecipes=$this->getUser()->getRecipes()->toArray();
+        // $favRecipes=$this->getUser()->getRecipes();
+        $i=0;
+        // dump( $favRecipes[$i]->getId());
+        // dd( $recipe[0]->getId());
+        $isfavorite=false;
+        while ($i<count($favRecipes) && $isfavorite==false){
+            if ($favRecipes[$i]->getId()==$recipe[0]->getId()){
+                $isfavorite=true;
+            }
+            $i++;
+        }
+        // dd( $isfavorite);
+
         $ingRecette = $rep->showIngRecipe($id);
         $vars = [
             'recipe' => $recipe,
-            'ingRecette' => $ingRecette
+            'ingRecette' => $ingRecette,
+            'isfavorite'=>$isfavorite
         ];
         // dd($vars);
         return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig", $vars);

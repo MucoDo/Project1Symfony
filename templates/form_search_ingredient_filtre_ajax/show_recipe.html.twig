@@ -16,7 +16,15 @@
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-{% set recipeId = recipe[0].id %}
+{% set class = 'bi bi-heart-fill blue-color' %}
+{% if isfavorite %}
+    {% set class = 'bi bi-heart-fill red-color' %}
+{% else %}
+    {% set class = 'bi bi-heart-fill blue-color' %}
+{% endif %}
+<span id="heart_like {{ recipe[0].id }}" data-id="{{ recipe[0].id }}" class="{{ class }}"></span> 
+
+{# {% set recipeId = recipe[0].id %}
 {% set userRecipes = app.user.recipes %}
 {% set class = 'bi bi-heart-fill blue-color' %}
 
@@ -36,7 +44,7 @@
     {% endif %}
 {% endfor %}
 
-<span id="heart_like {{ recipeId }}" data-id="{{ recipeId }}" class="{{ class }}"></span>
+<span id="heart_like {{ recipeId }}" data-id="{{ recipeId }}" class="{{ class }}"></span> #}
 
 
 {# {{ dump (app.user.recipes) }} #}
