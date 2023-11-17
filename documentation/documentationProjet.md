@@ -1,6 +1,6 @@
 App de propositions de recettes et de gestion des courses
 
-    Objectif: permettre à un utilisateur de trouver des recettes et de pouvoir gérer ses courses en conséquence
+    Objectif: permettre à un utilisateur de trouver des recettes en fonction des ingrédients dont il disposent déjà ou de ses envies et pouvoir générer une liste de courses automatiquement en fonction des recettes q'il souhaite cuisiner
 
     UTILISATEUR:
 
