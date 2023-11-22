@@ -172,7 +172,8 @@ likeButton.addEventListener('click', function(event) {
     let btnClique=event.target;
     let formLike= new FormData();
     formLike.append("id", btnClique.dataset.id);
-    axios.post ("/recipe/like", formLike, { headers: {
+    //axios.post ("/recipe/like", formLike, { headers: {
+    axios.post ("{{path('recipe_like')}}", formLike, { headers: {
         'Content-Type': 'multipart/form-data',  },
     })
     .then ((response)=>{
