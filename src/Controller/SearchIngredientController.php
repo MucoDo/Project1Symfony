@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
 
+
 class SearchIngredientController extends AbstractController
 {
     #[Route('/search/ingredient', name: 'search_ingredient')]
