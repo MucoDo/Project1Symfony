@@ -51,8 +51,8 @@ document.getElementById('search').addEventListener('click', function(event) {
     let divResultat=document.getElementById("div_resultats");
     divResultat.innerHTML="";
     // vider pagination
-    let divPagination=document.getElementById("navigationPagination");
-    divPagination.innerHTML="";
+    console.log(event.target.nodeName);
+    
     //alert("jjj");
     // obtenir le div pour afficher les résultats
 
@@ -76,7 +76,7 @@ document.getElementById('search').addEventListener('click', function(event) {
         //let myObj=JSON.Parse(arrayIn);
         console.log(arrayIn);
         // console.log(arrayIn[0]['image']);
-      
+
         arrayIn.forEach(function (recipe){
     
         var cardDivCol = document.createElement("div");
