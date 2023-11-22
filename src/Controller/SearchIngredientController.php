@@ -44,6 +44,10 @@ class SearchIngredientController extends AbstractController
             $resultats = $rep->searchIngredient($form->getData());
             // dd($resultats);
 
+            $recipesAll = $paginator->paginate($resultats,
+            $request->query->getInt('page', 1), 
+            10 );
+
             $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
             return new Response($response);
         }

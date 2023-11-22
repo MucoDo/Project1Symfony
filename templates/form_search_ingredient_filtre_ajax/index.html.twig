@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello FormSearchIngredientFiltreAjaxController!{% endblock %}
-{# {% import '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig' as knp_pagination %} #}
+{% import '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig' as knp_pagination %}
 
 {% block body %}
 {% include 'navigation.html.twig' %}
@@ -50,12 +50,15 @@ document.getElementById('search').addEventListener('click', function(event) {
     event.preventDefault();
     let divResultat=document.getElementById("div_resultats");
     divResultat.innerHTML="";
+    // vider pagination
+    let divPagination=document.getElementById("navigationPagination");
+    divPagination.innerHTML="";
     //alert("jjj");
     // obtenir le div pour afficher les résultats
 
     axios({
         // on prend la route generee avec path du data-route du form
-        url: '/search/ingredient',
+        url: "{{path('search_ingredient')}}",
         method: 'POST',
         headers: {
             'Content-Type': 'multipart/form-data'
