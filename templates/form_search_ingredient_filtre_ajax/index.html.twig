@@ -36,9 +36,9 @@
 
 {# </div> #}
 
+</div>
 <div id="navigationPagination" class="pagination">
     {{ knp_pagination_render(recettes) }}
-</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -108,8 +108,7 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         // Création de l'élément a avec les classes "btn" et "btn-primary" et le texte spécifié
         var link = document.createElement("a");
-        //link.href = "/show/recipe/" + recipe['id'];
-        link.href = "{{path('show_recipe')}}" + recipe['id'];
+        link.href = "/show/recipe/" + recipe['id'];
         link.className = "btn btn-primary";
         link.textContent = "Lire la recette";
 
