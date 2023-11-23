@@ -14,40 +14,45 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class RecipeLikeController extends AbstractController{
     #[Route('/recipe/like', name: 'recipe_like')]
     public function recipeLike(ManagerRegistry $doctrine,UserRepository $user,RecipeRepository $rep2,  Request $req){
-        $id=$req->get('id');
-        // dd($id);
-        $recipe=$rep2->find($id);
-        // dd($recipe);
         $user = $this->getUser();
-        $containsRecipe =  $user->getRecipes()->contains($recipe);
-        // dd($containsRecipe);
-        $heartColor='bleu';
-        if ($containsRecipe){
-            $user->removeRecipe($recipe);
+
+        if (!$user) {
+            return new JsonResponse(['message' => 'Veuillez vous connectez pour ajouter aux favoris'], 404);
+        } else {
+
+            $id=$req->get('id');
+            // dd($id);
+            $recipe=$rep2->find($id);
+            // dd($recipe);
+            $user = $this->getUser();
+            $containsRecipe =  $user->getRecipes()->contains($recipe);
+            // dd($containsRecipe);
             $heartColor='bleu';
-            
-        }
-        else{
-            $user->addRecipe($recipe); 
-            $heartColor='red';
-        }
-      
-        $em = $doctrine->getManager();
+            if ($containsRecipe){
+                $user->removeRecipe($recipe);
+                $heartColor='bleu';
+                
+            }
+            else{
+                $user->addRecipe($recipe); 
+                $heartColor='red';
+            }
 
-        $em->flush();
+            $em = $doctrine->getManager();
+
+            $em->flush();
 
 
-        $response= ['heartColor'=>$heartColor];
+            $response= ['heartColor'=>$heartColor];
 
-       
-    
 
-        // Renvoyer une response vide sinon symfony va générer une erreur disant que la réponse n'a pas été envoyée
-        // return new Response();
-        return new JsonResponse($response);
+            // Renvoyer une response vide sinon symfony va générer une erreur disant que la réponse n'a pas été envoyée
+            // return new Response();
+            return new JsonResponse($response);
+    }
 
         
-    }
+}
 
 
 

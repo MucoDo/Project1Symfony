@@ -51,7 +51,8 @@ document.getElementById('search').addEventListener('click', function(event) {
     let divResultat=document.getElementById("div_resultats");
     divResultat.innerHTML="";
     // vider pagination
-    console.log(event.target.nodeName);
+    //let divNavigationPagination=document.getElementById("navigationPagination");
+    //divNavigationPagination.innerHTML="";
     
     //alert("jjj");
     // obtenir le div pour afficher les résultats
@@ -107,7 +108,8 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         // Création de l'élément a avec les classes "btn" et "btn-primary" et le texte spécifié
         var link = document.createElement("a");
-        link.href = "/show/recipe/" + recipe['id'];
+        //link.href = "/show/recipe/" + recipe['id'];
+        link.href = "{{path('show_recipe')}}" + recipe['id'];
         link.className = "btn btn-primary";
         link.textContent = "Lire la recette";
 
@@ -122,8 +124,6 @@ document.getElementById('search').addEventListener('click', function(event) {
         // Ajout de la carte au document
         //divResultat.innerHTML="";
         cardDivCol.appendChild(cardDiv);
-       
-         
         divResultat.appendChild(cardDivCol);
 
 
