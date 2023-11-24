@@ -43,17 +43,18 @@ class SearchIngredientController extends AbstractController
 
     }
     #[Route('/search/ingredient/ajax/traitement', name: 'search_ingredient_ajax_traitement')]
-    public function searchIngredientAjaxTraitement(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer,  PaginatorInterface $paginator,Request $request): Response
+    public function searchIngredientAjaxTraitement(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer,  PaginatorInterface $paginator,Request $request, IngredientRepository $rep): Response
     {
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
+        $numeroPage=$request->get('page', 1);
+        // dd($form->getData());
 
 
         $rep = $doctrine->getRepository(Ingredient::class);
 
         $resultats = $rep->searchIngredient($form->getData());
         // dd($resultats);
-        $numeroPage=$request->query->getInt('page', 1);
 
         $recipesAll = $paginator->paginate($resultats,
         $numeroPage,
