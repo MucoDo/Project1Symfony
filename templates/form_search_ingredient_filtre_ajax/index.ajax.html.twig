@@ -1,0 +1,19 @@
+<div class="row">
+    {% for recipe in recettes %}
+    {# <h1>Vérification </h1> #}
+            <div class="col-sm-6" style= "width:18rem">
+                <div class="card" style= "width:18rem">
+                    <img class="card-img-top" src = {{recipe.image}} alt="Card image cap" style= "width:18rem">
+                    <div class="card-body" style= "width:18rem">
+                        <h5 class="card-title">{{ recipe.titre }} </h5>
+                        {# <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> #}
+                        <a href="{{ path('show_recipe', {'id': recipe.id }) }}"  class="btn btn-primary">Lire la recette</a>
+                    </div>
+                    </img>
+                </div>
+            </div>
+    {% endfor %}
+    <div id="navigationPagination" class="pagination">
+        {{ knp_pagination_render(recettes) }}
+    </div>
+</div>

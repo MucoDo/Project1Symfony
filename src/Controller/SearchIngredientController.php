@@ -46,10 +46,22 @@ class SearchIngredientController extends AbstractController
             
             $recipesAll = $paginator->paginate($resultats,
             $request->query->getInt('page', 1), 
-            20);
+            10);
+            // dd($recipesAll);
 
-            $response = $serializer->serialize($resultats, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
-            return new Response($response);
+            // $response=$recipesAll;
+            // $response = $serializer->serialize($recipesAll, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
+            // $responseALL = $serializer->serialize($recipesAll, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
+            
+            $response= [
+                'recettes' => $recipesAll,
+                // 'pagination' => $responseALL
+            ];
+            
+            // dd($response);
+    
+            // return new Response($response);
+            return new Response($this->renderView('form_search_ingredient_filtre_ajax/index.ajax.html.twig',$response));
         }
 
 
@@ -67,7 +79,7 @@ class SearchIngredientController extends AbstractController
 
 
         // $vars = ['form' => $form];
-        // dd($vars);
+        // dd($recipesAll);
         return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',['recettes'=> $recipesAll,'form' => $form]);
         // return $this->render('search_ingredient/index.html.twig',$vars);
 
