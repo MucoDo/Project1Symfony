@@ -29,56 +29,12 @@ class SearchIngredientController extends AbstractController
         $form = $this->createForm(SearchIngredientType::class);
         $form->handleRequest($req);
 
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $rep = $doctrine->getRepository(Ingredient::class);
-
-            // ici ça fait référence à la méthode propre qu'on va ajouter dans le repo IngredientRepositoty.php
-            //car on fera appel à la base de données
-            // $resultats = $rep->searchIngredient($form->getData());
-            // A retravailler pour tenir compte des résultats de l'appel AXIOS
-            // $resultats = $paginator->paginate($rep->searchIngredient($form->getData()),
-            // $request->query->getInt('page', 1), 
-            // 20 );
-            $resultats = $rep->searchIngredient($form->getData());
-            // dd($resultats);
-            $numeroPage=$request->query->getInt('page', 1);
-
-            $recipesAll = $paginator->paginate($resultats,
-            $numeroPage,
-            20);
-            // dd($recipesAll);
-
-            // $response=$recipesAll;
-            // $response = $serializer->serialize($recipesAll, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
-            // $responseALL = $serializer->serialize($recipesAll, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['ingredientRecipes', 'category']]);
-            
-            $response= [
-                'recipesAll' => $recipesAll,
-                // 'pagination' => $responseALL
-            ];
-            
-            // dd($response);
-    
-            // return new Response($response);
-            return new Response($this->renderView('form_search_ingredient_filtre_ajax/index.ajax.html.twig',$response));
-        }
-
-
-
-        // serialization sinon erreur "Cannot use object of type App\Entity\Ingredient as array"
-        // renvois du résultat JSON
-        
         $em = $doctrine->getManager();
         $rep = $em->getRepository(Recipe::class);
         $recipesAll = $paginator->paginate($rep->findAll(),
         $request->query->getInt('page', 1), 
         20 );
         
-
-
-
         // $vars = ['form' => $form];
         // dd($recipesAll);
         return $this->render('form_search_ingredient_filtre_ajax/index.html.twig',['recettes'=> $recipesAll,'form' => $form]);
@@ -86,6 +42,36 @@ class SearchIngredientController extends AbstractController
 
 
     }
+    #[Route('/search/ingredient/ajax/traitement', name: 'search_ingredient_ajax_traitement')]
+    public function searchIngredientAjaxTraitement(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer,  PaginatorInterface $paginator,Request $request): Response
+    {
+        $form = $this->createForm(SearchIngredientType::class);
+        $form->handleRequest($req);
+
+
+        $rep = $doctrine->getRepository(Ingredient::class);
+
+        $resultats = $rep->searchIngredient($form->getData());
+        // dd($resultats);
+        $numeroPage=$request->query->getInt('page', 1);
+
+        $recipesAll = $paginator->paginate($resultats,
+        $numeroPage,
+        20);
+        // dd($recipesAll);
+        
+        $response= [
+            'recipesAll' => $recipesAll,
+            'form' => $form
+            // 'pagination' => $responseALL
+        ];
+        
+        // dd($response);
+
+        // return new Response($response);
+        return new Response($this->renderView('form_search_ingredient_filtre_ajax/index.ajax.html.twig',$response));
+    }
+
 
     #[Route('/show/recipe/{id}', name: 'show_recipe')]
 

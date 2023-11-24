@@ -53,18 +53,20 @@ document.getElementById('search').addEventListener('click', function(event) {
     // vider pagination
     //let divNavigationPagination=document.getElementById("navigationPagination");
     //divNavigationPagination.innerHTML="";
+    let myFormData=new FormData(document.getElementById('recherche-form'))
+    myFormData.append ('page',1);
     
     //alert("jjj");
     // obtenir le div pour afficher les résultats
 
     axios({
         // on prend la route generee avec path du data-route du form
-        url: "{{path('search_ingredient')}}",
+        url: "{{path('search_ingredient_ajax_traitement')}}",
         method: 'POST',
         headers: {
             'Content-Type': 'multipart/form-data'
         },
-        data: new FormData(document.getElementById('recherche-form'))
+        data: myFormData
         }).then(function (response) {
 
 
@@ -139,6 +141,51 @@ document.getElementById('search').addEventListener('click', function(event) {
         })
     })
 </script>
+<script>
+document.addEventListener ('click', function (event){
+    console.log (event.target.nodeName);
+    if (event.target.nodeName ==="A"  && event.target.href.includes ("page=") &&  event.target.href.includes ("ajax")){
+        
+        console.log ("pagination ajax");
+        // empecher le lien de fonctionner
+        event.preventDefault();
+        event.stopPropagation();
 
+        // obtenir le lien du paginator
+        let lien = event.target.href;
+        // extraire du lien le nombre de page
+        let page = lien.split('=')[1]; // position 1 de l'array crée par split contient le text après le =
+        console.log ("page du lien (inspectez pour le voir): " + page);
+        let divResultat=document.getElementById("div_resultats");
+        divResultat.innerHTML="";
+        
+        // l'appel renvoie le form tel qu'il est, avec le numero de page à charger
+        // rajouter un couple clé-val au form (POST). L'action a besoin de la page pour le paginator,
+        // qui renverra les éléments à afficher (pareil que sans AJAX)
+        let myFormData = new FormData(document.getElementById("recherche-form"));
+        // on rajoute à la main un couple clé=>valeur dans le POST: page: X
+        myFormData.append('page', page);
+
+        axios({
+            url: '{{ path ("search_ingredient_ajax_traitement") }}',
+            method:'POST',
+            headers: {'Content-type' : 'multipart/form-data'},
+            data: myFormData
+        })
+        .then ( function (response) {
+            //alert("je suis rentrée dans le then");
+            divResultat.innerHTML = response.data;
+            console.log (response.data);
+        })
+        .catch( function (error)  {
+            console.log ("error:");
+            console.log (error);
+        });
+    }
+    
+
+});
+
+</script>
 
 {% endblock %}

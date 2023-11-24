@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
 class SearchIngredientControllerCopy extends AbstractController
 {
-    #[Route('/search/ingredient/trois', name: 'search_ingredient')]
+    #[Route('/search/ingredient/trois', name: 'search_ingredient_trois')]
     public function searchIngredientTrois(Request $req, ManagerRegistry $doctrine, SerializerInterface $serializer,  PaginatorInterface $paginator,Request $request): Response
     {
         $form = $this->createForm(SearchIngredientType::class);
@@ -87,7 +87,7 @@ class SearchIngredientControllerCopy extends AbstractController
 
     }
 
-    #[Route('/show/recipe/trois/{id}', name: 'show_recipe')]
+    #[Route('/show/recipe/trois/{id}', name: 'show_recipe_trois')]
 
     public function showRecipeTrois(RecipeRepository $rep,  Request $req)
     {
