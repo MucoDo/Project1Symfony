@@ -36,7 +36,7 @@
 
 {# </div> #}
 
-    <div id="navigationPagination" class="pagination">
+    <div class="pagination">
         {{ knp_pagination_render(recettes,'./twitter_bootstrap_v4_pagination.html.twig') }}
     </div>
 </div>
@@ -74,7 +74,7 @@ document.getElementById('search').addEventListener('click', function(event) {
         // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
         //let arrayIn = response.data;
 
-        alert("je suis dans le then");
+        //alert("je suis dans le then");
         //let myObj=JSON.Parse(arrayIn);
        // console.log(arrayIn);
         // console.log(arrayIn[0]['image']);
