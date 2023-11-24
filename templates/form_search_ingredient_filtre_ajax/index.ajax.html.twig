@@ -1,5 +1,5 @@
 <div class="row">
-    {% for recipe in recettes %}
+    {% for recipe in recipesAll %}
     {# <h1>Vérification </h1> #}
             <div class="col-sm-6" style= "width:18rem">
                 <div class="card" style= "width:18rem">
@@ -14,6 +14,6 @@
             </div>
     {% endfor %}
     <div class="pagination">
-        {{ knp_pagination_render(recettes, './twitter_bootstrap_v4_pagination.html.twig') }}
+        {{ knp_pagination_render(recipesAll, './twitter_bootstrap_v4_pagination.html.twig') }}
     </div>
 </div>
