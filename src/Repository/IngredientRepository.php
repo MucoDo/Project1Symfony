@@ -25,15 +25,20 @@ class IngredientRepository extends ServiceEntityRepository
 public function searchIngredient($filtre){
     //dd($filtre);
     $em=$this->getEntityManager();
+    // $query=$em->createQuery(
+    //     "SELECT distinct r.id, r.titre, r.instruction, r.image, i.nom, ir.quantity FROM App\Entity\Recipe r 
+    //     INNER JOIN r.ingredientRecipes ir
+    //     INNER JOIN ir.ingredient i
+    //     WHERE (i.nom LIKE :nom or :nom is NULL) 
+    //     "
+    // );
     $query=$em->createQuery(
-        "SELECT distinct r.id, r.titre, r.instruction, r.image, i.nom, ir.quantity FROM App\Entity\Recipe r 
-        INNER JOIN r.ingredientRecipes ir
+        "SELECT distinct r.id, r.titre, r.instruction, r.image
+        FROM App\Entity\Recipe r 
+        WHERE  r.id IN (SELECT distinct ir.recipe_id
+        FROM ingredientRecipes ir
         INNER JOIN ir.ingredient i
-        WHERE (i.nom LIKE :nom or :nom is NULL) 
-        "
-    );
-
-    $query->setParameter("nom","%".$filtre['nom']."%");
+        WHERE i.nom LIKE :nom or :nom is NULL)")->setParameter("nom","%".$filtre['nom']."%");
     $res=$query->getResult();
 
      // dd($res);

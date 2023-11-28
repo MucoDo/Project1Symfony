@@ -20,16 +20,18 @@ class ImportImagesController extends AbstractController
         $em = $doctrine->getManager();
         // obtenir le repository
         $rep = $em->getRepository(Recipe::class);
-        $recImages = $rep->findAll();
-        // dd($recImage);
-        $my_save_dir = 'C:\xampp\htdocs\Project1Symfony\assets\images';
-
+        // 10-15, 16-21, 22-27
+        $recImages = $rep->findBy(['id' => range(27, 32)]); // à lancer celui de 27 - 32
+        // dd($recImages);
+        
         foreach($recImages as $recImage ){
+            $my_save_dir = 'C:\xampp\htdocs\Project1Symfony\assets\images';
             $url_to_image=$recImage->getImage();
             $filename = basename($url_to_image);
             $complete_save_loc = $my_save_dir . $filename;
             file_put_contents($complete_save_loc, file_get_contents($url_to_image));
         }
+        dd();
 
     }
 }
