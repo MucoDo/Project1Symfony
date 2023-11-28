@@ -13,6 +13,8 @@ class ImportImagesController extends AbstractController
     #[Route('/import/images', name: 'app_import_images')]
     public function index(ManagerRegistry $doctrine)
     {
+
+        // REGARDER VIDEO https://www.youtube.com/watch?v=3ziRqzDcG0w
         $em = $doctrine->getManager();
         $rep = $em->getRepository(Recipe::class);
         $recipeImages=$rep->findby(['id' => '<10']);
