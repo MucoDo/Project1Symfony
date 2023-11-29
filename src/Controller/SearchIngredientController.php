@@ -54,7 +54,7 @@ class SearchIngredientController extends AbstractController
         $rep = $doctrine->getRepository(Ingredient::class);
 
         $resultats = $rep->searchIngredient($form->getData());
-        dd($resultats);
+        // dd($resultats);
 
         $recipesAll = $paginator->paginate($resultats,
         $numeroPage,
