@@ -32,15 +32,16 @@ public function searchIngredient($filtre){
     //     WHERE (i.nom LIKE :nom or :nom is NULL) 
     //     "
     // );
-    $query=$em->createQuery(
-        "SELECT distinct r.id, r.titre, r.instruction, r.image
-        FROM App\Entity\Recipe r 
-        WHERE  r.id IN (SELECT distinct ir.recipe_id
+    $query=$em->createQuery("SELECT distinct ir.recipe_id
         FROM ingredientRecipes ir
         INNER JOIN ir.ingredient i
         WHERE i.nom LIKE :nom or :nom is NULL)")->setParameter("nom","%".$filtre['nom']."%");
-    $res=$query->getResult();
+    $resultat=$query->getResult();
 
+    $query=$em->createQuery("SELECT distinct ir.recipe_id
+    FROM ingredientRecipes ir
+    INNER JOIN ir.ingredient i
+    WHERE i.nom LIKE :nom or :nom is NULL)")->setParameter("id","%".$filtre['nom']."%");
      // dd($res);
     return $res;
 }
