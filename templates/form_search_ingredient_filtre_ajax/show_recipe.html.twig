@@ -17,7 +17,7 @@
 <h1> Title: {{recipe[0].titre}}</h1>
 
 {% set class = 'bi bi-heart-fill blue-color' %}
-{% if isfavorite %}
+{% if isfavorite and app.user %}
     {% set class = 'bi bi-heart-fill red-color' %}
 {% else %}
     {% set class = 'bi bi-heart-fill blue-color' %}

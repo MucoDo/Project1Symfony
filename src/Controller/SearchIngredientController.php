@@ -78,28 +78,41 @@ class SearchIngredientController extends AbstractController
 
     public function showRecipe(RecipeRepository $rep,  Request $req)
     {
+        
         $id = $req->get('id');
         $recipe = $rep->showRecipe($id);
-        // dump( $recipe);
-        $favRecipes=$this->getUser()->getRecipes()->toArray();
-        // $favRecipes=$this->getUser()->getRecipes();
-        $i=0;
-        // dump( $favRecipes[$i]->getId());
-        // dd( $recipe[0]->getId());
-        $isfavorite=false;
-        while ($i<count($favRecipes) && $isfavorite==false){
-            if ($favRecipes[$i]->getId()==$recipe[0]->getId()){
-                $isfavorite=true;
-            }
-            $i++;
-        }
-        // dd( $isfavorite);
-
         $ingRecette = $rep->showIngRecipe($id);
+        // dump( $recipe);
+        $user = $this->getUser();
+        if ($user) {
+           
+            $favRecipes=$this->getUser()->getRecipes()->toArray();
+            // $favRecipes=$this->getUser()->getRecipes();
+            $i=0;
+            // dump( $favRecipes[$i]->getId());
+            // dd( $recipe[0]->getId());
+            $isfavorite=false;
+            while ($i<count($favRecipes) && $isfavorite==false){
+                if ($favRecipes[$i]->getId()==$recipe[0]->getId()){
+                    $isfavorite=true;
+                }
+                $i++;
+            }
+            
+        // dd( $isfavorite);
         $vars = [
             'recipe' => $recipe,
             'ingRecette' => $ingRecette,
             'isfavorite'=>$isfavorite
+        ];
+        // dd($vars);
+        return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig", $vars);
+        }
+    
+        $vars = [
+            'recipe' => $recipe,
+            'ingRecette' => $ingRecette
+            
         ];
         // dd($vars);
         return $this->render("form_search_ingredient_filtre_ajax/show_recipe.html.twig", $vars);

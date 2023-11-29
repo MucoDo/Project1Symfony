@@ -17,7 +17,8 @@ class RecipeLikeController extends AbstractController{
         $user = $this->getUser();
 
         if (!$user) {
-            return new JsonResponse(['message' => 'Veuillez vous connectez pour ajouter aux favoris'], 404);
+            $this->addFlash('msg',"Veuillez vous connecter ou vous inscrire pour ajouter aux favoris");
+            return $this->redirectToRoute('app_login');
         } else {
 
             $id=$req->get('id');
@@ -81,12 +82,16 @@ class RecipeLikeController extends AbstractController{
     #[Route('/recipe/show/likes', name: 'recipe_show_likes')]
     public function recipeShowLikes(UserRepository $rep, ManagerRegistry $doctrine){
         $user = $this->getUser();
+        if (!$user) {
+            return new Response('Veuillez vous connectez pour ajouter aux favoris');
+        } else {
         $favoris= $user->getRecipes()->toArray();
 
         // dd($favoris);
         $vars=['favoris' => $favoris];
 
         return $this -> render('recipe_like/recipe_show_likes.html.twig',$vars);
+        }
     }
 
 }
