@@ -20,8 +20,8 @@ class ImportImagesController extends AbstractController
         $em = $doctrine->getManager();
         // obtenir le repository
         $rep = $em->getRepository(Recipe::class);
-        // 10-15, 16-21, 22-27, 27 -32, 32, 42
-        $recImages = $rep->findBy(['id' => range(42, 52)]); 
+        // 10-15, 16-21, 22-27, 27 -32, 32, (42, 52),(52, 62), (62, 72), (73, 83), (83, 93), (94, 104), (104, 114), (114, 124),( 125, 135)
+        $recImages = $rep->findBy(['id' => range(125, 135)]); 
         // dd($recImages);
         
         foreach($recImages as $recImage ){
