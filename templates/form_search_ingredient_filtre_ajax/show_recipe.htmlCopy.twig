@@ -1,22 +1,128 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+{% include 'navigation.html.twig' %}
 <style>
 .blue-color {
-    color:blue;
-    }
+    font-size: 2rem;
+    color: blue;
+}
+.red-color {
+    font-size: 2rem;
+    color:red;
+}
+
 </style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
 
-{# class="bi bi-heart" #}
-<button id="like" data-id={{recipe[0].id}} class="btn btn-primary">Like</button>
+{% set class = 'bi bi-heart-fill blue-color' %}
 
-{# ----------------------TEST DE CHANGEMENT DE COULEUR--------------------------------------- #}
-<span id="heart_like" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
+{% if app.user %}
 
-{#--------- REFLECHIR A COMMENT INTEGRER LES LIENS DE FAVORIS DANS UNE SEULE PAGE AVEC LEUR URL------- #}
-{# <button id="all_favoris" class="btn btn-primary">Favoris</button> #}
+    {% if isfavorite %}
+        {% set class = 'bi bi-heart-fill red-color' %}
+    {% else %}
+        {% set class = 'bi bi-heart-fill blue-color' %}
+    {% endif %}
+
+{% else %}
+
+    {% set class = 'bi bi-heart-fill blue-color' %}
+
+{% endif %}
+<span id="heart_like {{ recipe[0].id }}" data-id="{{ recipe[0].id }}" class="{{ class }}"></span> 
+
+
+{# -------CODE FONCTIONNEL #}
+{# {% set class = 'bi bi-heart-fill blue-color' %}
+
+{% if isfavorite and app.user %}
+    {% set class = 'bi bi-heart-fill red-color' %}
+{% else %}
+    {% set class = 'bi bi-heart-fill blue-color' %}
+{% endif %}
+<span id="heart_like {{ recipe[0].id }}" data-id="{{ recipe[0].id }}" class="{{ class }}"></span>  #}
+
+{# ------- FIN CODE FONCTIONNEL #}
+
+{# {% set recipeId = recipe[0].id %}
+{% set userRecipes = app.user.recipes %}
+{% set class = 'bi bi-heart-fill blue-color' %}
+
+
+{% while  recipe in app.user.recipes %}
+
+{% for recipe in app.user.recipes %}
+<pre>
+    {{ dump(recipe,recipe.id == recipeId,recipeId) }}
+</pre>
+
+    {% if recipe.id == recipeId %}
+
+        {% set class = 'bi bi-heart-fill red-color' %}
+    {% else %}
+        {% set class = 'bi bi-heart-fill blue-color' %}
+    {% endif %}
+{% endfor %}
+
+<span id="heart_like {{ recipeId }}" data-id="{{ recipeId }}" class="{{ class }}"></span> #}
+
+
+{# {{ dump (app.user.recipes) }} #}
+{# Remplacez 123 par l'ID de la recette que vous souhaitez vérifier #}
+{# {{dump(app.user.recipes)}} #}
+
+{# {% set recipeId = recipe[0].id %}  Remplacez 123 par l'ID de votre recette spécifique #}
+{# 
+{% for recipe in app.user.recipes %}
+    {% if recipe.id == recipeId %} #}
+        {# Faites quelque chose avec la recette spécifique
+        {{ recipe.titre }}
+        <span id="heart_like {{recipeId}}" data-id={{recipeId}} class="bi bi-heart-fill red-color"></span>
+    
+    {% else %}
+        <p>ne fait rien</p>
+        <span id="heart_like {{recipeId}}" data-id={{recipeId}} class="bi bi-heart-fill blue-color"></span> #}
+
+    {# {% endif %}
+{% endfor %} #}
+
+{# {% set class = 'bi bi-heart-fill blue-color' %}
+{% if recipe[0].id in app.user.recipes %}
+    {% set class = class|replace({'blue-color': 'red-color'}) %}
+{% endif %} #}
+
+{# <span id="heart_like {{ recipe[0].id }}" data-id="{{ recipe[0].id }}" class="{{ class }}"></span> #}
+{# {% for recipe in app.user.recipes %} 
+    {% set recipeIdToCheck = recipe[0].id %} 
+    {% set class = 'bi bi-heart-fill blue-color' %}
+    <span id="heart_like {{recipe.id}}" data-id={{recipe.id}} class="{{ class }}"></span> #}
+    {# {% if recipe.id == recipeIdToCheck %}
+        {# La recette spécifique est trouvée dans les recettes de l'utilisateur #}
+        {# <p>La recette est présente dans les recettes de l'utilisateur.</p>
+        {% set class = class|replace({'blue-color': 'red-color'}) %} #} 
+        {# <span id="heart_like {{recipe.id}}" data-id={{recipe.id}} class="{{ class }}"></span>
+        <span id="heart_like {{recipe.id}}" data-id={{recipe.id}} class="bi bi-heart-fill red-color"></span> #}
+        {# <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill red-color"> #}
+        {# Faites ici ce que vous souhaitez faire si la recette est trouvée #}
+    {# {% else %}
+        <span id="heart_like {{recipe.id}}" data-id={{recipe.id}} class="{{ class }}"></span> #}
+
+    {# {% endif %} #}
+{# {% endfor %}        #}
+
+
+{# <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color"></span>
+    {% if app.user.recipes(recipe) %}
+        <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
+    {% else %}
+        <span id="heart_like {{recipe[0].id}}" data-id={{recipe[0].id}} class="bi bi-heart-fill blue-color">
+    {% endif %} #}
+
+
+{# agrandir la taille des emoticones #}
+<span id={{recipe[0].id}} class="bi bi-cart-plus-fill" style="font-size: 2rem"></span>
 
 <h3> Ingredients: </h3>
 <ul>
@@ -34,105 +140,115 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-/* --------- A intégrer avec le fonction ajout et remove des like --------
-    let changeColor=document.getElementById("like_test");
-    changeColor.addEventListener('click',function(){
-      if (changeColor.style.color === 'red') {
-      changeColor.style.color = 'blue';
-    } else {
-      changeColor.style.color = 'red';
-        }
-    });
-*/
 
+{# let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
 
-/* code qui fonctionne pour l'instant avec un bouton LIKE je veux l'appliquer à l'emoji coeur*/
-   /* let btnLike=document.getElementById("like");
-    btnLike.addEventListener('click',function(event){
-        let btnClique=event.target;
-        console.log(btnClique.dataset.id);
-        //alert('all is ok');
-        let formLike= new FormData();
-        formLike.append("id", btnClique.dataset.id);
+// Check if the color preference is already stored in localStorage
+if (localStorage.getItem("buttonColor") === "red") {
+    likeButton.style.color = "rgb(255, 0, 0)";
+}
 
-        axios.post ("/recipe/like", formLike, { headers: {
-            'Content-Type': 'multipart/form-data',  },
-        })
-        .then ((response)=>{
-            //alert("hello");
-            console.log("La reponse de la requete POst:", response.data);
-        })
-        .catch((error)=>{
-            console.log("La reponse de la requete POst:", error);
+likeButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    let styles = getComputedStyle(likeButton).color;
+    let btnClique=event.target;
+    let formLike= new FormData();
+    formLike.append("id", btnClique.dataset.id);
+    
+    if (styles === "rgb(0, 0, 255)") {
+        likeButton.style.color = "rgb(255, 0, 0)";
+        localStorage.setItem("buttonColor", "red"); // Store the color preference in localStorage
 
-        });
-
-    });*/
-
-  {# let changeColor=document.getElementById("heart_like");
-    changeColor.addEventListener('click',function(){
-      if (changeColor.style.color === 'red') {
-      changeColor.style.color = 'blue';
-    } else {
-      changeColor.style.color = 'red';
-        }
-    }); #}
-
-    let btnLike=document.getElementById("heart_like");
-    btnLike.addEventListener('click',function(event){
-        let btnClique=event.target;
-        console.log(btnClique.dataset.id);
-        //alert('all is ok');
-        if (btnClique.style.color === 'blue') {
-        //btnClique.style.color = 'red';
-         
-        let formLike= new FormData();
-        formLike.append("id", btnClique.dataset.id);
-
-        axios.post ("/recipe/like", formLike, { headers: {
-            'Content-Type': 'multipart/form-data',  },
-        })
-        .then ((response)=>{
-            alert("hello");
-            btnClique.style.color = 'red';         
-            console.log("La reponse de la requete Post:", response.data);
-        })
-        .catch((error)=>{
-            console.log("La reponse de la requete POst:", error);
-
-        })
-        }
-        else if (btnClique.style.color === 'red') {
-        
-        let formLike= new FormData();
-        formLike.append("id", btnClique.dataset.id);
-
-        axios.post ("/recipe/unlike", formLike, { headers: {
-            'Content-Type': 'multipart/form-data',  },
-        })
-        .then ((response)=>{
-            alert("hellobiz");
-            btnClique.style.color = 'blue';
-            console.log("La reponse de la requete Post:", response.data);
-        })
-        .catch((error)=>{
-            console.log("La reponse de la requete POst:", error);
-
-        })
-        }
-
+    axios.post ("/recipe/like", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        alert("hello du if");
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
 
     })
+    } 
+    else {
+        likeButton.style.color = "rgb(0, 0, 255)";
+        localStorage.removeItem("buttonColor"); // Remove the color preference from localStorage
 
+    axios.post ("/recipe/unlike", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du else");
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+    }
+}); #}
+
+let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
+likeButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    let btnClique=event.target;
+    let formLike= new FormData();
+    formLike.append("id", btnClique.dataset.id);
+    //axios.post ("/recipe/like", formLike, { headers: {
+    axios.post ("{{path('recipe_like')}}", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        let colorHeart = response.data.heartColor;
+        if (colorHeart=='bleu'){
+            likeButton.style.color="blue";
+        }else{
+            likeButton.style.color="red";
+        }
+
+
+        //alert("je suis dans le then");
+        //let myObj=JSON.Parse(arrayIn);
+        console.log(colorHeart);
     
-{# Bouton favoris temporaire à remplacer par un onglet spécifique #}
-    {# let btnFavoris=document.getElementById("all_favoris");
-    btnFavoris.addEventListener('click', function(event){
-        window.location.href ="/recipe/show/likes"
-    }) #}
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    })
+        
+});
+
+let groceryButton = document.getElementById("{{recipe[0].id}}");
+groceryButton.addEventListener('click', function(evenement) {
+    evenement.preventDefault();
+
+    let btnCliqueGrocery=evenement.target;
+    let formLike= new FormData();
+    formLike.append("id", btnCliqueGrocery.id);
+    //const id=btnCliqueGrocery.id
+    //axios.post (`/grocery/cart/add`, formLike, { headers: {
+    axios.post ("{{path('app_grocery_cart_add')}}", formLike, { headers: {
+        'Content-Type': 'multipart/form-data',  },
+    })
+    .then ((response)=>{
+        //alert("hello du if");
+        let arrayIn = response.data;
+
+        //alert("je suis dans le then");
+        //let myObj=JSON.Parse(arrayIn);
+        console.log(arrayIn);
+        
+    
+    })
+    .catch((error)=>{
+        console.log("La reponse de la requete POst:", error);
+
+    });
+})
+
 
 
 </script>
-
 
 {% endblock %}

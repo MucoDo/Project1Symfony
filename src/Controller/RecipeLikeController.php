@@ -6,20 +6,17 @@ use App\Repository\UserRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeLikeController extends AbstractController{
     #[Route('/recipe/like', name: 'recipe_like')]
     public function recipeLike(ManagerRegistry $doctrine,UserRepository $user,RecipeRepository $rep2,  Request $req){
         $user = $this->getUser();
 
-        if (!$user) {
-            $this->addFlash('msg',"Veuillez vous connecter ou vous inscrire pour ajouter aux favoris");
-            return $this->redirectToRoute('app_login');
-        } else {
 
             $id=$req->get('id');
             // dd($id);
@@ -53,9 +50,6 @@ class RecipeLikeController extends AbstractController{
     }
 
         
-}
-
-
 
     // #[Route('/recipe/unlike', name: 'recipe_unlike')]
     // public function recipeUnlike(ManagerRegistry $doctrine,UserRepository $rep,RecipeRepository $rep2,  Request $req){
@@ -80,18 +74,44 @@ class RecipeLikeController extends AbstractController{
     // }
 
     #[Route('/recipe/show/likes', name: 'recipe_show_likes')]
-    public function recipeShowLikes(UserRepository $rep, ManagerRegistry $doctrine){
-        $user = $this->getUser();
-        if (!$user) {
-            return new Response('Veuillez vous connectez pour ajouter aux favoris');
-        } else {
-        $favoris= $user->getRecipes()->toArray();
+    public function recipeShowLikes(UserRepository $user, ManagerRegistry $doctrine,Security $security){
+        // $user = $this->getUser();
+        // if ($this->getUser()) {
+        //     $favoris= $user->getRecipes()->toArray();
+            
+        //     // dd($favoris);
+        //     $vars=['favoris' => $favoris];
+            
+        //     return $this -> render('recipe_like/recipe_show_likes.html.twig',$vars);
+        // } else {
+        //     return new Response('Veuillez vous connectez pour ajouter aux favoris');
+        // }
 
-        // dd($favoris);
+     
+    // Vérifier si l'utilisateur est connecté
+    if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {
+        // Récupérer l'utilisateur connecté
+        $user = $security->getUser();
+        
+        // Récupérer la liste des favoris de l'utilisateur
+        $favoris = $user->getRecipes()->toArray();
         $vars=['favoris' => $favoris];
+        
+        // Afficher la liste des favoris
+        return $this->render('recipe_like/recipe_show_likes.html.twig',$vars);
+    } else {
 
-        return $this -> render('recipe_like/recipe_show_likes.html.twig',$vars);
-        }
+         // Récupérer l'URL de connexion ou d'inscription
+         $loginUrl = $this->generateUrl('app_login');
+         $registerUrl = $this->generateUrl('app_register');
+
+         // Message flash avec le lien pour se connecter ou s'inscrire
+         $response=$this->addFlash('warning', 'Vous devez vous connecter ou vous inscrire pour accéder à cette page. <a href="'.$loginUrl.'">Se connecter</a> | <a href="'.$registerUrl.'">S\'inscrire</a>');
+        return new JsonResponse($response);
+
+    }
+
+
     }
 
 }
