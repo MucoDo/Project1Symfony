@@ -104,10 +104,11 @@ class RecipeLikeController extends AbstractController{
          // Récupérer l'URL de connexion ou d'inscription
          $loginUrl = $this->generateUrl('app_login');
          $registerUrl = $this->generateUrl('app_register');
+         $vars=['lienConnexion'=>$loginUrl,
+         'lienInscr'=>$registerUrl];
 
-         // Message flash avec le lien pour se connecter ou s'inscrire
-         $response=$this->addFlash('warning', 'Vous devez vous connecter ou vous inscrire pour accéder à cette page. <a href="'.$loginUrl.'">Se connecter</a> | <a href="'.$registerUrl.'">S\'inscrire</a>');
-        return new JsonResponse($response);
+        
+         return $this->render('recipe_like/recipe_show_likes.html.twig',$vars);
 
     }
 
