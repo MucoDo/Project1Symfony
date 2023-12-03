@@ -11,7 +11,7 @@
     font-size: 2rem;
     color:red;
 }
-#popup-window {
+#popup-window, #popup-windowCourse {
   position: fixed;
   width: 300px;
   height: 200px;
@@ -95,13 +95,13 @@
 
 <div id="popup-window" class='card'>
     {# <h1>Pop-up Window</h1> #}
-    <p>Pour ajouter au favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
+    <p>Pour ajouter aux favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
     <button id="close-button">Close</button>
 </div>
  <div id="popup-windowCourse" class='card'>
     {# <h1>Pop-up Window</h1> #}
     <p>Pour ajouter à la liste des courses, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
-    <button id="close-button">Close</button>
+    <button id="close-buttonCourse">Close</button>
 </div>
 {# {% if app.user %}  #}
 <script>
@@ -134,7 +134,7 @@
 
             })
                 
-            } 
+        } 
             //alert('Pour ajouter au favoris, veuillez vous connecter.');
 
            
@@ -160,42 +160,42 @@
     evenement.preventDefault();
 
     let btnCliqueGrocery=evenement.target;
-    let isAuthentificated="{{ app.user ? true : false }}";
-    if (isAuthentificated){
-    let formLike= new FormData();
-    formLike.append("id", btnCliqueGrocery.id);
-    //const id=btnCliqueGrocery.id
-    //axios.post (`/grocery/cart/add`, formLike, { headers: {
-    axios.post ("{{path('app_grocery_cart_add')}}", formLike, { headers: {
-        'Content-Type': 'multipart/form-data',  },
-    })
-    .then ((response)=>{
-        //alert("hello du if");
-        let arrayIn = response.data;
+    let isAuthentificatedCourse="{{ app.user ? true : false }}";
+    if (isAuthentificatedCourse){
+        let formLike= new FormData();
+        formLike.append("id", btnCliqueGrocery.id);
+        //const id=btnCliqueGrocery.id
+        //axios.post (`/grocery/cart/add`, formLike, { headers: {
+        axios.post ("{{path('app_grocery_cart_add')}}", formLike, { headers: {
+            'Content-Type': 'multipart/form-data',  },
+        })
+        .then ((response)=>{
+            //alert("hello du if");
+            let arrayIn = response.data;
 
-        //alert("je suis dans le then");
-        //let myObj=JSON.Parse(arrayIn);
-        console.log(arrayIn);
+            //alert("je suis dans le then");
+            //let myObj=JSON.Parse(arrayIn);
+            console.log(arrayIn);
+            
         
-    
-    })
-    .catch((error)=>{
-        console.log("La reponse de la requete Post:", error);
+        })
+        .catch((error)=>{
+            console.log("La reponse de la requete Post:", error);
 
-    });
+        });
     }
 
-    let popupLink = document.getElementById("{{recipe[0].id}}");
-    let popupWindow = document.getElementById("popup-windowCourse");
-    let closeButton = document.getElementById("close-button");
+    let popupLinkCourse = document.getElementById("{{recipe[0].id}}");
+    let popupWindowCourse = document.getElementById("popup-windowCourse");
+    let closeButtonCourse = document.getElementById("close-buttonCourse");
     // Show the pop-up window when the link is clicked
-    popupLink.addEventListener("click", function(event) {
+    popupLinkCourse.addEventListener("click", function(event) {
         event.preventDefault();
-        popupWindow.style.display = "block";
+        popupWindowCourse.style.display = "block";
     });
     // Hide the pop-up window when the close button is clicked
-    closeButton.addEventListener("click", function() {
-        popupWindow.style.display = "none";
+    closeButtonCourse.addEventListener("click", function() {
+        popupWindowCourse.style.display = "none";
     });     
             
 

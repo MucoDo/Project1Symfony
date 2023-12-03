@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RecipeLikeController extends AbstractController{
     #[Route('/recipe/like', name: 'recipe_like')]
     public function recipeLike(ManagerRegistry $doctrine,UserRepository $user,RecipeRepository $rep2,  Request $req){
-        $user = $this->getUser();
+            $user = $this->getUser();
 
 
             $id=$req->get('id');

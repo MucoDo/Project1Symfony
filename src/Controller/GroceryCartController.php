@@ -2,20 +2,23 @@
 
 namespace App\Controller;
 
-use App\Repository\IngredientRecipeRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
+use App\Repository\IngredientRecipeRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class GroceryCartController extends AbstractController
 {
     #[Route('/grocery/cart', name: 'app_grocery_cart')]
-    public function index(SessionInterface $session, RecipeRepository $rep):response
+    public function index(SessionInterface $session, RecipeRepository $rep,Security $security):response
     {
+        if ($security->isGranted('IS_AUTHENTICATED_FULLY')){
         $fullPanier = $session->get('panierAll',[]);
         // dd($fullPanier);
         $ingQuantity=$rep->groceryList($fullPanier);
@@ -23,6 +26,17 @@ class GroceryCartController extends AbstractController
         $vars=['listeCourse'=>$ingQuantity];
         // dd($vars);
         return $this -> render('grocery_cart/index.html.twig',$vars);
+        } else {
+            
+         // Récupérer l'URL de connexion ou d'inscription
+         $loginUrl = $this->generateUrl('app_login');
+         $registerUrl = $this->generateUrl('app_register');
+         $vars=['lienConnexion'=>$loginUrl,
+         'lienInscr'=>$registerUrl];
+
+        
+         return $this->render('recipe_like/recipe_show_likes.html.twig',$vars);
+        }
     }
 
     #[Route('/grocery/cart/add', name: 'app_grocery_cart_add')]
