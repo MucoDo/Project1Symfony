@@ -11,6 +11,21 @@
     font-size: 2rem;
     color:red;
 }
+#popup-window {
+  position: fixed;
+  width: 300px;
+  height: 200px;
+  background: white;
+  border: 1px solid black;
+  padding: 10px;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: none;
+}  
 
 </style>
 
@@ -64,6 +79,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+ <div id="popup-window">
+    {# <h1>Pop-up Window</h1> #}
+    <p>Pour ajouter au favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
+    <button id="close-button">Close</button>
+</div>
 {# {% if app.user %}  #}
 <script>
     let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
@@ -97,28 +117,21 @@
                 
             } 
             //alert('Pour ajouter au favoris, veuillez vous connecter.');
-            // Flouter légèrement la fenêtre existante
-            document.body.style.filter = "blur(5px)";
-            // Créer le popup
-            let popup = document.createElement("div");
-            popup.className = "popup";
-            popup.innerHTML = "Veuillez vous connecter ou vous inscrire pour ajouter aux favoris.";
 
-            // Appliquer le style au popup
-            popup.style.position = "fixed";
-            popup.style.top = "50%";
-            popup.style.left = "50%";
-            popup.style.transform = "translate(-50%, -50%)";
-            popup.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-            popup.style.color = "#fff";
-            popup.style.padding = "20px";
-            popup.style.borderRadius = "5px";
-            popup.style.zIndex = "9999";
-
-            // Ajouter le popup à la page
-            document.body.appendChild(popup);
-
-        
+           
+        let popupLink = document.getElementById("heart_like {{recipe[0].id}}");
+        let popupWindow = document.getElementById("popup-window");
+        let closeButton = document.getElementById("close-button");
+        // Show the pop-up window when the link is clicked
+        popupLink.addEventListener("click", function(event) {
+            event.preventDefault();
+            popupWindow.style.display = "block";
+        });
+        // Hide the pop-up window when the close button is clicked
+        closeButton.addEventListener("click", function() {
+            popupWindow.style.display = "none";
+        });     
+            
 
         
     })
