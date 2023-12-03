@@ -9,7 +9,7 @@
 
     {{form_start(form,{'attr':{'id':'recherche-form'}})}}
         {{ form_row(form.nom) }}
-        <button class="btn btn-primary" id="search" type="submit">Search!</button>
+        <button class="btn btn-primary" id="search" type="submit">Search </button>
     {{ form_end(form) }}
 
 <div id="div_resultats" class="row">
@@ -72,70 +72,7 @@ document.getElementById('search').addEventListener('click', function(event) {
 
         console.log(response.data);
         divResultat.innerHTML=response.data;
-
-        // parcourir l'array d'objets reçu (car le JSON a été déjà parsé par AXIOS)
-        //let arrayIn = response.data;
-
-        //alert("je suis dans le then");
-        //let myObj=JSON.Parse(arrayIn);
-       // console.log(arrayIn);
-        // console.log(arrayIn[0]['image']);
-
-        /*arrayIn.forEach(function (recipe){
-    
-        var cardDivCol = document.createElement("div");
-        cardDivCol.className = "col-sm-6";
-
-        var cardDiv = document.createElement("div");
-        cardDiv.className = "card";
-        cardDiv.style.width = "18rem";
-
-        var img = document.createElement("img");
-        img.className = "card-img-top";
-        // img.src = arrayIn[0]['image'];
-        img.src = recipe['image'];
-        img.alt = "Card image cap";
-
-        var cardBodyDiv = document.createElement("div");
-        cardBodyDiv.className = "card-body";
-
-        // Création de l'élément h5 avec la classe "card-title" et le texte spécifié
-        var cardTitle = document.createElement("h5");
-        cardTitle.className = "card-title";
-        cardTitle.textContent = recipe['titre'];
-
-        // Création de l'élément p avec la classe "card-text" et le texte spécifié
-        var cardText = document.createElement("p");
-        cardText.className = "card-text";
-        cardText.textContent = "";
-
-        // Création de l'élément a avec les classes "btn" et "btn-primary" et le texte spécifié
-        var link = document.createElement("a");
-        link.href = "/show/recipe/" + recipe['id'];
-        link.className = "btn btn-primary";
-        link.textContent = "Lire la recette";
-
-        // Ajout des éléments créés à la carte
-        cardBodyDiv.appendChild(cardTitle);
-        cardBodyDiv.appendChild(cardText);
-        cardBodyDiv.appendChild(link);
-
-        cardDiv.appendChild(img);
-        cardDiv.appendChild(cardBodyDiv);
-
-        // Ajout de la carte au document
-        //divResultat.innerHTML="";
-        cardDivCol.appendChild(cardDiv);
-        divResultat.appendChild(cardDivCol);
-
-
-
-    });*/
-    
-
-       // divResultat.innerHTML="<p> Titre de la 1ère recette est: " + arrayIn[0]['titre'];
-
-        })
+       })
         .catch(error=>{
             console.error(error);
         })
