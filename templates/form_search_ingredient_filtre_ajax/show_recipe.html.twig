@@ -64,36 +64,64 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-{% if app.user %}
+{# {% if app.user %}  #}
 <script>
     let likeButton = document.getElementById("heart_like {{recipe[0].id}}");
     likeButton.addEventListener('click', function(event) {
     event.preventDefault();
 
     let btnClique=event.target;
-    let formLike= new FormData();
-    formLike.append("id", btnClique.dataset.id);
-    //axios.post ("/recipe/like", formLike, { headers: {
-    axios.post ("{{path('recipe_like')}}", formLike, { headers: {
-        'Content-Type': 'multipart/form-data',  },
-    })
-    .then ((response)=>{
-        let colorHeart = response.data.heartColor;
-        if (colorHeart=='bleu'){
-            likeButton.style.color="blue";
-        }else{
-            likeButton.style.color="red";
-        }
+    let isAuthentificated="{{ app.user ? true : false }}";
+    if (isAuthentificated){
+            let formLike= new FormData();
+            formLike.append("id", btnClique.dataset.id);
+            //axios.post ("/recipe/like", formLike, { headers: {
+            axios.post ("{{path('recipe_like')}}", formLike, { headers: {
+                'Content-Type': 'multipart/form-data',  },
+            })
+            .then ((response)=>{
+                let colorHeart = response.data.heartColor;
+                if (colorHeart=='bleu'){
+                    likeButton.style.color="blue";
+                }else{
+                    likeButton.style.color="red";
+                }
 
-       console.log(colorHeart);
-    
-    })
-    .catch((error)=>{
-        console.log("La reponse de la requete POst:", error);
+            console.log(colorHeart);
+            
+            })
+            .catch((error)=>{
+                console.log("La reponse de la requete POst:", error);
 
-    })
+            })
+                
+            } 
+            //alert('Pour ajouter au favoris, veuillez vous connecter.');
+            // Flouter légèrement la fenêtre existante
+            document.body.style.filter = "blur(5px)";
+            // Créer le popup
+            let popup = document.createElement("div");
+            popup.className = "popup";
+            popup.innerHTML = "Veuillez vous connecter ou vous inscrire pour ajouter aux favoris.";
+
+            // Appliquer le style au popup
+            popup.style.position = "fixed";
+            popup.style.top = "50%";
+            popup.style.left = "50%";
+            popup.style.transform = "translate(-50%, -50%)";
+            popup.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+            popup.style.color = "#fff";
+            popup.style.padding = "20px";
+            popup.style.borderRadius = "5px";
+            popup.style.zIndex = "9999";
+
+            // Ajouter le popup à la page
+            document.body.appendChild(popup);
+
         
-});
+
+        
+    })
 
     let groceryButton = document.getElementById("{{recipe[0].id}}");
     groceryButton.addEventListener('click', function(evenement) {
@@ -123,14 +151,8 @@
     });
 })
 
-{% else %}
-
-    let likeButton1 = document.getElementById("heart_like {{recipe[0].id}}");
-    likeButton1.addEventListener('click', function() {
-        console.log('Pour ajouter au favoris, veuillez vous connecter.');
-    })
 
 </script>
-{% endif %}
+{# {% endif %} #}
 
 {% endblock %}
