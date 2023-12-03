@@ -27,6 +27,20 @@
   display: none;
 }  
 
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
 </style>
 
 <h1> Title: {{recipe[0].titre}}</h1>
@@ -79,9 +93,14 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
- <div id="popup-window">
+<div id="popup-window" class='card'>
     {# <h1>Pop-up Window</h1> #}
     <p>Pour ajouter au favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
+    <button id="close-button">Close</button>
+</div>
+ <div id="popup-windowCourse" class='card'>
+    {# <h1>Pop-up Window</h1> #}
+    <p>Pour ajouter à la liste des courses, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
     <button id="close-button">Close</button>
 </div>
 {# {% if app.user %}  #}
@@ -111,7 +130,7 @@
             
             })
             .catch((error)=>{
-                console.log("La reponse de la requete POst:", error);
+                console.log("La reponse de la requete Post:", error);
 
             })
                 
@@ -141,6 +160,8 @@
     evenement.preventDefault();
 
     let btnCliqueGrocery=evenement.target;
+    let isAuthentificated="{{ app.user ? true : false }}";
+    if (isAuthentificated){
     let formLike= new FormData();
     formLike.append("id", btnCliqueGrocery.id);
     //const id=btnCliqueGrocery.id
@@ -159,9 +180,25 @@
     
     })
     .catch((error)=>{
-        console.log("La reponse de la requete POst:", error);
+        console.log("La reponse de la requete Post:", error);
 
     });
+    }
+
+    let popupLink = document.getElementById("{{recipe[0].id}}");
+    let popupWindow = document.getElementById("popup-windowCourse");
+    let closeButton = document.getElementById("close-button");
+    // Show the pop-up window when the link is clicked
+    popupLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        popupWindow.style.display = "block";
+    });
+    // Hide the pop-up window when the close button is clicked
+    closeButton.addEventListener("click", function() {
+        popupWindow.style.display = "none";
+    });     
+            
+
 })
 
 
