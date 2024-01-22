@@ -92,11 +92,13 @@ class RecipeLikeController extends AbstractController{
     if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {
         // Récupérer l'utilisateur connecté
         $user = $security->getUser();
+        // dd($user);
         
         // Récupérer la liste des favoris de l'utilisateur
         $favoris = $user->getRecipes()->toArray();
+        // dd($favoris);
         $vars=['favoris' => $favoris];
-        
+        // dd($vars);
         // Afficher la liste des favoris
         return $this->render('recipe_like/recipe_show_likes.html.twig',$vars);
     } else {

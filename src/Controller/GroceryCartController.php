@@ -35,7 +35,7 @@ class GroceryCartController extends AbstractController
          'lienInscr'=>$registerUrl];
 
         
-         return $this->render('recipe_like/recipe_show_likes.html.twig',$vars);
+         return $this->render('grocery_cart/index.html.twig',$vars);
         }
     }
 
@@ -85,7 +85,7 @@ class GroceryCartController extends AbstractController
     public function groceryCartDelete(SessionInterface $session){
         
         $session->remove('panierAll');
-        $session->clear();
+        // $session->clear();
         // $session-> set('panier', []);  
         // $session->save();
         return $this->redirectToRoute('app_grocery_cart');
