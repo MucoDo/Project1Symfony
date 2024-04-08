@@ -28,7 +28,7 @@ class RecipeLikeController extends AbstractController{
             $heartColor='blue';
             if ($containsRecipe){
                 $user->removeRecipe($recipe);
-                $heartColor='bleu';
+                $heartColor='blue';
                 
             }
             else{
