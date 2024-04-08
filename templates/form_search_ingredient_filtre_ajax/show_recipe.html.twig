@@ -5,7 +5,7 @@
 <style>
 .blue-color {
     font-size: 2rem;
-    color: blue;
+    color: green;
 }
 .red-color {
     font-size: 2rem;
@@ -120,8 +120,8 @@
             })
             .then ((response)=>{
                 let colorHeart = response.data.heartColor;
-                if (colorHeart=='bleu'){
-                    likeButton.style.color="blue";
+                if (colorHeart=='green'){
+                    likeButton.style.color="green";
                 }else{
                     likeButton.style.color="red";
                 }

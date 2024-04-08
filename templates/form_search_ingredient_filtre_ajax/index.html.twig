@@ -5,14 +5,26 @@
 
 {% block body %}
 {% include 'navigation.html.twig' %}
-<h1>Which ingredient would you like to cook?</h1>
 
-    {{form_start(form,{'attr':{'id':'recherche-form'}})}}
-        {{ form_row(form.nom) }}
+<hr>
+<h1 class="d-flex align-items-center justify-content-center">Which ingredient would you like to cook?</h1>
+
+    {# {{form_start(form,{'attr':{'id':'recherche-form'}})}}
+        {{ form_row(form.nom) }}        
         <button class="btn btn-primary" id="search" type="submit">Search </button>
-    {{ form_end(form) }}
+    {{ form_end(form) }} #}
+      
+            {{ form_start(form, {'attr': {'id': 'recherche-form'}}) }}
+                <div class="d-flex align-items-center justify-content-center">
+                    {{ form_row(form.nom) }}
+                    <button class="btn btn-primary" id="search" type="submit">Search</button>
+                </div>
+                <hr>
+                
+            {{ form_end(form) }}
+       
 
-<div id="div_resultats" class="row">
+    <div id="div_resultats" class="row d-flex align-items-center justify-content-center" >
 {# <div id="div_resultats"> #}
 {# <pre>
     {{ dump({recettes}) }}
@@ -36,10 +48,10 @@
 
 {# </div> #}
 
-    <div class="pagination">
-        {{ knp_pagination_render(recettes,'./twitter_bootstrap_v4_pagination.html.twig') }}
+        <div class="pagination d-flex align-items-center justify-content-center">
+            {{ knp_pagination_render(recettes,'./twitter_bootstrap_v4_pagination.html.twig') }}
+        </div>
     </div>
-</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
