@@ -5,7 +5,7 @@
 <style>
 .blue-color {
     font-size: 2rem;
-    color: green;
+    color: blue;
 }
 .red-color {
     font-size: 2rem;
@@ -95,7 +95,7 @@
 
 <div id="popup-window" class='card'>
     {# <h1>Pop-up Window</h1> #}
-    <p>Pour ajouter aux favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
+    <p d-flex align-items-center justify-content-center>Pour ajouter aux favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
     <button id="close-button">Close</button>
 </div>
  <div id="popup-windowCourse" class='card'>
@@ -120,13 +120,13 @@
             })
             .then ((response)=>{
                 let colorHeart = response.data.heartColor;
-                if (colorHeart=='green'){
-                    likeButton.style.color="green";
+                if (colorHeart=='blue'){
+                    likeButton.style.color="blue";
                 }else{
                     likeButton.style.color="red";
                 }
 
-            console.log(colorHeart);
+            console.log(response);
             
             })
             .catch((error)=>{
@@ -171,7 +171,9 @@
         })
         .then ((response)=>{
             //alert("hello du if");
-            let arrayIn = response.data;
+            groceryButton.style.color="green"
+            let arrayIn = response;
+              
 
             //alert("je suis dans le then");
             //let myObj=JSON.Parse(arrayIn);

@@ -25,7 +25,7 @@ class RecipeLikeController extends AbstractController{
             $user = $this->getUser();
             $containsRecipe =  $user->getRecipes()->contains($recipe);
             // dd($containsRecipe);
-            $heartColor='bleu';
+            $heartColor='blue';
             if ($containsRecipe){
                 $user->removeRecipe($recipe);
                 $heartColor='bleu';

@@ -86,8 +86,8 @@ class GroceryCartController extends AbstractController
         
         $session->remove('panierAll');
         // $session->clear();
-        // $session-> set('panier', []);  
-        // $session->save();
+        $session-> set('panier', []);  
+        $session->save();
         return $this->redirectToRoute('app_grocery_cart');
 
     }
