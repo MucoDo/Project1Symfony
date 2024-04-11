@@ -123,7 +123,8 @@
     <p d-flex align-items-center justify-content-center>Pour ajouter aux favoris, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
     <button id="close-button">Close</button>
 </div>
- <div id="popup-windowCourse" class='card'>
+<div id="popup-windowCourse" class='card'>
+
     {# <h1>Pop-up Window</h1> #}
     <p>Pour ajouter à la liste des courses, veuillez vous <a href={{path('app_login')}}>connecter</a> ou vous <a href={{path('app_register')}}> inscrire</a></p>
     <button id="close-buttonCourse">Close</button>
@@ -148,7 +149,8 @@
                 if (colorHeart=='blue'){
                     likeButton.style.color="blue";
                 }else{
-                    likeButton.style.color="red";
+likeButton.style.color="red";
+
                 }
 
             console.log(response);
@@ -162,7 +164,7 @@
         } 
             //alert('Pour ajouter au favoris, veuillez vous connecter.');
 
-           
+        
         let popupLink = document.getElementById("heart_like {{recipe[0].id}}");
         let popupWindow = document.getElementById("popup-window");
         let closeButton = document.getElementById("close-button");
