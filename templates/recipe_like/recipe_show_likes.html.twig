@@ -12,6 +12,7 @@
 					<div class="card-body p-md-5">
 						<div class="row justify-content-center">
 		<h1>Vos favoris</h1>
+		{% if listeCourse is defined and listeCourse|length > 0 %}
 
 		<ul>
 			{% for fav in favoris %}
@@ -20,6 +21,11 @@
 				</li>
 			{% endfor %}
 		</ul>
+		{% else %}
+			<p colspan="5" class="text-center">Il n'y a pas encore de favoris</p>
+		{% endif %}
+							
+
 						</div>
 					</div>
 				</div>
